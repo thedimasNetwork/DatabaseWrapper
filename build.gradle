@@ -67,6 +67,11 @@ dependencies {
     runtimeOnly "mysql:mysql-connector-java:$mysqlVersion"
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
