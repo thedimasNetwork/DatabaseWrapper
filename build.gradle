@@ -10,7 +10,7 @@ apply plugin: "java"
 apply plugin: "maven-publish"
 
 group = 'stellar.database'
-version = '1.1'
+version = '1.0'
 
 sourceCompatibility = 16
 
@@ -67,6 +67,14 @@ dependencies {
     runtimeOnly "mysql:mysql-connector-java:$mysqlVersion"
 }
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
 task codegen {
     doLast {
         var host, schema, user, password
@@ -107,7 +115,7 @@ task codegen {
                                 .withInputSchema("$schema")
                         )
                         .withTarget(new Target()
-                                .withPackageName("stellar.plugin.database.gen")
+                                .withPackageName("stellar.database.gen")
                                 .withDirectory(sourceSets.main.java.srcDirs.first().path)
                         )
                 )
