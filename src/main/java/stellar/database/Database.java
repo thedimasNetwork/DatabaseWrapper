@@ -22,7 +22,7 @@ public class Database {
     private static String user;
     private static String password;
 
-    public static void init(String ip, int port, String name, String user, String password) {
+    public static void load(String ip, int port, String name, String user, String password) {
         Database.ip = ip;
         Database.port = port;
         Database.name = name;
