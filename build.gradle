@@ -7,6 +7,10 @@ import org.jooq.meta.jaxb.Jdbc
 import org.jooq.meta.jaxb.Target
 
 apply plugin: "java"
+apply plugin: "maven-publish"
+
+group = 'stellar.database'
+version = '1.1'
 
 sourceCompatibility = 16
 
