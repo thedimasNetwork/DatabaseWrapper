@@ -134,16 +134,16 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     }
 
     /**
-     * Setter for <code>mindustry.users.exp</code>.
+     * Setter for <code>mindustry.users.donated</code>.
      */
-    public void setExp(Integer value) {
+    public void setDonated(Integer value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>mindustry.users.exp</code>.
+     * Getter for <code>mindustry.users.donated</code>.
      */
-    public Integer getExp() {
+    public Integer getDonated() {
         return (Integer) get(8);
     }
 
@@ -352,7 +352,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
 
     @Override
     public Field<Integer> field9() {
-        return Users.USERS.EXP;
+        return Users.USERS.DONATED;
     }
 
     @Override
@@ -447,7 +447,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
 
     @Override
     public Integer component9() {
-        return getExp();
+        return getDonated();
     }
 
     @Override
@@ -542,7 +542,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
 
     @Override
     public Integer value9() {
-        return getExp();
+        return getDonated();
     }
 
     @Override
@@ -645,7 +645,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
 
     @Override
     public UsersRecord value9(Integer value) {
-        setExp(value);
+        setDonated(value);
         return this;
     }
 
@@ -747,7 +747,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     /**
      * Create a detached, initialised UsersRecord
      */
-    public UsersRecord(Integer id, String uuid, String ip, String name, String locale, String translator, Byte admin, Byte jsallowed, Integer exp, Byte popup, Byte discord, Integer attacks, Integer waves, Integer hexes, Long built, Long broken, Integer deaths, Integer logins, Integer messages) {
+    public UsersRecord(Integer id, String uuid, String ip, String name, String locale, String translator, Byte admin, Byte jsallowed, Integer donated, Byte popup, Byte discord, Integer attacks, Integer waves, Integer hexes, Long built, Long broken, Integer deaths, Integer logins, Integer messages) {
         super(Users.USERS);
 
         setId(id);
@@ -758,7 +758,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
         setTranslator(translator);
         setAdmin(admin);
         setJsallowed(jsallowed);
-        setExp(exp);
+        setDonated(donated);
         setPopup(popup);
         setDiscord(discord);
         setAttacks(attacks);

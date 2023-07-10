@@ -95,9 +95,9 @@ public class Users extends TableImpl<UsersRecord> {
     public final TableField<UsersRecord, Byte> JSALLOWED = createField(DSL.name("jsallowed"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.TINYINT)), this, "");
 
     /**
-     * The column <code>mindustry.users.exp</code>.
+     * The column <code>mindustry.users.donated</code>.
      */
-    public final TableField<UsersRecord, Integer> EXP = createField(DSL.name("exp"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<UsersRecord, Integer> DONATED = createField(DSL.name("donated"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.users.popup</code>.
