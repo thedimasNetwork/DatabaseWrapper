@@ -127,12 +127,12 @@ public class Users extends TableImpl<UsersRecord> {
     /**
      * The column <code>mindustry.users.built</code>.
      */
-    public final TableField<UsersRecord, Long> BUILT = createField(DSL.name("built"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<UsersRecord, Integer> BUILT = createField(DSL.name("built"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.users.broken</code>.
      */
-    public final TableField<UsersRecord, Long> BROKEN = createField(DSL.name("broken"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<UsersRecord, Integer> BROKEN = createField(DSL.name("broken"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.users.deaths</code>.
@@ -251,21 +251,21 @@ public class Users extends TableImpl<UsersRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row19<Integer, String, String, String, String, String, Byte, Byte, Integer, Byte, Byte, Integer, Integer, Integer, Long, Long, Integer, Integer, Integer> fieldsRow() {
+    public Row19<Integer, String, String, String, String, String, Byte, Byte, Integer, Byte, Byte, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer> fieldsRow() {
         return (Row19) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function19<? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Byte, ? super Byte, ? super Integer, ? super Byte, ? super Byte, ? super Integer, ? super Integer, ? super Integer, ? super Long, ? super Long, ? super Integer, ? super Integer, ? super Integer, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function19<? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Byte, ? super Byte, ? super Integer, ? super Byte, ? super Byte, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Class, Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function19<? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Byte, ? super Byte, ? super Integer, ? super Byte, ? super Byte, ? super Integer, ? super Integer, ? super Integer, ? super Long, ? super Long, ? super Integer, ? super Integer, ? super Integer, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function19<? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Byte, ? super Byte, ? super Integer, ? super Byte, ? super Byte, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
