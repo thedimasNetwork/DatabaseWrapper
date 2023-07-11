@@ -7,6 +7,7 @@ import org.jooq.*;
 import org.jooq.impl.DSL;
 import stellar.database.gen.Tables;
 import stellar.database.gen.tables.records.BansRecord;
+import stellar.database.gen.tables.records.PlaytimeRecord;
 import stellar.database.gen.tables.records.UsersRecord;
 
 import java.sql.*;
@@ -138,5 +139,24 @@ public class Database {
         BansRecord bansRecord = Database.latestBan(target);
         bansRecord.setActive((byte) 0);
         bansRecord.store();
+    }
+
+    public long getPlaytime(String uuid, Field<Long> field) throws SQLException{
+        Record1<Long> timeFetch = Database.getContext()
+                .select(field)
+                .from(Tables.PLAYTIME)
+                .where(Tables.PLAYTIME.UUID.eq(uuid))
+                .fetchOne();
+        long time = 0;
+        if (timeFetch == null) {
+            Log.warn("Player @ doesn't exists", uuid);
+            PlaytimeRecord playtimeRecord = Database.getContext().newRecord(Tables.PLAYTIME);
+            playtimeRecord.setUuid(uuid);
+            playtimeRecord.store();
+        } else {
+            time = timeFetch.value1();
+        }
+
+        return time;
     }
 }
