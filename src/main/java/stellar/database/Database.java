@@ -141,7 +141,7 @@ public class Database {
         bansRecord.store();
     }
 
-    public long getPlaytime(String uuid, Field<Long> field) throws SQLException{
+    public static long getPlaytime(String uuid, Field<Long> field) throws SQLException{
         Record1<Long> timeFetch = Database.getContext()
                 .select(field)
                 .from(Tables.PLAYTIME)
