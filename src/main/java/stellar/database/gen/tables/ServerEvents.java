@@ -40,7 +40,7 @@ public class ServerEvents extends TableImpl<ServerEventsRecord> {
     /**
      * The reference instance of <code>mindustry.server_events</code>
      */
-    public static final ServerEvents SERVER_EVENTS = new ServerEvents();
+    public static final ServerEvents serverEvents = new ServerEvents();
 
     /**
      * The class holding records for this type
@@ -53,52 +53,52 @@ public class ServerEvents extends TableImpl<ServerEventsRecord> {
     /**
      * The column <code>mindustry.server_events.id</code>.
      */
-    public final TableField<ServerEventsRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+    public final TableField<ServerEventsRecord, Integer> id = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>mindustry.server_events.server</code>.
      */
-    public final TableField<ServerEventsRecord, String> SERVER = createField(DSL.name("server"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<ServerEventsRecord, String> server = createField(DSL.name("server"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.server_events.timestamp</code>.
      */
-    public final TableField<ServerEventsRecord, Long> TIMESTAMP = createField(DSL.name("timestamp"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<ServerEventsRecord, Long> timestamp = createField(DSL.name("timestamp"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>mindustry.server_events.type</code>.
      */
-    public final TableField<ServerEventsRecord, String> TYPE = createField(DSL.name("type"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<ServerEventsRecord, String> type = createField(DSL.name("type"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.server_events.ip</code>.
      */
-    public final TableField<ServerEventsRecord, String> IP = createField(DSL.name("ip"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<ServerEventsRecord, String> ip = createField(DSL.name("ip"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>mindustry.server_events.name</code>.
      */
-    public final TableField<ServerEventsRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<ServerEventsRecord, String> name = createField(DSL.name("name"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>mindustry.server_events.uuid</code>.
      */
-    public final TableField<ServerEventsRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<ServerEventsRecord, String> uuid = createField(DSL.name("uuid"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>mindustry.server_events.mapname</code>.
      */
-    public final TableField<ServerEventsRecord, String> MAPNAME = createField(DSL.name("mapname"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<ServerEventsRecord, String> mapname = createField(DSL.name("mapname"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>mindustry.server_events.wave</code>.
      */
-    public final TableField<ServerEventsRecord, Integer> WAVE = createField(DSL.name("wave"), SQLDataType.INTEGER, this, "");
+    public final TableField<ServerEventsRecord, Integer> wave = createField(DSL.name("wave"), SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>mindustry.server_events.request</code>.
      */
-    public final TableField<ServerEventsRecord, String> REQUEST = createField(DSL.name("request"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<ServerEventsRecord, String> request = createField(DSL.name("request"), SQLDataType.VARCHAR(255), this, "");
 
     private ServerEvents(Name alias, Table<ServerEventsRecord> aliased) {
         this(alias, aliased, null);
@@ -112,14 +112,14 @@ public class ServerEvents extends TableImpl<ServerEventsRecord> {
      * Create an aliased <code>mindustry.server_events</code> table reference
      */
     public ServerEvents(String alias) {
-        this(DSL.name(alias), SERVER_EVENTS);
+        this(DSL.name(alias), serverEvents);
     }
 
     /**
      * Create an aliased <code>mindustry.server_events</code> table reference
      */
     public ServerEvents(Name alias) {
-        this(alias, SERVER_EVENTS);
+        this(alias, serverEvents);
     }
 
     /**
@@ -130,12 +130,12 @@ public class ServerEvents extends TableImpl<ServerEventsRecord> {
     }
 
     public <O extends Record> ServerEvents(Table<O> child, ForeignKey<O, ServerEventsRecord> key) {
-        super(child, key, SERVER_EVENTS);
+        super(child, key, serverEvents);
     }
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Mindustry.MINDUSTRY;
+        return aliased() ? null : Mindustry.mindustry;
     }
 
     @Override
@@ -145,7 +145,7 @@ public class ServerEvents extends TableImpl<ServerEventsRecord> {
 
     @Override
     public UniqueKey<ServerEventsRecord> getPrimaryKey() {
-        return Keys.KEY_SERVER_EVENTS_PRIMARY;
+        return Keys.keyServerEventsPrimary;
     }
 
     @Override

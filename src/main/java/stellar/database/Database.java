@@ -68,28 +68,28 @@ public class Database {
     @Nullable
     public static UsersRecord getPlayer(String uuid) throws SQLException {
         return Database.getContext()
-                .selectFrom(Tables.USERS)
-                .where(Tables.USERS.UUID.eq(uuid))
+                .selectFrom(Tables.users)
+                .where(Tables.users.uuid.eq(uuid))
                 .fetchOne();
     }
 
     @Nullable
     public static UsersRecord getPlayer(int id) throws SQLException {
         return Database.getContext()
-                .selectFrom(Tables.USERS)
-                .where(Tables.USERS.ID.eq(id))
+                .selectFrom(Tables.users)
+                .where(Tables.users.id.eq(id))
                 .fetchOne();
     }
 
     public static boolean playerExists(String uuid) throws SQLException {
-        return Database.getContext().fetchExists(Tables.USERS, Tables.USERS.UUID.eq(uuid));
+        return Database.getContext().fetchExists(Tables.users, Tables.users.uuid.eq(uuid));
     }
 
     public static BansRecord latestBan(String uuid) throws SQLException {
         return Database.getContext()
-                .selectFrom(Tables.BANS)
-                .where(Tables.BANS.TARGET.eq(uuid))
-                .orderBy(Tables.BANS.ID.desc())
+                .selectFrom(Tables.bans)
+                .where(Tables.bans.target.eq(uuid))
+                .orderBy(Tables.bans.id.desc())
                 .limit(1)
                 .fetchOne();
     }
@@ -119,7 +119,7 @@ public class Database {
             throw new IllegalArgumentException("Target is already banned!");
         }
 
-        BansRecord bansRecord = Database.getContext().newRecord(Tables.BANS);
+        BansRecord bansRecord = Database.getContext().newRecord(Tables.bans);
         bansRecord.setAdmin(admin);
         bansRecord.setTarget(target);
         bansRecord.setCreated(LocalDateTime.now());
@@ -144,13 +144,13 @@ public class Database {
     public static long getPlaytime(String uuid, Field<Long> field) throws SQLException{
         Record1<Long> timeFetch = Database.getContext()
                 .select(field)
-                .from(Tables.PLAYTIME)
-                .where(Tables.PLAYTIME.UUID.eq(uuid))
+                .from(Tables.playtime)
+                .where(Tables.playtime.uuid.eq(uuid))
                 .fetchOne();
         long time = 0;
         if (timeFetch == null) {
             Log.warn("Player @ doesn't exists", uuid);
-            PlaytimeRecord playtimeRecord = Database.getContext().newRecord(Tables.PLAYTIME);
+            PlaytimeRecord playtimeRecord = Database.getContext().newRecord(Tables.playtime);
             playtimeRecord.setUuid(uuid);
             playtimeRecord.store();
         } else {

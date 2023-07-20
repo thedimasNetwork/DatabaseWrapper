@@ -44,7 +44,7 @@ public class PlayerEvents extends TableImpl<PlayerEventsRecord> {
     /**
      * The reference instance of <code>mindustry.player_events</code>
      */
-    public static final PlayerEvents PLAYER_EVENTS = new PlayerEvents();
+    public static final PlayerEvents playerEvents = new PlayerEvents();
 
     /**
      * The class holding records for this type
@@ -57,62 +57,62 @@ public class PlayerEvents extends TableImpl<PlayerEventsRecord> {
     /**
      * The column <code>mindustry.player_events.id</code>.
      */
-    public final TableField<PlayerEventsRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+    public final TableField<PlayerEventsRecord, Integer> id = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>mindustry.player_events.server</code>.
      */
-    public final TableField<PlayerEventsRecord, String> SERVER = createField(DSL.name("server"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<PlayerEventsRecord, String> server = createField(DSL.name("server"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.player_events.timestamp</code>.
      */
-    public final TableField<PlayerEventsRecord, Long> TIMESTAMP = createField(DSL.name("timestamp"), SQLDataType.BIGINT.nullable(false), this, "");
+    public final TableField<PlayerEventsRecord, Long> timestamp = createField(DSL.name("timestamp"), SQLDataType.BIGINT.nullable(false), this, "");
 
     /**
      * The column <code>mindustry.player_events.type</code>.
      */
-    public final TableField<PlayerEventsRecord, String> TYPE = createField(DSL.name("type"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<PlayerEventsRecord, String> type = createField(DSL.name("type"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.player_events.uuid</code>.
      */
-    public final TableField<PlayerEventsRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<PlayerEventsRecord, String> uuid = createField(DSL.name("uuid"), SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.player_events.ip</code>.
      */
-    public final TableField<PlayerEventsRecord, String> IP = createField(DSL.name("ip"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<PlayerEventsRecord, String> ip = createField(DSL.name("ip"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>mindustry.player_events.name</code>.
      */
-    public final TableField<PlayerEventsRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<PlayerEventsRecord, String> name = createField(DSL.name("name"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>mindustry.player_events.message</code>.
      */
-    public final TableField<PlayerEventsRecord, String> MESSAGE = createField(DSL.name("message"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<PlayerEventsRecord, String> message = createField(DSL.name("message"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>mindustry.player_events.x</code>.
      */
-    public final TableField<PlayerEventsRecord, Integer> X = createField(DSL.name("x"), SQLDataType.INTEGER, this, "");
+    public final TableField<PlayerEventsRecord, Integer> x = createField(DSL.name("x"), SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>mindustry.player_events.y</code>.
      */
-    public final TableField<PlayerEventsRecord, Integer> Y = createField(DSL.name("y"), SQLDataType.INTEGER, this, "");
+    public final TableField<PlayerEventsRecord, Integer> y = createField(DSL.name("y"), SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>mindustry.player_events.block</code>.
      */
-    public final TableField<PlayerEventsRecord, String> BLOCK = createField(DSL.name("block"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<PlayerEventsRecord, String> block = createField(DSL.name("block"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>mindustry.player_events.command</code>.
      */
-    public final TableField<PlayerEventsRecord, String> COMMAND = createField(DSL.name("command"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<PlayerEventsRecord, String> command = createField(DSL.name("command"), SQLDataType.VARCHAR(255), this, "");
 
     private PlayerEvents(Name alias, Table<PlayerEventsRecord> aliased) {
         this(alias, aliased, null);
@@ -126,14 +126,14 @@ public class PlayerEvents extends TableImpl<PlayerEventsRecord> {
      * Create an aliased <code>mindustry.player_events</code> table reference
      */
     public PlayerEvents(String alias) {
-        this(DSL.name(alias), PLAYER_EVENTS);
+        this(DSL.name(alias), playerEvents);
     }
 
     /**
      * Create an aliased <code>mindustry.player_events</code> table reference
      */
     public PlayerEvents(Name alias) {
-        this(alias, PLAYER_EVENTS);
+        this(alias, playerEvents);
     }
 
     /**
@@ -144,17 +144,17 @@ public class PlayerEvents extends TableImpl<PlayerEventsRecord> {
     }
 
     public <O extends Record> PlayerEvents(Table<O> child, ForeignKey<O, PlayerEventsRecord> key) {
-        super(child, key, PLAYER_EVENTS);
+        super(child, key, playerEvents);
     }
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Mindustry.MINDUSTRY;
+        return aliased() ? null : Mindustry.mindustry;
     }
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.PLAYER_EVENTS_UUID);
+        return Arrays.asList(Indexes.playerEventsUuid);
     }
 
     @Override
@@ -164,7 +164,7 @@ public class PlayerEvents extends TableImpl<PlayerEventsRecord> {
 
     @Override
     public UniqueKey<PlayerEventsRecord> getPrimaryKey() {
-        return Keys.KEY_PLAYER_EVENTS_PRIMARY;
+        return Keys.keyPlayerEventsPrimary;
     }
 
     @Override

@@ -39,7 +39,7 @@ public class Playtime extends TableImpl<PlaytimeRecord> {
     /**
      * The reference instance of <code>mindustry.playtime</code>
      */
-    public static final Playtime PLAYTIME = new Playtime();
+    public static final Playtime playtime = new Playtime();
 
     /**
      * The class holding records for this type
@@ -52,77 +52,77 @@ public class Playtime extends TableImpl<PlaytimeRecord> {
     /**
      * The column <code>mindustry.playtime.uuid</code>.
      */
-    public final TableField<PlaytimeRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.VARCHAR(40).nullable(false), this, "");
+    public final TableField<PlaytimeRecord, String> uuid = createField(DSL.name("uuid"), SQLDataType.VARCHAR(40).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.playtime.hub</code>.
      */
-    public final TableField<PlaytimeRecord, Long> HUB = createField(DSL.name("hub"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<PlaytimeRecord, Long> hub = createField(DSL.name("hub"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>mindustry.playtime.survival</code>.
      */
-    public final TableField<PlaytimeRecord, Long> SURVIVAL = createField(DSL.name("survival"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<PlaytimeRecord, Long> survival = createField(DSL.name("survival"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>mindustry.playtime.attack</code>.
      */
-    public final TableField<PlaytimeRecord, Long> ATTACK = createField(DSL.name("attack"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<PlaytimeRecord, Long> attack = createField(DSL.name("attack"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>mindustry.playtime.sandbox</code>.
      */
-    public final TableField<PlaytimeRecord, Long> SANDBOX = createField(DSL.name("sandbox"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<PlaytimeRecord, Long> sandbox = createField(DSL.name("sandbox"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>mindustry.playtime.pvp</code>.
      */
-    public final TableField<PlaytimeRecord, Long> PVP = createField(DSL.name("pvp"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<PlaytimeRecord, Long> pvp = createField(DSL.name("pvp"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>mindustry.playtime.erekir_hexed</code>.
      */
-    public final TableField<PlaytimeRecord, Long> EREKIR_HEXED = createField(DSL.name("erekir_hexed"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<PlaytimeRecord, Long> erekirHexed = createField(DSL.name("erekir_hexed"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>mindustry.playtime.anarchy</code>.
      */
-    public final TableField<PlaytimeRecord, Long> ANARCHY = createField(DSL.name("anarchy"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<PlaytimeRecord, Long> anarchy = createField(DSL.name("anarchy"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>mindustry.playtime.campaign_maps</code>.
      */
-    public final TableField<PlaytimeRecord, Long> CAMPAIGN_MAPS = createField(DSL.name("campaign_maps"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<PlaytimeRecord, Long> campaignMaps = createField(DSL.name("campaign_maps"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>mindustry.playtime.ms_go</code>.
      */
-    public final TableField<PlaytimeRecord, Long> MS_GO = createField(DSL.name("ms_go"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<PlaytimeRecord, Long> msGo = createField(DSL.name("ms_go"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>mindustry.playtime.hex_pvp</code>.
      */
-    public final TableField<PlaytimeRecord, Long> HEX_PVP = createField(DSL.name("hex_pvp"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<PlaytimeRecord, Long> hexPvp = createField(DSL.name("hex_pvp"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>mindustry.playtime.castle_wars</code>.
      */
-    public final TableField<PlaytimeRecord, Long> CASTLE_WARS = createField(DSL.name("castle_wars"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<PlaytimeRecord, Long> castleWars = createField(DSL.name("castle_wars"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>mindustry.playtime.crawler_arena</code>.
      */
-    public final TableField<PlaytimeRecord, Long> CRAWLER_ARENA = createField(DSL.name("crawler_arena"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<PlaytimeRecord, Long> crawlerArena = createField(DSL.name("crawler_arena"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>mindustry.playtime.zone_capture</code>.
      */
-    public final TableField<PlaytimeRecord, Long> ZONE_CAPTURE = createField(DSL.name("zone_capture"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<PlaytimeRecord, Long> zoneCapture = createField(DSL.name("zone_capture"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
 
     /**
      * The column <code>mindustry.playtime.test</code>.
      */
-    public final TableField<PlaytimeRecord, Long> TEST = createField(DSL.name("test"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
+    public final TableField<PlaytimeRecord, Long> test = createField(DSL.name("test"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BIGINT)), this, "");
 
     private Playtime(Name alias, Table<PlaytimeRecord> aliased) {
         this(alias, aliased, null);
@@ -136,14 +136,14 @@ public class Playtime extends TableImpl<PlaytimeRecord> {
      * Create an aliased <code>mindustry.playtime</code> table reference
      */
     public Playtime(String alias) {
-        this(DSL.name(alias), PLAYTIME);
+        this(DSL.name(alias), playtime);
     }
 
     /**
      * Create an aliased <code>mindustry.playtime</code> table reference
      */
     public Playtime(Name alias) {
-        this(alias, PLAYTIME);
+        this(alias, playtime);
     }
 
     /**
@@ -154,17 +154,17 @@ public class Playtime extends TableImpl<PlaytimeRecord> {
     }
 
     public <O extends Record> Playtime(Table<O> child, ForeignKey<O, PlaytimeRecord> key) {
-        super(child, key, PLAYTIME);
+        super(child, key, playtime);
     }
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Mindustry.MINDUSTRY;
+        return aliased() ? null : Mindustry.mindustry;
     }
 
     @Override
     public UniqueKey<PlaytimeRecord> getPrimaryKey() {
-        return Keys.KEY_PLAYTIME_PRIMARY;
+        return Keys.keyPlaytimePrimary;
     }
 
     @Override

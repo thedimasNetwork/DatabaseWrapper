@@ -30,37 +30,37 @@ public class Mindustry extends SchemaImpl {
     /**
      * The reference instance of <code>mindustry</code>
      */
-    public static final Mindustry MINDUSTRY = new Mindustry();
+    public static final Mindustry mindustry = new Mindustry();
 
     /**
      * The table <code>mindustry.bans</code>.
      */
-    public final Bans BANS = Bans.BANS;
+    public final Bans bans = Bans.bans;
 
     /**
      * The table <code>mindustry.ip_cached</code>.
      */
-    public final IpCached IP_CACHED = IpCached.IP_CACHED;
+    public final IpCached ipCached = IpCached.ipCached;
 
     /**
      * The table <code>mindustry.player_events</code>.
      */
-    public final PlayerEvents PLAYER_EVENTS = PlayerEvents.PLAYER_EVENTS;
+    public final PlayerEvents playerEvents = PlayerEvents.playerEvents;
 
     /**
      * The table <code>mindustry.playtime</code>.
      */
-    public final Playtime PLAYTIME = Playtime.PLAYTIME;
+    public final Playtime playtime = Playtime.playtime;
 
     /**
      * The table <code>mindustry.server_events</code>.
      */
-    public final ServerEvents SERVER_EVENTS = ServerEvents.SERVER_EVENTS;
+    public final ServerEvents serverEvents = ServerEvents.serverEvents;
 
     /**
      * The table <code>mindustry.users</code>.
      */
-    public final Users USERS = Users.USERS;
+    public final Users users = Users.users;
 
     /**
      * No further instances allowed
@@ -78,12 +78,12 @@ public class Mindustry extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
-            Bans.BANS,
-            IpCached.IP_CACHED,
-            PlayerEvents.PLAYER_EVENTS,
-            Playtime.PLAYTIME,
-            ServerEvents.SERVER_EVENTS,
-            Users.USERS
+            Bans.bans,
+            IpCached.ipCached,
+            PlayerEvents.playerEvents,
+            Playtime.playtime,
+            ServerEvents.serverEvents,
+            Users.users
         );
     }
 }

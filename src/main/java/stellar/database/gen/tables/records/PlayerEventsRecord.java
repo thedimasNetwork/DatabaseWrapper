@@ -214,62 +214,62 @@ public class PlayerEventsRecord extends UpdatableRecordImpl<PlayerEventsRecord> 
 
     @Override
     public Field<Integer> field1() {
-        return PlayerEvents.PLAYER_EVENTS.ID;
+        return PlayerEvents.playerEvents.id;
     }
 
     @Override
     public Field<String> field2() {
-        return PlayerEvents.PLAYER_EVENTS.SERVER;
+        return PlayerEvents.playerEvents.server;
     }
 
     @Override
     public Field<Long> field3() {
-        return PlayerEvents.PLAYER_EVENTS.TIMESTAMP;
+        return PlayerEvents.playerEvents.timestamp;
     }
 
     @Override
     public Field<String> field4() {
-        return PlayerEvents.PLAYER_EVENTS.TYPE;
+        return PlayerEvents.playerEvents.type;
     }
 
     @Override
     public Field<String> field5() {
-        return PlayerEvents.PLAYER_EVENTS.UUID;
+        return PlayerEvents.playerEvents.uuid;
     }
 
     @Override
     public Field<String> field6() {
-        return PlayerEvents.PLAYER_EVENTS.IP;
+        return PlayerEvents.playerEvents.ip;
     }
 
     @Override
     public Field<String> field7() {
-        return PlayerEvents.PLAYER_EVENTS.NAME;
+        return PlayerEvents.playerEvents.name;
     }
 
     @Override
     public Field<String> field8() {
-        return PlayerEvents.PLAYER_EVENTS.MESSAGE;
+        return PlayerEvents.playerEvents.message;
     }
 
     @Override
     public Field<Integer> field9() {
-        return PlayerEvents.PLAYER_EVENTS.X;
+        return PlayerEvents.playerEvents.x;
     }
 
     @Override
     public Field<Integer> field10() {
-        return PlayerEvents.PLAYER_EVENTS.Y;
+        return PlayerEvents.playerEvents.y;
     }
 
     @Override
     public Field<String> field11() {
-        return PlayerEvents.PLAYER_EVENTS.BLOCK;
+        return PlayerEvents.playerEvents.block;
     }
 
     @Override
     public Field<String> field12() {
-        return PlayerEvents.PLAYER_EVENTS.COMMAND;
+        return PlayerEvents.playerEvents.command;
     }
 
     @Override
@@ -489,14 +489,14 @@ public class PlayerEventsRecord extends UpdatableRecordImpl<PlayerEventsRecord> 
      * Create a detached PlayerEventsRecord
      */
     public PlayerEventsRecord() {
-        super(PlayerEvents.PLAYER_EVENTS);
+        super(PlayerEvents.playerEvents);
     }
 
     /**
      * Create a detached, initialised PlayerEventsRecord
      */
     public PlayerEventsRecord(Integer id, String server, Long timestamp, String type, String uuid, String ip, String name, String message, Integer x, Integer y, String block, String command) {
-        super(PlayerEvents.PLAYER_EVENTS);
+        super(PlayerEvents.playerEvents);
 
         setId(id);
         setServer(server);

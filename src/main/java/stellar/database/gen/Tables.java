@@ -21,30 +21,30 @@ public class Tables {
     /**
      * The table <code>mindustry.bans</code>.
      */
-    public static final Bans BANS = Bans.BANS;
+    public static final Bans bans = Bans.bans;
 
     /**
      * The table <code>mindustry.ip_cached</code>.
      */
-    public static final IpCached IP_CACHED = IpCached.IP_CACHED;
+    public static final IpCached ipCached = IpCached.ipCached;
 
     /**
      * The table <code>mindustry.player_events</code>.
      */
-    public static final PlayerEvents PLAYER_EVENTS = PlayerEvents.PLAYER_EVENTS;
+    public static final PlayerEvents playerEvents = PlayerEvents.playerEvents;
 
     /**
      * The table <code>mindustry.playtime</code>.
      */
-    public static final Playtime PLAYTIME = Playtime.PLAYTIME;
+    public static final Playtime playtime = Playtime.playtime;
 
     /**
      * The table <code>mindustry.server_events</code>.
      */
-    public static final ServerEvents SERVER_EVENTS = ServerEvents.SERVER_EVENTS;
+    public static final ServerEvents serverEvents = ServerEvents.serverEvents;
 
     /**
      * The table <code>mindustry.users</code>.
      */
-    public static final Users USERS = Users.USERS;
+    public static final Users users = Users.users;
 }

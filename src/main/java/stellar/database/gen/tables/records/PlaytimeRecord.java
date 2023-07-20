@@ -256,77 +256,77 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
 
     @Override
     public Field<String> field1() {
-        return Playtime.PLAYTIME.UUID;
+        return Playtime.playtime.uuid;
     }
 
     @Override
     public Field<Long> field2() {
-        return Playtime.PLAYTIME.HUB;
+        return Playtime.playtime.hub;
     }
 
     @Override
     public Field<Long> field3() {
-        return Playtime.PLAYTIME.SURVIVAL;
+        return Playtime.playtime.survival;
     }
 
     @Override
     public Field<Long> field4() {
-        return Playtime.PLAYTIME.ATTACK;
+        return Playtime.playtime.attack;
     }
 
     @Override
     public Field<Long> field5() {
-        return Playtime.PLAYTIME.SANDBOX;
+        return Playtime.playtime.sandbox;
     }
 
     @Override
     public Field<Long> field6() {
-        return Playtime.PLAYTIME.PVP;
+        return Playtime.playtime.pvp;
     }
 
     @Override
     public Field<Long> field7() {
-        return Playtime.PLAYTIME.EREKIR_HEXED;
+        return Playtime.playtime.erekirHexed;
     }
 
     @Override
     public Field<Long> field8() {
-        return Playtime.PLAYTIME.ANARCHY;
+        return Playtime.playtime.anarchy;
     }
 
     @Override
     public Field<Long> field9() {
-        return Playtime.PLAYTIME.CAMPAIGN_MAPS;
+        return Playtime.playtime.campaignMaps;
     }
 
     @Override
     public Field<Long> field10() {
-        return Playtime.PLAYTIME.MS_GO;
+        return Playtime.playtime.msGo;
     }
 
     @Override
     public Field<Long> field11() {
-        return Playtime.PLAYTIME.HEX_PVP;
+        return Playtime.playtime.hexPvp;
     }
 
     @Override
     public Field<Long> field12() {
-        return Playtime.PLAYTIME.CASTLE_WARS;
+        return Playtime.playtime.castleWars;
     }
 
     @Override
     public Field<Long> field13() {
-        return Playtime.PLAYTIME.CRAWLER_ARENA;
+        return Playtime.playtime.crawlerArena;
     }
 
     @Override
     public Field<Long> field14() {
-        return Playtime.PLAYTIME.ZONE_CAPTURE;
+        return Playtime.playtime.zoneCapture;
     }
 
     @Override
     public Field<Long> field15() {
-        return Playtime.PLAYTIME.TEST;
+        return Playtime.playtime.test;
     }
 
     @Override
@@ -597,14 +597,14 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
      * Create a detached PlaytimeRecord
      */
     public PlaytimeRecord() {
-        super(Playtime.PLAYTIME);
+        super(Playtime.playtime);
     }
 
     /**
      * Create a detached, initialised PlaytimeRecord
      */
     public PlaytimeRecord(String uuid, Long hub, Long survival, Long attack, Long sandbox, Long pvp, Long erekirHexed, Long anarchy, Long campaignMaps, Long msGo, Long hexPvp, Long castleWars, Long crawlerArena, Long zoneCapture, Long test) {
-        super(Playtime.PLAYTIME);
+        super(Playtime.playtime);
 
         setUuid(uuid);
         setHub(hub);

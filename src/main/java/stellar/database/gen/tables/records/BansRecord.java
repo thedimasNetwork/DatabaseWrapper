@@ -146,37 +146,37 @@ public class BansRecord extends UpdatableRecordImpl<BansRecord> implements Recor
 
     @Override
     public Field<Integer> field1() {
-        return Bans.BANS.ID;
+        return Bans.bans.id;
     }
 
     @Override
     public Field<String> field2() {
-        return Bans.BANS.ADMIN;
+        return Bans.bans.admin;
     }
 
     @Override
     public Field<String> field3() {
-        return Bans.BANS.TARGET;
+        return Bans.bans.target;
     }
 
     @Override
     public Field<LocalDateTime> field4() {
-        return Bans.BANS.CREATED;
+        return Bans.bans.created;
     }
 
     @Override
     public Field<LocalDateTime> field5() {
-        return Bans.BANS.UNTIL;
+        return Bans.bans.until;
     }
 
     @Override
     public Field<String> field6() {
-        return Bans.BANS.REASON;
+        return Bans.bans.reason;
     }
 
     @Override
     public Field<Byte> field7() {
-        return Bans.BANS.ACTIVE;
+        return Bans.bans.active;
     }
 
     @Override
@@ -311,14 +311,14 @@ public class BansRecord extends UpdatableRecordImpl<BansRecord> implements Recor
      * Create a detached BansRecord
      */
     public BansRecord() {
-        super(Bans.BANS);
+        super(Bans.bans);
     }
 
     /**
      * Create a detached, initialised BansRecord
      */
     public BansRecord(Integer id, String admin, String target, LocalDateTime created, LocalDateTime until, String reason, Byte active) {
-        super(Bans.BANS);
+        super(Bans.bans);
 
         setId(id);
         setAdmin(admin);

@@ -23,6 +23,6 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index USERS_USERS_IP_INDEX = Internal.createIndex(DSL.name("users_ip_index"), Users.USERS, new OrderField[] { Users.USERS.IP }, false);
-    public static final Index PLAYER_EVENTS_UUID = Internal.createIndex(DSL.name("uuid"), PlayerEvents.PLAYER_EVENTS, new OrderField[] { PlayerEvents.PLAYER_EVENTS.UUID }, false);
+    public static final Index usersUsersIpIndex = Internal.createIndex(DSL.name("users_ip_index"), Users.users, new OrderField[] { Users.users.ip }, false);
+    public static final Index playerEventsUuid = Internal.createIndex(DSL.name("uuid"), PlayerEvents.playerEvents, new OrderField[] { PlayerEvents.playerEvents.uuid }, false);
 }

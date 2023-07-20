@@ -41,7 +41,7 @@ public class Bans extends TableImpl<BansRecord> {
     /**
      * The reference instance of <code>mindustry.bans</code>
      */
-    public static final Bans BANS = new Bans();
+    public static final Bans bans = new Bans();
 
     /**
      * The class holding records for this type
@@ -54,37 +54,37 @@ public class Bans extends TableImpl<BansRecord> {
     /**
      * The column <code>mindustry.bans.id</code>.
      */
-    public final TableField<BansRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+    public final TableField<BansRecord, Integer> id = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>mindustry.bans.admin</code>.
      */
-    public final TableField<BansRecord, String> ADMIN = createField(DSL.name("admin"), SQLDataType.VARCHAR(40).nullable(false), this, "");
+    public final TableField<BansRecord, String> admin = createField(DSL.name("admin"), SQLDataType.VARCHAR(40).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.bans.target</code>.
      */
-    public final TableField<BansRecord, String> TARGET = createField(DSL.name("target"), SQLDataType.VARCHAR(40).nullable(false), this, "");
+    public final TableField<BansRecord, String> target = createField(DSL.name("target"), SQLDataType.VARCHAR(40).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.bans.created</code>.
      */
-    public final TableField<BansRecord, LocalDateTime> CREATED = createField(DSL.name("created"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+    public final TableField<BansRecord, LocalDateTime> created = createField(DSL.name("created"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.bans.until</code>.
      */
-    public final TableField<BansRecord, LocalDateTime> UNTIL = createField(DSL.name("until"), SQLDataType.LOCALDATETIME(0), this, "");
+    public final TableField<BansRecord, LocalDateTime> until = createField(DSL.name("until"), SQLDataType.LOCALDATETIME(0), this, "");
 
     /**
      * The column <code>mindustry.bans.reason</code>.
      */
-    public final TableField<BansRecord, String> REASON = createField(DSL.name("reason"), SQLDataType.VARCHAR(128).nullable(false), this, "");
+    public final TableField<BansRecord, String> reason = createField(DSL.name("reason"), SQLDataType.VARCHAR(128).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.bans.active</code>.
      */
-    public final TableField<BansRecord, Byte> ACTIVE = createField(DSL.name("active"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("1", SQLDataType.TINYINT)), this, "");
+    public final TableField<BansRecord, Byte> active = createField(DSL.name("active"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("1", SQLDataType.TINYINT)), this, "");
 
     private Bans(Name alias, Table<BansRecord> aliased) {
         this(alias, aliased, null);
@@ -98,14 +98,14 @@ public class Bans extends TableImpl<BansRecord> {
      * Create an aliased <code>mindustry.bans</code> table reference
      */
     public Bans(String alias) {
-        this(DSL.name(alias), BANS);
+        this(DSL.name(alias), bans);
     }
 
     /**
      * Create an aliased <code>mindustry.bans</code> table reference
      */
     public Bans(Name alias) {
-        this(alias, BANS);
+        this(alias, bans);
     }
 
     /**
@@ -116,12 +116,12 @@ public class Bans extends TableImpl<BansRecord> {
     }
 
     public <O extends Record> Bans(Table<O> child, ForeignKey<O, BansRecord> key) {
-        super(child, key, BANS);
+        super(child, key, bans);
     }
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Mindustry.MINDUSTRY;
+        return aliased() ? null : Mindustry.mindustry;
     }
 
     @Override
@@ -131,7 +131,7 @@ public class Bans extends TableImpl<BansRecord> {
 
     @Override
     public UniqueKey<BansRecord> getPrimaryKey() {
-        return Keys.KEY_BANS_PRIMARY;
+        return Keys.keyBansPrimary;
     }
 
     @Override

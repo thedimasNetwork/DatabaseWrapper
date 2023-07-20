@@ -186,52 +186,52 @@ public class ServerEventsRecord extends UpdatableRecordImpl<ServerEventsRecord> 
 
     @Override
     public Field<Integer> field1() {
-        return ServerEvents.SERVER_EVENTS.ID;
+        return ServerEvents.serverEvents.id;
     }
 
     @Override
     public Field<String> field2() {
-        return ServerEvents.SERVER_EVENTS.SERVER;
+        return ServerEvents.serverEvents.server;
     }
 
     @Override
     public Field<Long> field3() {
-        return ServerEvents.SERVER_EVENTS.TIMESTAMP;
+        return ServerEvents.serverEvents.timestamp;
     }
 
     @Override
     public Field<String> field4() {
-        return ServerEvents.SERVER_EVENTS.TYPE;
+        return ServerEvents.serverEvents.type;
     }
 
     @Override
     public Field<String> field5() {
-        return ServerEvents.SERVER_EVENTS.IP;
+        return ServerEvents.serverEvents.ip;
     }
 
     @Override
     public Field<String> field6() {
-        return ServerEvents.SERVER_EVENTS.NAME;
+        return ServerEvents.serverEvents.name;
     }
 
     @Override
     public Field<String> field7() {
-        return ServerEvents.SERVER_EVENTS.UUID;
+        return ServerEvents.serverEvents.uuid;
     }
 
     @Override
     public Field<String> field8() {
-        return ServerEvents.SERVER_EVENTS.MAPNAME;
+        return ServerEvents.serverEvents.mapname;
     }
 
     @Override
     public Field<Integer> field9() {
-        return ServerEvents.SERVER_EVENTS.WAVE;
+        return ServerEvents.serverEvents.wave;
     }
 
     @Override
     public Field<String> field10() {
-        return ServerEvents.SERVER_EVENTS.REQUEST;
+        return ServerEvents.serverEvents.request;
     }
 
     @Override
@@ -417,14 +417,14 @@ public class ServerEventsRecord extends UpdatableRecordImpl<ServerEventsRecord> 
      * Create a detached ServerEventsRecord
      */
     public ServerEventsRecord() {
-        super(ServerEvents.SERVER_EVENTS);
+        super(ServerEvents.serverEvents);
     }
 
     /**
      * Create a detached, initialised ServerEventsRecord
      */
     public ServerEventsRecord(Integer id, String server, Long timestamp, String type, String ip, String name, String uuid, String mapname, Integer wave, String request) {
-        super(ServerEvents.SERVER_EVENTS);
+        super(ServerEvents.serverEvents);
 
         setId(id);
         setServer(server);

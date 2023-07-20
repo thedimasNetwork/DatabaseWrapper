@@ -28,7 +28,7 @@ public class DefaultCatalog extends CatalogImpl {
     /**
      * The schema <code>mindustry</code>.
      */
-    public final Mindustry MINDUSTRY = Mindustry.MINDUSTRY;
+    public final Mindustry mindustry = Mindustry.mindustry;
 
     /**
      * No further instances allowed
@@ -40,7 +40,7 @@ public class DefaultCatalog extends CatalogImpl {
     @Override
     public final List<Schema> getSchemas() {
         return Arrays.asList(
-            Mindustry.MINDUSTRY
+            Mindustry.mindustry
         );
     }
 

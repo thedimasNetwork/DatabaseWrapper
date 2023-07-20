@@ -130,32 +130,32 @@ public class IpCachedRecord extends UpdatableRecordImpl<IpCachedRecord> implemen
 
     @Override
     public Field<Integer> field1() {
-        return IpCached.IP_CACHED.ID;
+        return IpCached.ipCached.id;
     }
 
     @Override
     public Field<String> field2() {
-        return IpCached.IP_CACHED.IP;
+        return IpCached.ipCached.ip;
     }
 
     @Override
     public Field<Byte> field3() {
-        return IpCached.IP_CACHED.PROXY;
+        return IpCached.ipCached.proxy;
     }
 
     @Override
     public Field<Byte> field4() {
-        return IpCached.IP_CACHED.VPN;
+        return IpCached.ipCached.vpn;
     }
 
     @Override
     public Field<String> field5() {
-        return IpCached.IP_CACHED.TYPE;
+        return IpCached.ipCached.type;
     }
 
     @Override
     public Field<Short> field6() {
-        return IpCached.IP_CACHED.RISK;
+        return IpCached.ipCached.risk;
     }
 
     @Override
@@ -273,14 +273,14 @@ public class IpCachedRecord extends UpdatableRecordImpl<IpCachedRecord> implemen
      * Create a detached IpCachedRecord
      */
     public IpCachedRecord() {
-        super(IpCached.IP_CACHED);
+        super(IpCached.ipCached);
     }
 
     /**
      * Create a detached, initialised IpCachedRecord
      */
     public IpCachedRecord(Integer id, String ip, Byte proxy, Byte vpn, String type, Short risk) {
-        super(IpCached.IP_CACHED);
+        super(IpCached.ipCached);
 
         setId(id);
         setIp(ip);

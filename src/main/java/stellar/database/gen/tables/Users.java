@@ -44,7 +44,7 @@ public class Users extends TableImpl<UsersRecord> {
     /**
      * The reference instance of <code>mindustry.users</code>
      */
-    public static final Users USERS = new Users();
+    public static final Users users = new Users();
 
     /**
      * The class holding records for this type
@@ -57,97 +57,97 @@ public class Users extends TableImpl<UsersRecord> {
     /**
      * The column <code>mindustry.users.id</code>.
      */
-    public final TableField<UsersRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+    public final TableField<UsersRecord, Integer> id = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>mindustry.users.uuid</code>.
      */
-    public final TableField<UsersRecord, String> UUID = createField(DSL.name("uuid"), SQLDataType.VARCHAR(40).nullable(false), this, "");
+    public final TableField<UsersRecord, String> uuid = createField(DSL.name("uuid"), SQLDataType.VARCHAR(40).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.users.ip</code>.
      */
-    public final TableField<UsersRecord, String> IP = createField(DSL.name("ip"), SQLDataType.VARCHAR(40).nullable(false), this, "");
+    public final TableField<UsersRecord, String> ip = createField(DSL.name("ip"), SQLDataType.VARCHAR(40).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.users.name</code>.
      */
-    public final TableField<UsersRecord, String> NAME = createField(DSL.name("name"), SQLDataType.VARCHAR(50).nullable(false), this, "");
+    public final TableField<UsersRecord, String> name = createField(DSL.name("name"), SQLDataType.VARCHAR(50).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.users.locale</code>.
      */
-    public final TableField<UsersRecord, String> LOCALE = createField(DSL.name("locale"), SQLDataType.VARCHAR(30).nullable(false).defaultValue(DSL.inline("undefined", SQLDataType.VARCHAR)), this, "");
+    public final TableField<UsersRecord, String> locale = createField(DSL.name("locale"), SQLDataType.VARCHAR(30).nullable(false).defaultValue(DSL.inline("undefined", SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>mindustry.users.translator</code>.
      */
-    public final TableField<UsersRecord, String> TRANSLATOR = createField(DSL.name("translator"), SQLDataType.VARCHAR(20).nullable(false).defaultValue(DSL.inline("double", SQLDataType.VARCHAR)), this, "");
+    public final TableField<UsersRecord, String> translator = createField(DSL.name("translator"), SQLDataType.VARCHAR(20).nullable(false).defaultValue(DSL.inline("double", SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>mindustry.users.admin</code>.
      */
-    public final TableField<UsersRecord, Byte> ADMIN = createField(DSL.name("admin"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.TINYINT)), this, "");
+    public final TableField<UsersRecord, Byte> admin = createField(DSL.name("admin"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>mindustry.users.jsallowed</code>.
      */
-    public final TableField<UsersRecord, Byte> JSALLOWED = createField(DSL.name("jsallowed"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.TINYINT)), this, "");
+    public final TableField<UsersRecord, Byte> jsallowed = createField(DSL.name("jsallowed"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>mindustry.users.donated</code>.
      */
-    public final TableField<UsersRecord, Integer> DONATED = createField(DSL.name("donated"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<UsersRecord, Integer> donated = createField(DSL.name("donated"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.users.popup</code>.
      */
-    public final TableField<UsersRecord, Byte> POPUP = createField(DSL.name("popup"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("1", SQLDataType.TINYINT)), this, "");
+    public final TableField<UsersRecord, Byte> popup = createField(DSL.name("popup"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("1", SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>mindustry.users.discord</code>.
      */
-    public final TableField<UsersRecord, Byte> DISCORD = createField(DSL.name("discord"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("1", SQLDataType.TINYINT)), this, "");
+    public final TableField<UsersRecord, Byte> discord = createField(DSL.name("discord"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("1", SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>mindustry.users.attacks</code>.
      */
-    public final TableField<UsersRecord, Integer> ATTACKS = createField(DSL.name("attacks"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<UsersRecord, Integer> attacks = createField(DSL.name("attacks"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.users.waves</code>.
      */
-    public final TableField<UsersRecord, Integer> WAVES = createField(DSL.name("waves"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<UsersRecord, Integer> waves = createField(DSL.name("waves"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.users.hexes</code>.
      */
-    public final TableField<UsersRecord, Integer> HEXES = createField(DSL.name("hexes"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<UsersRecord, Integer> hexes = createField(DSL.name("hexes"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.users.built</code>.
      */
-    public final TableField<UsersRecord, Integer> BUILT = createField(DSL.name("built"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<UsersRecord, Integer> built = createField(DSL.name("built"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.users.broken</code>.
      */
-    public final TableField<UsersRecord, Integer> BROKEN = createField(DSL.name("broken"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<UsersRecord, Integer> broken = createField(DSL.name("broken"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.users.deaths</code>.
      */
-    public final TableField<UsersRecord, Integer> DEATHS = createField(DSL.name("deaths"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<UsersRecord, Integer> deaths = createField(DSL.name("deaths"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.users.logins</code>.
      */
-    public final TableField<UsersRecord, Integer> LOGINS = createField(DSL.name("logins"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<UsersRecord, Integer> logins = createField(DSL.name("logins"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.users.messages</code>.
      */
-    public final TableField<UsersRecord, Integer> MESSAGES = createField(DSL.name("messages"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<UsersRecord, Integer> messages = createField(DSL.name("messages"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
 
     private Users(Name alias, Table<UsersRecord> aliased) {
         this(alias, aliased, null);
@@ -161,14 +161,14 @@ public class Users extends TableImpl<UsersRecord> {
      * Create an aliased <code>mindustry.users</code> table reference
      */
     public Users(String alias) {
-        this(DSL.name(alias), USERS);
+        this(DSL.name(alias), users);
     }
 
     /**
      * Create an aliased <code>mindustry.users</code> table reference
      */
     public Users(Name alias) {
-        this(alias, USERS);
+        this(alias, users);
     }
 
     /**
@@ -179,17 +179,17 @@ public class Users extends TableImpl<UsersRecord> {
     }
 
     public <O extends Record> Users(Table<O> child, ForeignKey<O, UsersRecord> key) {
-        super(child, key, USERS);
+        super(child, key, users);
     }
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Mindustry.MINDUSTRY;
+        return aliased() ? null : Mindustry.mindustry;
     }
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.USERS_USERS_IP_INDEX);
+        return Arrays.asList(Indexes.usersUsersIpIndex);
     }
 
     @Override
@@ -199,12 +199,12 @@ public class Users extends TableImpl<UsersRecord> {
 
     @Override
     public UniqueKey<UsersRecord> getPrimaryKey() {
-        return Keys.KEY_USERS_PRIMARY;
+        return Keys.keyUsersPrimary;
     }
 
     @Override
     public List<UniqueKey<UsersRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_USERS_SECONDARY);
+        return Arrays.asList(Keys.keyUsersSecondary);
     }
 
     @Override

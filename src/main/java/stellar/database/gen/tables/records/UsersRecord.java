@@ -312,97 +312,97 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
 
     @Override
     public Field<Integer> field1() {
-        return Users.USERS.ID;
+        return Users.users.id;
     }
 
     @Override
     public Field<String> field2() {
-        return Users.USERS.UUID;
+        return Users.users.uuid;
     }
 
     @Override
     public Field<String> field3() {
-        return Users.USERS.IP;
+        return Users.users.ip;
     }
 
     @Override
     public Field<String> field4() {
-        return Users.USERS.NAME;
+        return Users.users.name;
     }
 
     @Override
     public Field<String> field5() {
-        return Users.USERS.LOCALE;
+        return Users.users.locale;
     }
 
     @Override
     public Field<String> field6() {
-        return Users.USERS.TRANSLATOR;
+        return Users.users.translator;
     }
 
     @Override
     public Field<Byte> field7() {
-        return Users.USERS.ADMIN;
+        return Users.users.admin;
     }
 
     @Override
     public Field<Byte> field8() {
-        return Users.USERS.JSALLOWED;
+        return Users.users.jsallowed;
     }
 
     @Override
     public Field<Integer> field9() {
-        return Users.USERS.DONATED;
+        return Users.users.donated;
     }
 
     @Override
     public Field<Byte> field10() {
-        return Users.USERS.POPUP;
+        return Users.users.popup;
     }
 
     @Override
     public Field<Byte> field11() {
-        return Users.USERS.DISCORD;
+        return Users.users.discord;
     }
 
     @Override
     public Field<Integer> field12() {
-        return Users.USERS.ATTACKS;
+        return Users.users.attacks;
     }
 
     @Override
     public Field<Integer> field13() {
-        return Users.USERS.WAVES;
+        return Users.users.waves;
     }
 
     @Override
     public Field<Integer> field14() {
-        return Users.USERS.HEXES;
+        return Users.users.hexes;
     }
 
     @Override
     public Field<Integer> field15() {
-        return Users.USERS.BUILT;
+        return Users.users.built;
     }
 
     @Override
     public Field<Integer> field16() {
-        return Users.USERS.BROKEN;
+        return Users.users.broken;
     }
 
     @Override
     public Field<Integer> field17() {
-        return Users.USERS.DEATHS;
+        return Users.users.deaths;
     }
 
     @Override
     public Field<Integer> field18() {
-        return Users.USERS.LOGINS;
+        return Users.users.logins;
     }
 
     @Override
     public Field<Integer> field19() {
-        return Users.USERS.MESSAGES;
+        return Users.users.messages;
     }
 
     @Override
@@ -741,14 +741,14 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
      * Create a detached UsersRecord
      */
     public UsersRecord() {
-        super(Users.USERS);
+        super(Users.users);
     }
 
     /**
      * Create a detached, initialised UsersRecord
      */
     public UsersRecord(Integer id, String uuid, String ip, String name, String locale, String translator, Byte admin, Byte jsallowed, Integer donated, Byte popup, Byte discord, Integer attacks, Integer waves, Integer hexes, Integer built, Integer broken, Integer deaths, Integer logins, Integer messages) {
-        super(Users.USERS);
+        super(Users.users);
 
         setId(id);
         setUuid(uuid);

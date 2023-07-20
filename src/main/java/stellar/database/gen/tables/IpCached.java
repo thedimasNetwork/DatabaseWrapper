@@ -42,7 +42,7 @@ public class IpCached extends TableImpl<IpCachedRecord> {
     /**
      * The reference instance of <code>mindustry.ip_cached</code>
      */
-    public static final IpCached IP_CACHED = new IpCached();
+    public static final IpCached ipCached = new IpCached();
 
     /**
      * The class holding records for this type
@@ -55,32 +55,32 @@ public class IpCached extends TableImpl<IpCachedRecord> {
     /**
      * The column <code>mindustry.ip_cached.id</code>.
      */
-    public final TableField<IpCachedRecord, Integer> ID = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+    public final TableField<IpCachedRecord, Integer> id = createField(DSL.name("id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>mindustry.ip_cached.ip</code>.
      */
-    public final TableField<IpCachedRecord, String> IP = createField(DSL.name("ip"), SQLDataType.VARCHAR(64).nullable(false), this, "");
+    public final TableField<IpCachedRecord, String> ip = createField(DSL.name("ip"), SQLDataType.VARCHAR(64).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.ip_cached.proxy</code>.
      */
-    public final TableField<IpCachedRecord, Byte> PROXY = createField(DSL.name("proxy"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.TINYINT)), this, "");
+    public final TableField<IpCachedRecord, Byte> proxy = createField(DSL.name("proxy"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>mindustry.ip_cached.vpn</code>.
      */
-    public final TableField<IpCachedRecord, Byte> VPN = createField(DSL.name("vpn"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.TINYINT)), this, "");
+    public final TableField<IpCachedRecord, Byte> vpn = createField(DSL.name("vpn"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.TINYINT)), this, "");
 
     /**
      * The column <code>mindustry.ip_cached.type</code>.
      */
-    public final TableField<IpCachedRecord, String> TYPE = createField(DSL.name("type"), SQLDataType.VARCHAR(64), this, "");
+    public final TableField<IpCachedRecord, String> type = createField(DSL.name("type"), SQLDataType.VARCHAR(64), this, "");
 
     /**
      * The column <code>mindustry.ip_cached.risk</code>.
      */
-    public final TableField<IpCachedRecord, Short> RISK = createField(DSL.name("risk"), SQLDataType.SMALLINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.SMALLINT)), this, "");
+    public final TableField<IpCachedRecord, Short> risk = createField(DSL.name("risk"), SQLDataType.SMALLINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.SMALLINT)), this, "");
 
     private IpCached(Name alias, Table<IpCachedRecord> aliased) {
         this(alias, aliased, null);
@@ -94,14 +94,14 @@ public class IpCached extends TableImpl<IpCachedRecord> {
      * Create an aliased <code>mindustry.ip_cached</code> table reference
      */
     public IpCached(String alias) {
-        this(DSL.name(alias), IP_CACHED);
+        this(DSL.name(alias), ipCached);
     }
 
     /**
      * Create an aliased <code>mindustry.ip_cached</code> table reference
      */
     public IpCached(Name alias) {
-        this(alias, IP_CACHED);
+        this(alias, ipCached);
     }
 
     /**
@@ -112,12 +112,12 @@ public class IpCached extends TableImpl<IpCachedRecord> {
     }
 
     public <O extends Record> IpCached(Table<O> child, ForeignKey<O, IpCachedRecord> key) {
-        super(child, key, IP_CACHED);
+        super(child, key, ipCached);
     }
 
     @Override
     public Schema getSchema() {
-        return aliased() ? null : Mindustry.MINDUSTRY;
+        return aliased() ? null : Mindustry.mindustry;
     }
 
     @Override
@@ -127,12 +127,12 @@ public class IpCached extends TableImpl<IpCachedRecord> {
 
     @Override
     public UniqueKey<IpCachedRecord> getPrimaryKey() {
-        return Keys.KEY_IP_CACHED_PRIMARY;
+        return Keys.keyIpCachedPrimary;
     }
 
     @Override
     public List<UniqueKey<IpCachedRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.KEY_IP_CACHED_SECONDARY);
+        return Arrays.asList(Keys.keyIpCachedSecondary);
     }
 
     @Override
