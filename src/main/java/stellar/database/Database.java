@@ -2,15 +2,20 @@ package stellar.database;
 
 import arc.util.Log;
 import arc.util.Nullable;
-import com.mysql.cj.jdbc.exceptions.CommunicationsException;
-import org.jooq.*;
+import org.jooq.DSLContext;
+import org.jooq.Field;
+import org.jooq.Record1;
+import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import stellar.database.gen.Tables;
 import stellar.database.gen.tables.records.BansRecord;
 import stellar.database.gen.tables.records.PlaytimeRecord;
 import stellar.database.gen.tables.records.UsersRecord;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 public class Database {
@@ -50,7 +55,7 @@ public class Database {
         try { // checking if the connection is alive; may be not closed but timeout
             PreparedStatement ps = connection.prepareStatement("SELECT 1");
             ps.executeQuery();
-        } catch (CommunicationsException e) {
+        } catch (Exception e) {
             Log.warn("Database connection died due to inactivity");
             connection = DriverManager.getConnection(getConnectionUrl(), user, password);
         }

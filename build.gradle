@@ -3,6 +3,7 @@ import org.jooq.codegen.DefaultGeneratorStrategy
 import org.jooq.codegen.GenerationTool
 import org.jooq.meta.Definition
 import org.jooq.meta.jaxb.Database
+import org.jooq.meta.jaxb.ForcedType
 import org.jooq.meta.jaxb.Generator
 import org.jooq.meta.jaxb.Jdbc
 import org.jooq.meta.jaxb.Strategy
@@ -65,8 +66,6 @@ dependencies {
     compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
 
     implementation "org.jooq:jooq:$jooqVersion"
-    implementation "mysql:mysql-connector-java:$mysqlVersion"
-
     runtimeOnly "mysql:mysql-connector-java:$mysqlVersion"
 }
 
