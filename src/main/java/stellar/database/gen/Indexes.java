@@ -9,7 +9,6 @@ import org.jooq.OrderField;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 
-import stellar.database.gen.tables.PlayerEvents;
 import stellar.database.gen.tables.Users;
 
 
@@ -24,5 +23,4 @@ public class Indexes {
     // -------------------------------------------------------------------------
 
     public static final Index usersUsersIpIndex = Internal.createIndex(DSL.name("users_ip_index"), Users.users, new OrderField[] { Users.users.ip }, false);
-    public static final Index playerEventsUuid = Internal.createIndex(DSL.name("uuid"), PlayerEvents.playerEvents, new OrderField[] { PlayerEvents.playerEvents.uuid }, false);
 }

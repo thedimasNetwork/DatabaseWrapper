@@ -6,9 +6,9 @@ package stellar.database.gen;
 
 import stellar.database.gen.tables.Bans;
 import stellar.database.gen.tables.IpCached;
-import stellar.database.gen.tables.PlayerEvents;
+import stellar.database.gen.tables.Messages;
 import stellar.database.gen.tables.Playtime;
-import stellar.database.gen.tables.ServerEvents;
+import stellar.database.gen.tables.Stats;
 import stellar.database.gen.tables.Users;
 
 
@@ -29,9 +29,9 @@ public class Tables {
     public static final IpCached ipCached = IpCached.ipCached;
 
     /**
-     * The table <code>mindustry.player_events</code>.
+     * The table <code>mindustry.messages</code>.
      */
-    public static final PlayerEvents playerEvents = PlayerEvents.playerEvents;
+    public static final Messages messages = Messages.messages;
 
     /**
      * The table <code>mindustry.playtime</code>.
@@ -39,9 +39,9 @@ public class Tables {
     public static final Playtime playtime = Playtime.playtime;
 
     /**
-     * The table <code>mindustry.server_events</code>.
+     * The table <code>mindustry.stats</code>.
      */
-    public static final ServerEvents serverEvents = ServerEvents.serverEvents;
+    public static final Stats stats = Stats.stats;
 
     /**
      * The table <code>mindustry.users</code>.

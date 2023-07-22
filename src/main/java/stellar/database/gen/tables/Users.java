@@ -10,13 +10,13 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function19;
+import org.jooq.Function11;
 import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row19;
+import org.jooq.Row11;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -108,46 +108,6 @@ public class Users extends TableImpl<UsersRecord> {
      * The column <code>mindustry.users.discord</code>.
      */
     public final TableField<UsersRecord, Byte> discord = createField(DSL.name("discord"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("1", SQLDataType.TINYINT)), this, "");
-
-    /**
-     * The column <code>mindustry.users.attacks</code>.
-     */
-    public final TableField<UsersRecord, Integer> attacks = createField(DSL.name("attacks"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>mindustry.users.waves</code>.
-     */
-    public final TableField<UsersRecord, Integer> waves = createField(DSL.name("waves"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>mindustry.users.hexes</code>.
-     */
-    public final TableField<UsersRecord, Integer> hexes = createField(DSL.name("hexes"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>mindustry.users.built</code>.
-     */
-    public final TableField<UsersRecord, Integer> built = createField(DSL.name("built"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>mindustry.users.broken</code>.
-     */
-    public final TableField<UsersRecord, Integer> broken = createField(DSL.name("broken"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>mindustry.users.deaths</code>.
-     */
-    public final TableField<UsersRecord, Integer> deaths = createField(DSL.name("deaths"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>mindustry.users.logins</code>.
-     */
-    public final TableField<UsersRecord, Integer> logins = createField(DSL.name("logins"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
-
-    /**
-     * The column <code>mindustry.users.messages</code>.
-     */
-    public final TableField<UsersRecord, Integer> messages = createField(DSL.name("messages"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
 
     private Users(Name alias, Table<UsersRecord> aliased) {
         this(alias, aliased, null);
@@ -247,25 +207,25 @@ public class Users extends TableImpl<UsersRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row19 type methods
+    // Row11 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row19<Integer, String, String, String, String, String, Byte, Byte, Integer, Byte, Byte, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer> fieldsRow() {
-        return (Row19) super.fieldsRow();
+    public Row11<Integer, String, String, String, String, String, Byte, Byte, Integer, Byte, Byte> fieldsRow() {
+        return (Row11) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function19<? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Byte, ? super Byte, ? super Integer, ? super Byte, ? super Byte, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function11<? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Byte, ? super Byte, ? super Integer, ? super Byte, ? super Byte, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Class, Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function19<? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Byte, ? super Byte, ? super Integer, ? super Byte, ? super Byte, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? super Integer, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Byte, ? super Byte, ? super Integer, ? super Byte, ? super Byte, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

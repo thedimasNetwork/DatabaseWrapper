@@ -13,9 +13,9 @@ import org.jooq.impl.SchemaImpl;
 
 import stellar.database.gen.tables.Bans;
 import stellar.database.gen.tables.IpCached;
-import stellar.database.gen.tables.PlayerEvents;
+import stellar.database.gen.tables.Messages;
 import stellar.database.gen.tables.Playtime;
-import stellar.database.gen.tables.ServerEvents;
+import stellar.database.gen.tables.Stats;
 import stellar.database.gen.tables.Users;
 
 
@@ -43,9 +43,9 @@ public class Mindustry extends SchemaImpl {
     public final IpCached ipCached = IpCached.ipCached;
 
     /**
-     * The table <code>mindustry.player_events</code>.
+     * The table <code>mindustry.messages</code>.
      */
-    public final PlayerEvents playerEvents = PlayerEvents.playerEvents;
+    public final Messages messages = Messages.messages;
 
     /**
      * The table <code>mindustry.playtime</code>.
@@ -53,9 +53,9 @@ public class Mindustry extends SchemaImpl {
     public final Playtime playtime = Playtime.playtime;
 
     /**
-     * The table <code>mindustry.server_events</code>.
+     * The table <code>mindustry.stats</code>.
      */
-    public final ServerEvents serverEvents = ServerEvents.serverEvents;
+    public final Stats stats = Stats.stats;
 
     /**
      * The table <code>mindustry.users</code>.
@@ -80,9 +80,9 @@ public class Mindustry extends SchemaImpl {
         return Arrays.asList(
             Bans.bans,
             IpCached.ipCached,
-            PlayerEvents.playerEvents,
+            Messages.messages,
             Playtime.playtime,
-            ServerEvents.serverEvents,
+            Stats.stats,
             Users.users
         );
     }
