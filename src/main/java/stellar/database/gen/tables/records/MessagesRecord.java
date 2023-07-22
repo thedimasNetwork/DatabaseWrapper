@@ -27,8 +27,9 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
     /**
      * Setter for <code>mindustry.messages.id</code>.
      */
-    public void setId(Integer value) {
+    public MessagesRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -41,8 +42,9 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
     /**
      * Setter for <code>mindustry.messages.timestamp</code>.
      */
-    public void setTimestamp(LocalDateTime value) {
+    public MessagesRecord setTimestamp(LocalDateTime value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -55,8 +57,9 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
     /**
      * Setter for <code>mindustry.messages.server</code>.
      */
-    public void setServer(String value) {
+    public MessagesRecord setServer(String value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -69,8 +72,9 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
     /**
      * Setter for <code>mindustry.messages.from</code>.
      */
-    public void setFrom(String value) {
+    public MessagesRecord setFrom(String value) {
         set(3, value);
+        return this;
     }
 
     /**
@@ -83,8 +87,9 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
     /**
      * Setter for <code>mindustry.messages.target</code>.
      */
-    public void setTarget(String value) {
+    public MessagesRecord setTarget(String value) {
         set(4, value);
+        return this;
     }
 
     /**
@@ -97,8 +102,9 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
     /**
      * Setter for <code>mindustry.messages.type</code>.
      */
-    public void setType(MessageType value) {
+    public MessagesRecord setType(MessageType value) {
         set(5, value);
+        return this;
     }
 
     /**
@@ -111,8 +117,9 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
     /**
      * Setter for <code>mindustry.messages.text</code>.
      */
-    public void setText(String value) {
+    public MessagesRecord setText(String value) {
         set(6, value);
+        return this;
     }
 
     /**
@@ -125,8 +132,9 @@ public class MessagesRecord extends UpdatableRecordImpl<MessagesRecord> implemen
     /**
      * Setter for <code>mindustry.messages.locale</code>.
      */
-    public void setLocale(String value) {
+    public MessagesRecord setLocale(String value) {
         set(7, value);
+        return this;
     }
 
     /**

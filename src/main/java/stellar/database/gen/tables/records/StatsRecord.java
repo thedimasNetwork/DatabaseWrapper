@@ -24,8 +24,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.uuid</code>.
      */
-    public void setUuid(String value) {
+    public StatsRecord setUuid(String value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -38,8 +39,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.waves</code>.
      */
-    public void setWaves(Integer value) {
+    public StatsRecord setWaves(Integer value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -52,8 +54,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.survivals</code>.
      */
-    public void setSurvivals(Integer value) {
+    public StatsRecord setSurvivals(Integer value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -66,8 +69,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.attacks</code>.
      */
-    public void setAttacks(Integer value) {
+    public StatsRecord setAttacks(Integer value) {
         set(3, value);
+        return this;
     }
 
     /**
@@ -80,8 +84,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.pvp</code>.
      */
-    public void setPvp(Integer value) {
+    public StatsRecord setPvp(Integer value) {
         set(4, value);
+        return this;
     }
 
     /**
@@ -94,8 +99,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.hexes_captured</code>.
      */
-    public void setHexesCaptured(Integer value) {
+    public StatsRecord setHexesCaptured(Integer value) {
         set(5, value);
+        return this;
     }
 
     /**
@@ -108,8 +114,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.hexes_destroyed</code>.
      */
-    public void setHexesDestroyed(Integer value) {
+    public StatsRecord setHexesDestroyed(Integer value) {
         set(6, value);
+        return this;
     }
 
     /**
@@ -122,8 +129,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.hexes_lost</code>.
      */
-    public void setHexesLost(Integer value) {
+    public StatsRecord setHexesLost(Integer value) {
         set(7, value);
+        return this;
     }
 
     /**
@@ -136,8 +144,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.hex_wins</code>.
      */
-    public void setHexWins(Integer value) {
+    public StatsRecord setHexWins(Integer value) {
         set(8, value);
+        return this;
     }
 
     /**
@@ -150,8 +159,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.hex_losses</code>.
      */
-    public void setHexLosses(Integer value) {
+    public StatsRecord setHexLosses(Integer value) {
         set(9, value);
+        return this;
     }
 
     /**
@@ -164,8 +174,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.hex_score</code>.
      */
-    public void setHexScore(Integer value) {
+    public StatsRecord setHexScore(Integer value) {
         set(10, value);
+        return this;
     }
 
     /**
@@ -178,8 +189,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.built</code>.
      */
-    public void setBuilt(Integer value) {
+    public StatsRecord setBuilt(Integer value) {
         set(11, value);
+        return this;
     }
 
     /**
@@ -192,8 +204,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.broken</code>.
      */
-    public void setBroken(Integer value) {
+    public StatsRecord setBroken(Integer value) {
         set(12, value);
+        return this;
     }
 
     /**
@@ -206,8 +219,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.kills</code>.
      */
-    public void setKills(Integer value) {
+    public StatsRecord setKills(Integer value) {
         set(13, value);
+        return this;
     }
 
     /**
@@ -220,8 +234,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.deaths</code>.
      */
-    public void setDeaths(Integer value) {
+    public StatsRecord setDeaths(Integer value) {
         set(14, value);
+        return this;
     }
 
     /**
@@ -234,8 +249,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.logins</code>.
      */
-    public void setLogins(Integer value) {
+    public StatsRecord setLogins(Integer value) {
         set(15, value);
+        return this;
     }
 
     /**
@@ -248,8 +264,9 @@ public class StatsRecord extends UpdatableRecordImpl<StatsRecord> implements Rec
     /**
      * Setter for <code>mindustry.stats.messages</code>.
      */
-    public void setMessages(Integer value) {
+    public StatsRecord setMessages(Integer value) {
         set(16, value);
+        return this;
     }
 
     /**

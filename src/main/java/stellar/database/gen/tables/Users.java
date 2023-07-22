@@ -87,12 +87,12 @@ public class Users extends TableImpl<UsersRecord> {
     /**
      * The column <code>mindustry.users.admin</code>.
      */
-    public final TableField<UsersRecord, Byte> admin = createField(DSL.name("admin"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.TINYINT)), this, "");
+    public final TableField<UsersRecord, Boolean> admin = createField(DSL.name("admin"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>mindustry.users.jsallowed</code>.
      */
-    public final TableField<UsersRecord, Byte> jsallowed = createField(DSL.name("jsallowed"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.TINYINT)), this, "");
+    public final TableField<UsersRecord, Boolean> jsallowed = createField(DSL.name("jsallowed"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>mindustry.users.donated</code>.
@@ -102,12 +102,12 @@ public class Users extends TableImpl<UsersRecord> {
     /**
      * The column <code>mindustry.users.popup</code>.
      */
-    public final TableField<UsersRecord, Byte> popup = createField(DSL.name("popup"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("1", SQLDataType.TINYINT)), this, "");
+    public final TableField<UsersRecord, Boolean> popup = createField(DSL.name("popup"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("1", SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>mindustry.users.discord</code>.
      */
-    public final TableField<UsersRecord, Byte> discord = createField(DSL.name("discord"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("1", SQLDataType.TINYINT)), this, "");
+    public final TableField<UsersRecord, Boolean> discord = createField(DSL.name("discord"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("1", SQLDataType.BOOLEAN)), this, "");
 
     private Users(Name alias, Table<UsersRecord> aliased) {
         this(alias, aliased, null);
@@ -211,21 +211,21 @@ public class Users extends TableImpl<UsersRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Integer, String, String, String, String, String, Byte, Byte, Integer, Byte, Byte> fieldsRow() {
+    public Row11<Integer, String, String, String, String, String, Boolean, Boolean, Integer, Boolean, Boolean> fieldsRow() {
         return (Row11) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function11<? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Byte, ? super Byte, ? super Integer, ? super Byte, ? super Byte, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function11<? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super Boolean, ? super Integer, ? super Boolean, ? super Boolean, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Class, Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Byte, ? super Byte, ? super Integer, ? super Byte, ? super Byte, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super Boolean, ? super Integer, ? super Boolean, ? super Boolean, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

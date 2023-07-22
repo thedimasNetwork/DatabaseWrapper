@@ -24,8 +24,9 @@ public class IpCachedRecord extends UpdatableRecordImpl<IpCachedRecord> implemen
     /**
      * Setter for <code>mindustry.ip_cached.id</code>.
      */
-    public void setId(Integer value) {
+    public IpCachedRecord setId(Integer value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -38,8 +39,9 @@ public class IpCachedRecord extends UpdatableRecordImpl<IpCachedRecord> implemen
     /**
      * Setter for <code>mindustry.ip_cached.ip</code>.
      */
-    public void setIp(String value) {
+    public IpCachedRecord setIp(String value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -52,8 +54,9 @@ public class IpCachedRecord extends UpdatableRecordImpl<IpCachedRecord> implemen
     /**
      * Setter for <code>mindustry.ip_cached.proxy</code>.
      */
-    public void setProxy(Byte value) {
+    public IpCachedRecord setProxy(Byte value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -66,8 +69,9 @@ public class IpCachedRecord extends UpdatableRecordImpl<IpCachedRecord> implemen
     /**
      * Setter for <code>mindustry.ip_cached.vpn</code>.
      */
-    public void setVpn(Byte value) {
+    public IpCachedRecord setVpn(Byte value) {
         set(3, value);
+        return this;
     }
 
     /**
@@ -80,8 +84,9 @@ public class IpCachedRecord extends UpdatableRecordImpl<IpCachedRecord> implemen
     /**
      * Setter for <code>mindustry.ip_cached.type</code>.
      */
-    public void setType(String value) {
+    public IpCachedRecord setType(String value) {
         set(4, value);
+        return this;
     }
 
     /**
@@ -94,8 +99,9 @@ public class IpCachedRecord extends UpdatableRecordImpl<IpCachedRecord> implemen
     /**
      * Setter for <code>mindustry.ip_cached.risk</code>.
      */
-    public void setRisk(Short value) {
+    public IpCachedRecord setRisk(Short value) {
         set(5, value);
+        return this;
     }
 
     /**

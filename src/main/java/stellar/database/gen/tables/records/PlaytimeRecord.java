@@ -24,8 +24,9 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
     /**
      * Setter for <code>mindustry.playtime.uuid</code>.
      */
-    public void setUuid(String value) {
+    public PlaytimeRecord setUuid(String value) {
         set(0, value);
+        return this;
     }
 
     /**
@@ -38,8 +39,9 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
     /**
      * Setter for <code>mindustry.playtime.hub</code>.
      */
-    public void setHub(Long value) {
+    public PlaytimeRecord setHub(Long value) {
         set(1, value);
+        return this;
     }
 
     /**
@@ -52,8 +54,9 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
     /**
      * Setter for <code>mindustry.playtime.survival</code>.
      */
-    public void setSurvival(Long value) {
+    public PlaytimeRecord setSurvival(Long value) {
         set(2, value);
+        return this;
     }
 
     /**
@@ -66,8 +69,9 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
     /**
      * Setter for <code>mindustry.playtime.attack</code>.
      */
-    public void setAttack(Long value) {
+    public PlaytimeRecord setAttack(Long value) {
         set(3, value);
+        return this;
     }
 
     /**
@@ -80,8 +84,9 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
     /**
      * Setter for <code>mindustry.playtime.sandbox</code>.
      */
-    public void setSandbox(Long value) {
+    public PlaytimeRecord setSandbox(Long value) {
         set(4, value);
+        return this;
     }
 
     /**
@@ -94,8 +99,9 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
     /**
      * Setter for <code>mindustry.playtime.pvp</code>.
      */
-    public void setPvp(Long value) {
+    public PlaytimeRecord setPvp(Long value) {
         set(5, value);
+        return this;
     }
 
     /**
@@ -108,8 +114,9 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
     /**
      * Setter for <code>mindustry.playtime.erekir_hexed</code>.
      */
-    public void setErekirHexed(Long value) {
+    public PlaytimeRecord setErekirHexed(Long value) {
         set(6, value);
+        return this;
     }
 
     /**
@@ -122,8 +129,9 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
     /**
      * Setter for <code>mindustry.playtime.anarchy</code>.
      */
-    public void setAnarchy(Long value) {
+    public PlaytimeRecord setAnarchy(Long value) {
         set(7, value);
+        return this;
     }
 
     /**
@@ -136,8 +144,9 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
     /**
      * Setter for <code>mindustry.playtime.campaign_maps</code>.
      */
-    public void setCampaignMaps(Long value) {
+    public PlaytimeRecord setCampaignMaps(Long value) {
         set(8, value);
+        return this;
     }
 
     /**
@@ -150,8 +159,9 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
     /**
      * Setter for <code>mindustry.playtime.ms_go</code>.
      */
-    public void setMsGo(Long value) {
+    public PlaytimeRecord setMsGo(Long value) {
         set(9, value);
+        return this;
     }
 
     /**
@@ -164,8 +174,9 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
     /**
      * Setter for <code>mindustry.playtime.hex_pvp</code>.
      */
-    public void setHexPvp(Long value) {
+    public PlaytimeRecord setHexPvp(Long value) {
         set(10, value);
+        return this;
     }
 
     /**
@@ -178,8 +189,9 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
     /**
      * Setter for <code>mindustry.playtime.castle_wars</code>.
      */
-    public void setCastleWars(Long value) {
+    public PlaytimeRecord setCastleWars(Long value) {
         set(11, value);
+        return this;
     }
 
     /**
@@ -192,8 +204,9 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
     /**
      * Setter for <code>mindustry.playtime.crawler_arena</code>.
      */
-    public void setCrawlerArena(Long value) {
+    public PlaytimeRecord setCrawlerArena(Long value) {
         set(12, value);
+        return this;
     }
 
     /**
@@ -206,8 +219,9 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
     /**
      * Setter for <code>mindustry.playtime.zone_capture</code>.
      */
-    public void setZoneCapture(Long value) {
+    public PlaytimeRecord setZoneCapture(Long value) {
         set(13, value);
+        return this;
     }
 
     /**
@@ -220,8 +234,9 @@ public class PlaytimeRecord extends UpdatableRecordImpl<PlaytimeRecord> implemen
     /**
      * Setter for <code>mindustry.playtime.test</code>.
      */
-    public void setTest(Long value) {
+    public PlaytimeRecord setTest(Long value) {
         set(14, value);
+        return this;
     }
 
     /**

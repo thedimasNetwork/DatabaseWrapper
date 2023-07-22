@@ -84,7 +84,7 @@ public class Bans extends TableImpl<BansRecord> {
     /**
      * The column <code>mindustry.bans.active</code>.
      */
-    public final TableField<BansRecord, Byte> active = createField(DSL.name("active"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("1", SQLDataType.TINYINT)), this, "");
+    public final TableField<BansRecord, Boolean> active = createField(DSL.name("active"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("1", SQLDataType.BOOLEAN)), this, "");
 
     private Bans(Name alias, Table<BansRecord> aliased) {
         this(alias, aliased, null);
@@ -178,21 +178,21 @@ public class Bans extends TableImpl<BansRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row7<Integer, String, String, LocalDateTime, LocalDateTime, String, Byte> fieldsRow() {
+    public Row7<Integer, String, String, LocalDateTime, LocalDateTime, String, Boolean> fieldsRow() {
         return (Row7) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function7<? super Integer, ? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super Byte, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function7<? super Integer, ? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super Boolean, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Class, Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super Integer, ? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super Byte, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super Integer, ? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super Boolean, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

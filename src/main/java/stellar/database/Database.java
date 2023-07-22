@@ -105,7 +105,7 @@ public class Database {
             return false;
         }
 
-        if (record.getActive() != 1) {
+        if (!record.getActive()) {
             return false;
         }
 
@@ -142,7 +142,7 @@ public class Database {
         }
 
         BansRecord bansRecord = Database.latestBan(target);
-        bansRecord.setActive((byte) 0);
+        bansRecord.setActive(false);
         bansRecord.store();
     }
 
