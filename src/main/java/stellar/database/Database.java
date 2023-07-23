@@ -9,6 +9,8 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import stellar.database.gen.Tables;
 import stellar.database.gen.tables.records.BansRecord;
+import stellar.database.gen.tables.records.PlaytimeRecord;
+import stellar.database.gen.tables.records.StatsRecord;
 import stellar.database.gen.tables.records.UsersRecord;
 
 import java.sql.Connection;
@@ -70,6 +72,7 @@ public class Database {
         return context;
     }
 
+    // region players
     @Nullable
     public static UsersRecord getPlayer(String uuid) throws SQLException {
         return Database.getContext()
@@ -89,7 +92,9 @@ public class Database {
     public static boolean playerExists(String uuid) throws SQLException {
         return Database.getContext().fetchExists(Tables.users, Tables.users.uuid.eq(uuid));
     }
+    // endregion
 
+    // region bans
     public static BansRecord latestBan(String uuid) throws SQLException {
         return Database.getContext()
                 .selectFrom(Tables.bans)
@@ -145,7 +150,9 @@ public class Database {
                 .setActive(false)
                 .store();
     }
+    // endregion
 
+    // region playtime & stats
     public static long getPlaytime(String uuid, Field<Long> field) throws SQLException {
         Record1<Long> timeFetch = Database.getContext()
                 .select(field)
@@ -164,4 +171,35 @@ public class Database {
 
         return time;
     }
+
+    public static long getTotalPlaytime(String uuid) throws SQLException {
+        PlaytimeRecord timeFetch = Database.getContext()
+                .selectFrom(Tables.playtime)
+                .where(Tables.playtime.uuid.eq(uuid))
+                .fetchOne();
+        long time = 0;
+        if (timeFetch == null) {
+            Log.warn("Player @ doesn't exists", uuid);
+            Database.getContext().newRecord(Tables.playtime)
+                    .setUuid(uuid)
+                    .store();
+        } else {
+            for (Field<?> field : timeFetch.fields()) {
+                if (field.getType() == Long.class) {
+                    System.out.println(field.getName());
+                    time += (Long) field.getValue(timeFetch);
+                }
+            }
+        }
+
+        return time;
+    }
+
+    public static StatsRecord getStats(String uuid) throws SQLException {
+        return Database.getContext()
+                .selectFrom(Tables.stats)
+                .where(Tables.stats.uuid.eq(uuid))
+                .fetchOne();
+    }
+    // endregion
 }
