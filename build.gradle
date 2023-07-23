@@ -1,7 +1,9 @@
 import groovy.json.JsonSlurper
+import org.jooq.DataType
 import org.jooq.codegen.DefaultGeneratorStrategy
 import org.jooq.codegen.GenerationTool
 import org.jooq.meta.Definition
+import org.jooq.meta.DefaultDataTypeDefinition
 import org.jooq.meta.jaxb.*
 import org.jooq.tools.StringUtils
 
@@ -102,7 +104,7 @@ task codegen {
             password = project.property("dbpassword")
         }
         println(sourceSets.main.java.srcDirs.first().path)
-        org.jooq.meta.jaxb.Configuration configuration = new org.jooq.meta.jaxb.Configuration()
+        Configuration configuration = new Configuration()
                 .withJdbc(new Jdbc()
                         .withDriver("com.mysql.cj.jdbc.Driver")
                         .withUrl("jdbc:mysql://$host:3306/$schema")
@@ -152,5 +154,15 @@ jar {
 class CamelCaseGeneratorStrategy extends DefaultGeneratorStrategy {
     String getJavaIdentifier(Definition definition) {
         StringUtils.toCamelCaseLC(super.getJavaIdentifier(definition))
+    }
+
+    String getJavaGetterName(Definition definition, Mode mode) {
+        if (mode == Mode.RECORD) {
+            if (((DefaultDataTypeDefinition) definition.getProperties().get("definedType")).type.equalsIgnoreCase("tinyint")) {
+                return "is" + StringUtils.toCamelCase(definition.getOutputName())
+            }
+        }
+        return "get" + StringUtils.toCamelCase(definition.getOutputName())
+
     }
 }

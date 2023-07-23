@@ -110,7 +110,7 @@ public class Database {
             return false;
         }
 
-        if (!record.getActive()) {
+        if (!record.isActive()) {
             return false;
         }
 

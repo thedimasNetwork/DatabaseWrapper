@@ -122,7 +122,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     /**
      * Getter for <code>mindustry.users.admin</code>.
      */
-    public Boolean getAdmin() {
+    public Boolean isAdmin() {
         return (Boolean) get(6);
     }
 
@@ -137,7 +137,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     /**
      * Getter for <code>mindustry.users.jsallowed</code>.
      */
-    public Boolean getJsallowed() {
+    public Boolean isJsallowed() {
         return (Boolean) get(7);
     }
 
@@ -167,7 +167,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     /**
      * Getter for <code>mindustry.users.popup</code>.
      */
-    public Boolean getPopup() {
+    public Boolean isPopup() {
         return (Boolean) get(9);
     }
 
@@ -182,7 +182,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
     /**
      * Getter for <code>mindustry.users.discord</code>.
      */
-    public Boolean getDiscord() {
+    public Boolean isDiscord() {
         return (Boolean) get(10);
     }
 
@@ -296,12 +296,12 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
 
     @Override
     public Boolean component7() {
-        return getAdmin();
+        return isAdmin();
     }
 
     @Override
     public Boolean component8() {
-        return getJsallowed();
+        return isJsallowed();
     }
 
     @Override
@@ -311,12 +311,12 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
 
     @Override
     public Boolean component10() {
-        return getPopup();
+        return isPopup();
     }
 
     @Override
     public Boolean component11() {
-        return getDiscord();
+        return isDiscord();
     }
 
     @Override
@@ -351,12 +351,12 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
 
     @Override
     public Boolean value7() {
-        return getAdmin();
+        return isAdmin();
     }
 
     @Override
     public Boolean value8() {
-        return getJsallowed();
+        return isJsallowed();
     }
 
     @Override
@@ -366,12 +366,12 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> implements Rec
 
     @Override
     public Boolean value10() {
-        return getPopup();
+        return isPopup();
     }
 
     @Override
     public Boolean value11() {
-        return getDiscord();
+        return isDiscord();
     }
 
     @Override

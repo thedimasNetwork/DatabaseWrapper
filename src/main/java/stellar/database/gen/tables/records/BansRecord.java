@@ -124,7 +124,7 @@ public class BansRecord extends UpdatableRecordImpl<BansRecord> implements Recor
     /**
      * Getter for <code>mindustry.bans.active</code>.
      */
-    public Boolean getActive() {
+    public Boolean isActive() {
         return (Boolean) get(6);
     }
 
@@ -218,7 +218,7 @@ public class BansRecord extends UpdatableRecordImpl<BansRecord> implements Recor
 
     @Override
     public Boolean component7() {
-        return getActive();
+        return isActive();
     }
 
     @Override
@@ -253,7 +253,7 @@ public class BansRecord extends UpdatableRecordImpl<BansRecord> implements Recor
 
     @Override
     public Boolean value7() {
-        return getActive();
+        return isActive();
     }
 
     @Override

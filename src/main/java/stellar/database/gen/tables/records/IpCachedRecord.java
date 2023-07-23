@@ -62,7 +62,7 @@ public class IpCachedRecord extends UpdatableRecordImpl<IpCachedRecord> implemen
     /**
      * Getter for <code>mindustry.ip_cached.proxy</code>.
      */
-    public Boolean getProxy() {
+    public Boolean isProxy() {
         return (Boolean) get(2);
     }
 
@@ -77,7 +77,7 @@ public class IpCachedRecord extends UpdatableRecordImpl<IpCachedRecord> implemen
     /**
      * Getter for <code>mindustry.ip_cached.vpn</code>.
      */
-    public Boolean getVpn() {
+    public Boolean isVpn() {
         return (Boolean) get(3);
     }
 
@@ -176,12 +176,12 @@ public class IpCachedRecord extends UpdatableRecordImpl<IpCachedRecord> implemen
 
     @Override
     public Boolean component3() {
-        return getProxy();
+        return isProxy();
     }
 
     @Override
     public Boolean component4() {
-        return getVpn();
+        return isVpn();
     }
 
     @Override
@@ -206,12 +206,12 @@ public class IpCachedRecord extends UpdatableRecordImpl<IpCachedRecord> implemen
 
     @Override
     public Boolean value3() {
-        return getProxy();
+        return isProxy();
     }
 
     @Override
     public Boolean value4() {
-        return getVpn();
+        return isVpn();
     }
 
     @Override
