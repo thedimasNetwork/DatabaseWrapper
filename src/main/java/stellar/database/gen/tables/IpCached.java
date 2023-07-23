@@ -65,12 +65,12 @@ public class IpCached extends TableImpl<IpCachedRecord> {
     /**
      * The column <code>mindustry.ip_cached.proxy</code>.
      */
-    public final TableField<IpCachedRecord, Byte> proxy = createField(DSL.name("proxy"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.TINYINT)), this, "");
+    public final TableField<IpCachedRecord, Boolean> proxy = createField(DSL.name("proxy"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>mindustry.ip_cached.vpn</code>.
      */
-    public final TableField<IpCachedRecord, Byte> vpn = createField(DSL.name("vpn"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.TINYINT)), this, "");
+    public final TableField<IpCachedRecord, Boolean> vpn = createField(DSL.name("vpn"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>mindustry.ip_cached.type</code>.
@@ -179,21 +179,21 @@ public class IpCached extends TableImpl<IpCachedRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Integer, String, Byte, Byte, String, Short> fieldsRow() {
+    public Row6<Integer, String, Boolean, Boolean, String, Short> fieldsRow() {
         return (Row6) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function6<? super Integer, ? super String, ? super Byte, ? super Byte, ? super String, ? super Short, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function6<? super Integer, ? super String, ? super Boolean, ? super Boolean, ? super String, ? super Short, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Class, Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super Integer, ? super String, ? super Byte, ? super Byte, ? super String, ? super Short, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function6<? super Integer, ? super String, ? super Boolean, ? super Boolean, ? super String, ? super Short, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
