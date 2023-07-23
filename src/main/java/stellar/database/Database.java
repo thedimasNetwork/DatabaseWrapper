@@ -9,7 +9,6 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import stellar.database.gen.Tables;
 import stellar.database.gen.tables.records.BansRecord;
-import stellar.database.gen.tables.records.PlaytimeRecord;
 import stellar.database.gen.tables.records.UsersRecord;
 
 import java.sql.Connection;
@@ -18,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+@SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted"})
 public class Database {
     private static Connection connection;
     private static DSLContext context;
@@ -124,13 +124,13 @@ public class Database {
             throw new IllegalArgumentException("Target is already banned!");
         }
 
-        BansRecord bansRecord = Database.getContext().newRecord(Tables.bans);
-        bansRecord.setAdmin(admin);
-        bansRecord.setTarget(target);
-        bansRecord.setCreated(LocalDateTime.now());
-        if (period > -1) { bansRecord.setUntil(LocalDateTime.now().plusDays(period)); }
-        bansRecord.setReason(reason);
-        bansRecord.store();
+        Database.getContext().newRecord(Tables.bans)
+                .setAdmin(admin)
+                .setTarget(target)
+                .setCreated(LocalDateTime.now())
+                .setUntil(period > -1 ? LocalDateTime.now().plusDays(period) : null)
+                .setReason(reason)
+                .store();
     }
 
     public static void unban(String target) throws SQLException {
@@ -141,12 +141,12 @@ public class Database {
             throw new IllegalArgumentException("Target is not banned!");
         }
 
-        BansRecord bansRecord = Database.latestBan(target);
-        bansRecord.setActive(false);
-        bansRecord.store();
+        Database.latestBan(target)
+                .setActive(false)
+                .store();
     }
 
-    public static long getPlaytime(String uuid, Field<Long> field) throws SQLException{
+    public static long getPlaytime(String uuid, Field<Long> field) throws SQLException {
         Record1<Long> timeFetch = Database.getContext()
                 .select(field)
                 .from(Tables.playtime)
@@ -155,9 +155,9 @@ public class Database {
         long time = 0;
         if (timeFetch == null) {
             Log.warn("Player @ doesn't exists", uuid);
-            PlaytimeRecord playtimeRecord = Database.getContext().newRecord(Tables.playtime);
-            playtimeRecord.setUuid(uuid);
-            playtimeRecord.store();
+            Database.getContext().newRecord(Tables.playtime)
+                    .setUuid(uuid)
+                    .store();
         } else {
             time = timeFetch.value1();
         }
