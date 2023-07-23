@@ -92,6 +92,22 @@ public class Database {
     public static boolean playerExists(String uuid) throws SQLException {
         return Database.getContext().fetchExists(Tables.users, Tables.users.uuid.eq(uuid));
     }
+
+    public static void createPlayer(String uuid, String ip, String name, String locale, boolean admin) throws SQLException {
+        Database.getContext().newRecord(Tables.users)
+                .setUuid(uuid)
+                .setIp(ip)
+                .setName(name)
+                .setLocale(locale)
+                .setAdmin(admin)
+                .store();
+    }
+
+    public static void createFullPlayer(String uuid, String ip, String name, String locale, boolean admin) throws SQLException {
+        Database.createPlayer(uuid, ip, name, locale, admin);
+        Database.createPlaytime(uuid);
+        Database.createStats(uuid);
+    }
     // endregion
 
     // region bans
@@ -162,9 +178,7 @@ public class Database {
         long time = 0;
         if (timeFetch == null) {
             Log.warn("Player @ doesn't exists", uuid);
-            Database.getContext().newRecord(Tables.playtime)
-                    .setUuid(uuid)
-                    .store();
+            createPlaytime(uuid);
         } else {
             time = timeFetch.value1();
         }
@@ -180,9 +194,7 @@ public class Database {
         long time = 0;
         if (timeFetch == null) {
             Log.warn("Player @ doesn't exists", uuid);
-            Database.getContext().newRecord(Tables.playtime)
-                    .setUuid(uuid)
-                    .store();
+            createPlaytime(uuid);
         } else {
             for (Field<?> field : timeFetch.fields()) {
                 if (field.getType() == Long.class) {
@@ -195,11 +207,21 @@ public class Database {
         return time;
     }
 
+    public static void createPlaytime(String uuid) throws SQLException {
+        Database.getContext().newRecord(Tables.playtime)
+                .setUuid(uuid)
+                .store();
+    }
+
     public static StatsRecord getStats(String uuid) throws SQLException {
         return Database.getContext()
                 .selectFrom(Tables.stats)
                 .where(Tables.stats.uuid.eq(uuid))
                 .fetchOne();
+    }
+
+    public static void createStats(String uuid) throws SQLException {
+
     }
     // endregion
 }
