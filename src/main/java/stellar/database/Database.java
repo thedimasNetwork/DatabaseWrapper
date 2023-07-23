@@ -10,7 +10,9 @@ import org.jooq.Field;
 import org.jooq.Record1;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
+import stellar.database.enums.MessageType;
 import stellar.database.gen.Tables;
+import stellar.database.gen.tables.Messages;
 import stellar.database.gen.tables.records.BansRecord;
 import stellar.database.gen.tables.records.PlaytimeRecord;
 import stellar.database.gen.tables.records.StatsRecord;
@@ -360,6 +362,30 @@ public class Database {
     public static void createStats(String uuid) throws SQLException {
         Database.getContext().newRecord(Tables.stats)
                 .setUuid(uuid)
+                .store();
+    }
+    // endregion
+
+    // region messages & events
+    /**
+     * Creates a new message record in the database.
+     *
+     * @param server The name or identifier of the server where the message originates.
+     * @param from   The sender of the message.
+     * @param target The target recipient of the message (player's UUID or team).
+     * @param type   The type of the message ({@link MessageType}).
+     * @param text   The content of the message.
+     * @param locale The locale or language of the message.
+     * @throws SQLException If a database error occurs.
+     */
+    public static void createMessage(String server, String from, String target, MessageType type, String text, String locale) throws SQLException {
+        Database.getContext().newRecord(Tables.messages)
+                .setServer(server)
+                .setFrom(from)
+                .setTarget(target)
+                .setType(type)
+                .setText(text)
+                .setLocale(locale)
                 .store();
     }
     // endregion

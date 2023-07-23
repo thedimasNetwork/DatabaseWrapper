@@ -76,7 +76,7 @@ public class Messages extends TableImpl<MessagesRecord> {
     /**
      * The column <code>mindustry.messages.target</code>.
      */
-    public final TableField<MessagesRecord, String> target = createField(DSL.name("target"), SQLDataType.VARCHAR(40).nullable(false), this, "");
+    public final TableField<MessagesRecord, String> target = createField(DSL.name("target"), SQLDataType.VARCHAR(40), this, "");
 
     /**
      * The column <code>mindustry.messages.type</code>.

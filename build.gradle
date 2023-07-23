@@ -1,5 +1,4 @@
 import groovy.json.JsonSlurper
-import org.jooq.DataType
 import org.jooq.codegen.DefaultGeneratorStrategy
 import org.jooq.codegen.GenerationTool
 import org.jooq.meta.Definition
@@ -117,10 +116,11 @@ task codegen {
                                 .withIncludes(".*")
                                 .withExcludes("")
                                 .withInputSchema("$schema")
-                                .withForcedTypes(new ForcedType()
-                                        .withUserType("stellar.database.enums.MessageType")
-                                        .withEnumConverter(true)
-                                        .withIncludeTypes("mindustry.messages.type"),
+                                .withForcedTypes(
+                                        new ForcedType()
+                                                .withUserType("stellar.database.enums.MessageType")
+                                                .withEnumConverter(true)
+                                                .withIncludeTypes("mindustry.messages.type"),
                                         new ForcedType()
                                                 .withName("BOOLEAN")
                                                 .withIncludeTypes("(?i:TINYINT)")

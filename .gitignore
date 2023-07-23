@@ -156,3 +156,4 @@ Thumbs.db
 android/libs/
 
 database.json
+src/main/java/stellar/database/DatabaseTest.java
