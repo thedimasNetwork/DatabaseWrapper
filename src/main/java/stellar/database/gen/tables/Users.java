@@ -24,9 +24,11 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
+import org.jooq.impl.EnumConverter;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
+import stellar.database.enums.PlayerStatus;
 import stellar.database.gen.Indexes;
 import stellar.database.gen.Keys;
 import stellar.database.gen.Mindustry;
@@ -85,9 +87,9 @@ public class Users extends TableImpl<UsersRecord> {
     public final TableField<UsersRecord, String> translator = createField(DSL.name("translator"), SQLDataType.VARCHAR(20).nullable(false).defaultValue(DSL.inline("double", SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>mindustry.users.admin</code>.
+     * The column <code>mindustry.users.status</code>.
      */
-    public final TableField<UsersRecord, Boolean> admin = createField(DSL.name("admin"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
+    public final TableField<UsersRecord, PlayerStatus> status = createField(DSL.name("status"), SQLDataType.SMALLINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.SMALLINT)), this, "", new EnumConverter<Short, PlayerStatus>(Short.class, PlayerStatus.class));
 
     /**
      * The column <code>mindustry.users.jsallowed</code>.
@@ -211,21 +213,21 @@ public class Users extends TableImpl<UsersRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row11<Integer, String, String, String, String, String, Boolean, Boolean, Integer, Boolean, Boolean> fieldsRow() {
+    public Row11<Integer, String, String, String, String, String, PlayerStatus, Boolean, Integer, Boolean, Boolean> fieldsRow() {
         return (Row11) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function11<? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super Boolean, ? super Integer, ? super Boolean, ? super Boolean, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function11<? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super PlayerStatus, ? super Boolean, ? super Integer, ? super Boolean, ? super Boolean, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Class, Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super Boolean, ? super Boolean, ? super Integer, ? super Boolean, ? super Boolean, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function11<? super Integer, ? super String, ? super String, ? super String, ? super String, ? super String, ? super PlayerStatus, ? super Boolean, ? super Integer, ? super Boolean, ? super Boolean, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

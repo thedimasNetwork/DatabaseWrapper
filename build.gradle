@@ -122,6 +122,10 @@ task codegen {
                                                 .withEnumConverter(true)
                                                 .withIncludeTypes("mindustry.messages.type"),
                                         new ForcedType()
+                                                .withUserType("stellar.database.enums.PlayerStatus")
+                                                .withEnumConverter(true)
+                                                .withIncludeTypes("mindustry.users.status"),
+                                        new ForcedType()
                                                 .withName("BOOLEAN")
                                                 .withIncludeTypes("(?i:TINYINT)")
                                 )
@@ -163,6 +167,6 @@ class CamelCaseGeneratorStrategy extends DefaultGeneratorStrategy {
             }
         }
         return "get" + StringUtils.toCamelCase(definition.getOutputName())
-
     }
 }
+

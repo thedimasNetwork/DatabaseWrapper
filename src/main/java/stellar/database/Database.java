@@ -11,6 +11,7 @@ import org.jooq.Record1;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import stellar.database.enums.MessageType;
+import stellar.database.enums.PlayerStatus;
 import stellar.database.gen.Tables;
 import stellar.database.gen.tables.Messages;
 import stellar.database.gen.tables.records.BansRecord;
@@ -162,7 +163,7 @@ public class Database {
                 .setIp(ip)
                 .setName(name)
                 .setLocale(locale)
-                .setAdmin(admin)
+                .setStatus(admin ? PlayerStatus.admin : PlayerStatus.basic)
                 .store();
     }
 
