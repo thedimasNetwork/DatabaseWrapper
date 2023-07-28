@@ -65,10 +65,10 @@ dependencies {
     runtimeOnly "mysql:mysql-connector-java:$mysqlVersion"
 }
 
-java {
-    withSourcesJar()
-    withJavadocJar()
-}
+//java {
+//    withSourcesJar()
+//    withJavadocJar()
+//}
 
 publishing {
     publications {
