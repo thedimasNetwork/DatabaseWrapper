@@ -309,9 +309,12 @@ public class DatabaseAsync {
                     Log.warn("Player @ doesn't exist", uuid);
                     createPlaytimeAsync(uuid).join();
                 } else {
-                    for (Field<?> playtimeField : timeFetch.fields()) {
-                        if (playtimeField.getType() == Long.class) {
-                            time += (Long) playtimeField.getValue(timeFetch); // probably it's better to use INT instead of BIGINT
+                    for (Field<?> field : timeFetch.fields()) {
+                        if (field.getType() == Long.class) {
+                            Long fieldValue = (Long) field.getValue(timeFetch);
+                            if (fieldValue != null) {
+                                time += fieldValue;
+                            }
                         }
                     }
                 }

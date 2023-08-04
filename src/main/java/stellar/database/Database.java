@@ -267,7 +267,10 @@ public class Database {
         } else {
             for (Field<?> field : timeFetch.fields()) {
                 if (field.getType() == Long.class) {
-                    time += (Long) field.getValue(timeFetch);
+                    Long fieldValue = (Long) field.getValue(timeFetch);
+                    if (fieldValue != null) {
+                        time += fieldValue;
+                    }
                 }
             }
         }
