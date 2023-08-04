@@ -267,7 +267,7 @@ public class DatabaseAsync {
      *
      * @param uuid  The UUID of the player.
      * @param field The playtime field to retrieve.
-     * @return A CompletableFuture that holds the playtime value for the specified field.
+     * @return A CompletableFuture that holds the playtime value for the specified field in seconds.
      */
     public static CompletableFuture<Long> getPlaytimeAsync(String uuid, Field<Long> field) {
         return getContextAsync().thenApplyAsync(context -> {
@@ -295,7 +295,7 @@ public class DatabaseAsync {
      * Asynchronously retrieves the total playtime of a player.
      *
      * @param uuid The UUID of the player.
-     * @return A CompletableFuture that holds the total playtime in milliseconds.
+     * @return A CompletableFuture that holds the total playtime in seconds.
      */
     public static CompletableFuture<Long> getTotalPlaytimeAsync(String uuid) {
         return getContextAsync().thenApplyAsync(context -> {
@@ -317,7 +317,6 @@ public class DatabaseAsync {
                 }
                 return time;
             } catch (DataAccessException e) {
-                Log.err(e);
                 throw new RuntimeException("Error fetching total playtime.", e);
             }
         });
@@ -336,7 +335,6 @@ public class DatabaseAsync {
                         .setUuid(uuid)
                         .store();
             } catch (DataAccessException e) {
-                Log.err(e);
                 throw new RuntimeException("Error creating playtime.", e);
             }
         });
@@ -355,7 +353,6 @@ public class DatabaseAsync {
                         .where(Tables.stats.uuid.eq(uuid))
                         .fetchOne();
             } catch (DataAccessException e) {
-                Log.err(e);
                 throw new RuntimeException("Error fetching stats.", e);
             }
         });
@@ -374,7 +371,6 @@ public class DatabaseAsync {
                         .setUuid(uuid)
                         .store();
             } catch (DataAccessException e) {
-                Log.err(e);
                 throw new RuntimeException("Error creating stats.", e);
             }
         });

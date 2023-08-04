@@ -62,7 +62,7 @@ public class Database {
      */
     @Nullable
     public static UsersRecord getPlayer(String uuid) throws SQLException {
-        return Database.getContext()
+        return getContext()
                 .selectFrom(Tables.users)
                 .where(Tables.users.uuid.eq(uuid))
                 .fetchOne();
@@ -77,7 +77,7 @@ public class Database {
      */
     @Nullable
     public static UsersRecord getPlayer(int id) throws SQLException {
-        return Database.getContext()
+        return getContext()
                 .selectFrom(Tables.users)
                 .where(Tables.users.id.eq(id))
                 .fetchOne();
@@ -91,7 +91,7 @@ public class Database {
      * @throws SQLException If a database error occurs.
      */
     public static boolean playerExists(String uuid) throws SQLException {
-        return Database.getContext().fetchExists(Tables.users, Tables.users.uuid.eq(uuid));
+        return getContext().fetchExists(Tables.users, Tables.users.uuid.eq(uuid));
     }
 
     /**
@@ -105,7 +105,7 @@ public class Database {
      * @throws SQLException If a database error occurs.
      */
     public static void createPlayer(String uuid, String ip, String name, String locale, boolean admin) throws SQLException {
-        Database.getContext().newRecord(Tables.users)
+        getContext().newRecord(Tables.users)
                 .setUuid(uuid)
                 .setIp(ip)
                 .setName(name)
@@ -125,9 +125,9 @@ public class Database {
      * @throws SQLException If a database error occurs.
      */
     public static void createFullPlayer(String uuid, String ip, String name, String locale, boolean admin) throws SQLException {
-        Database.createPlayer(uuid, ip, name, locale, admin);
-        Database.createPlaytime(uuid);
-        Database.createStats(uuid);
+        createPlayer(uuid, ip, name, locale, admin);
+        createPlaytime(uuid);
+        createStats(uuid);
     }
     // endregion
 
@@ -141,7 +141,7 @@ public class Database {
      * @throws SQLException If a database error occurs.
      */
     public static BansRecord latestBan(String uuid) throws SQLException {
-        return Database.getContext()
+        return getContext()
                 .selectFrom(Tables.bans)
                 .where(Tables.bans.target.eq(uuid))
                 .orderBy(Tables.bans.id.desc())
@@ -184,14 +184,14 @@ public class Database {
      * @throws IllegalArgumentException If the target player does not exist or is already banned.
      */
     public static void ban(String admin, String target, int period, String reason) throws SQLException {
-        if (!Database.playerExists(target)) {
+        if (!playerExists(target)) {
             throw new IllegalArgumentException("Target does not exist!");
         }
-        if (Database.isBanned(target)) {
+        if (isBanned(target)) {
             throw new IllegalArgumentException("Target is already banned!");
         }
 
-        Database.getContext().newRecord(Tables.bans)
+        getContext().newRecord(Tables.bans)
                 .setAdmin(admin)
                 .setTarget(target)
                 .setCreated(LocalDateTime.now())
@@ -208,14 +208,14 @@ public class Database {
      * @throws IllegalArgumentException If the target player does not exist or is not banned.
      */
     public static void unban(String target) throws SQLException {
-        if (!Database.playerExists(target)) {
+        if (!playerExists(target)) {
             throw new IllegalArgumentException("Target does not exist!");
         }
-        if (!Database.isBanned(target)) {
+        if (!isBanned(target)) {
             throw new IllegalArgumentException("Target is not banned!");
         }
 
-        Database.latestBan(target)
+        latestBan(target)
                 .setActive(false)
                 .store();
     }
@@ -228,11 +228,11 @@ public class Database {
      *
      * @param uuid  The UUID of the player.
      * @param field The playtime field to retrieve.
-     * @return The playtime value for the specified field.
+     * @return The playtime value for the specified field in seconds.
      * @throws SQLException If a database error occurs.
      */
     public static long getPlaytime(String uuid, Field<Long> field) throws SQLException {
-        Record1<Long> timeFetch = Database.getContext()
+        Record1<Long> timeFetch = getContext()
                 .select(field)
                 .from(Tables.playtime)
                 .where(Tables.playtime.uuid.eq(uuid))
@@ -252,11 +252,11 @@ public class Database {
      * Retrieves the total playtime of a player.
      *
      * @param uuid The UUID of the player.
-     * @return The total playtime in milliseconds.
+     * @return The total playtime in seconds.
      * @throws SQLException If a database error occurs.
      */
     public static long getTotalPlaytime(String uuid) throws SQLException {
-        PlaytimeRecord timeFetch = Database.getContext()
+        PlaytimeRecord timeFetch = getContext()
                 .selectFrom(Tables.playtime)
                 .where(Tables.playtime.uuid.eq(uuid))
                 .fetchOne();
@@ -282,7 +282,7 @@ public class Database {
      * @throws SQLException If a database error occurs.
      */
     public static void createPlaytime(String uuid) throws SQLException {
-        Database.getContext().newRecord(Tables.playtime)
+        getContext().newRecord(Tables.playtime)
                 .setUuid(uuid)
                 .store();
     }
@@ -295,7 +295,7 @@ public class Database {
      * @throws SQLException If a database error occurs.
      */
     public static StatsRecord getStats(String uuid) throws SQLException {
-        return Database.getContext()
+        return getContext()
                 .selectFrom(Tables.stats)
                 .where(Tables.stats.uuid.eq(uuid))
                 .fetchOne();
@@ -308,7 +308,7 @@ public class Database {
      * @throws SQLException If a database error occurs.
      */
     public static void createStats(String uuid) throws SQLException {
-        Database.getContext().newRecord(Tables.stats)
+        getContext().newRecord(Tables.stats)
                 .setUuid(uuid)
                 .store();
     }
@@ -327,7 +327,7 @@ public class Database {
      * @throws SQLException If a database error occurs.
      */
     public static void createMessage(String server, String from, String target, MessageType type, String text, String locale) throws SQLException {
-        Database.getContext().newRecord(Tables.messages)
+        getContext().newRecord(Tables.messages)
                 .setServer(server)
                 .setFrom(from)
                 .setTarget(target)
@@ -335,6 +335,71 @@ public class Database {
                 .setText(text)
                 .setLocale(locale)
                 .store();
+    }
+
+    /**
+     * Creates a new login record in the database.
+     *
+     * @param server The name or identifier of the server where the message originates.
+     * @param uuid   The UUID of the player.
+     * @param ip     The IP address of the player.
+     * @param name   The name of the player.
+     * @param locale The locale of the player.
+     * @throws SQLException If a database error occurs.
+     */
+    public static void createLogin(String server, String uuid, String ip, String name, String locale) throws SQLException {
+        getContext().newRecord(Tables.logins)
+                .setServer(server)
+                .setUuid(uuid)
+                .setIp(ip)
+                .setName(name)
+                .setLocale(locale)
+                .store();
+    }
+
+
+    // Maybe move getIps and getNames to players region
+
+    /**
+     * Retrieves an array of IP addresses used by a player.
+     *
+     * @param uuid The UUID of the player.
+     * @return An array of IP addresses used by the specified player.
+     * @throws SQLException If a database error occurs.
+     * @throws IllegalArgumentException If the player does not exist.
+     */
+    public static String[] getIps(String uuid) throws SQLException { // TODO: Async
+        if (!playerExists(uuid)) {
+            throw new IllegalArgumentException("Target does not exist!");
+        }
+
+        return getContext()
+                .select(Tables.logins.ip)
+                .from(Tables.logins)
+                .where(Tables.logins.uuid.eq(uuid))
+                .groupBy(Tables.logins.ip)
+                .fetchArray(0, String.class);
+    }
+
+    /**
+     * Retrieves an array of names used by a player.
+     *
+     * @param uuid The UUID of the player.
+     * @return An array of names used by the specified player.
+     * @throws SQLException If a database error occurs.
+     * @throws IllegalArgumentException If the player does not exist.
+     */
+    public static String[] getNames(String uuid) throws SQLException { // TODO: Async
+        if (!playerExists(uuid)) {
+            throw new IllegalArgumentException("Target does not exist!");
+        }
+
+        return getContext()
+                .select(Tables.logins.name)
+                .from(Tables.logins)
+                .where(Tables.logins.uuid.eq(uuid))
+                .groupBy(Tables.logins.name)
+                .fetchArray(0, String.class);
     }
     // endregion
 }

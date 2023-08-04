@@ -11,12 +11,14 @@ import org.jooq.impl.Internal;
 
 import stellar.database.gen.tables.Bans;
 import stellar.database.gen.tables.IpCached;
+import stellar.database.gen.tables.Logins;
 import stellar.database.gen.tables.Messages;
 import stellar.database.gen.tables.Playtime;
 import stellar.database.gen.tables.Stats;
 import stellar.database.gen.tables.Users;
 import stellar.database.gen.tables.records.BansRecord;
 import stellar.database.gen.tables.records.IpCachedRecord;
+import stellar.database.gen.tables.records.LoginsRecord;
 import stellar.database.gen.tables.records.MessagesRecord;
 import stellar.database.gen.tables.records.PlaytimeRecord;
 import stellar.database.gen.tables.records.StatsRecord;
@@ -37,6 +39,7 @@ public class Keys {
     public static final UniqueKey<BansRecord> keyBansPrimary = Internal.createUniqueKey(Bans.bans, DSL.name("KEY_bans_PRIMARY"), new TableField[] { Bans.bans.id }, true);
     public static final UniqueKey<IpCachedRecord> keyIpCachedPrimary = Internal.createUniqueKey(IpCached.ipCached, DSL.name("KEY_ip_cached_PRIMARY"), new TableField[] { IpCached.ipCached.id }, true);
     public static final UniqueKey<IpCachedRecord> keyIpCachedSecondary = Internal.createUniqueKey(IpCached.ipCached, DSL.name("KEY_ip_cached_SECONDARY"), new TableField[] { IpCached.ipCached.ip }, true);
+    public static final UniqueKey<LoginsRecord> keyLoginsPrimary = Internal.createUniqueKey(Logins.logins, DSL.name("KEY_logins_PRIMARY"), new TableField[] { Logins.logins.id }, true);
     public static final UniqueKey<MessagesRecord> keyMessagesPrimary = Internal.createUniqueKey(Messages.messages, DSL.name("KEY_messages_PRIMARY"), new TableField[] { Messages.messages.id }, true);
     public static final UniqueKey<PlaytimeRecord> keyPlaytimePrimary = Internal.createUniqueKey(Playtime.playtime, DSL.name("KEY_playtime_PRIMARY"), new TableField[] { Playtime.playtime.uuid }, true);
     public static final UniqueKey<StatsRecord> keyStatsPrimary = Internal.createUniqueKey(Stats.stats, DSL.name("KEY_stats_PRIMARY"), new TableField[] { Stats.stats.uuid }, true);
