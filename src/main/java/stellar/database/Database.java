@@ -1,6 +1,3 @@
-/**
- * A utility class for handling database operations related to player data and bans.
- */
 package stellar.database;
 
 import arc.util.Log;
@@ -13,28 +10,22 @@ import org.jooq.impl.DSL;
 import stellar.database.enums.MessageType;
 import stellar.database.enums.PlayerStatus;
 import stellar.database.gen.Tables;
-import stellar.database.gen.tables.Messages;
 import stellar.database.gen.tables.records.BansRecord;
 import stellar.database.gen.tables.records.PlaytimeRecord;
 import stellar.database.gen.tables.records.StatsRecord;
 import stellar.database.gen.tables.records.UsersRecord;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+import static stellar.database.Config.*;
+
+/**
+ * A utility class for handling database operations.
+ */
 @SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted"})
 public class Database {
-    private static Connection connection;
-    private static DSLContext context;
-
-    private static String ip;
-    private static int port;
-    private static String name;
-    private static String user;
-    private static String password;
+    // region loading
 
     /**
      * Loads the database connection parameters.
@@ -46,49 +37,7 @@ public class Database {
      * @param password The password for the database connection.
      */
     public static void load(String ip, int port, String name, String user, String password) {
-        Database.ip = ip;
-        Database.port = port;
-        Database.name = name;
-        Database.user = user;
-        Database.password = password;
-    }
-
-    /**
-     * Gets the connection URL for the database.
-     *
-     * @return The connection URL as a string.
-     */
-    private static String getConnectionUrl() {
-        return "jdbc:mysql://" + ip + ":" + port + "/" + name + "?autoReconnect=true";
-    }
-
-    /**
-     * Retrieves the database connection.
-     *
-     * @return The database connection.
-     * @throws SQLException If a database error occurs.
-     */
-    public static Connection getConnection() throws SQLException {
-        if (connection == null) {
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                connection = DriverManager.getConnection(getConnectionUrl(), user, password);
-            } catch (Throwable t) {
-                Log.err(t);
-            }
-        } else if (connection.isClosed()) {
-            connection = DriverManager.getConnection(getConnectionUrl(), user, password);
-        }
-
-        try { // checking if the connection is alive; may be not closed but timeout
-            PreparedStatement ps = connection.prepareStatement("SELECT 1");
-            ps.executeQuery();
-        } catch (Exception e) {
-            Log.warn("Database connection died due to inactivity");
-            connection = DriverManager.getConnection(getConnectionUrl(), user, password);
-        }
-
-        return connection;
+        Config.load(ip, port, name, user, password);
     }
 
     /**
@@ -98,11 +47,9 @@ public class Database {
      * @throws SQLException If a database error occurs.
      */
     public static DSLContext getContext() throws SQLException {
-        if (context == null) {
-            context = DSL.using(getConnection(), SQLDialect.MYSQL);
-        }
-        return context;
+        return DSL.using(getConnection(), SQLDialect.MYSQL);
     }
+    // endregion
 
     // region players
 
@@ -274,7 +221,7 @@ public class Database {
     }
     // endregion
 
-    // region playtime & stats
+    // region activity
 
     /**
      * Retrieves the playtime of a player for a specific field.
