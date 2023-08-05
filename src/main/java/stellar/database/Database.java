@@ -239,7 +239,7 @@ public class Database {
                 .fetchOne();
         long time = 0;
         if (timeFetch == null) {
-            Log.warn("Player @ doesn't exist", uuid);
+            Log.warn("Player @ does not exist", uuid);
             createPlaytime(uuid);
         } else {
             time = timeFetch.value1();
@@ -262,7 +262,7 @@ public class Database {
                 .fetchOne();
         long time = 0;
         if (timeFetch == null) {
-            Log.warn("Player @ doesn't exist", uuid);
+            Log.warn("Player @ does not exist", uuid);
             createPlaytime(uuid);
         } else {
             for (Field<?> field : timeFetch.fields()) {
@@ -364,16 +364,16 @@ public class Database {
     // Maybe move getIps and getNames to players region
 
     /**
-     * Retrieves an array of IP addresses used by a player.
+     * Retrieves an array of IP addresses used by a player from the database.
      *
      * @param uuid The UUID of the player.
      * @return An array of IP addresses used by the specified player.
      * @throws SQLException If a database error occurs.
      * @throws IllegalArgumentException If the player does not exist.
      */
-    public static String[] getIps(String uuid) throws SQLException { // TODO: Async
+    public static String[] getIps(String uuid) throws SQLException {
         if (!playerExists(uuid)) {
-            throw new IllegalArgumentException("Target does not exist!");
+            throw new IllegalArgumentException("Player does not exist!");
         }
 
         return getContext()
@@ -385,16 +385,16 @@ public class Database {
     }
 
     /**
-     * Retrieves an array of names used by a player.
+     * Retrieves an array of names used by a player from the database.
      *
      * @param uuid The UUID of the player.
      * @return An array of names used by the specified player.
      * @throws SQLException If a database error occurs.
      * @throws IllegalArgumentException If the player does not exist.
      */
-    public static String[] getNames(String uuid) throws SQLException { // TODO: Async
+    public static String[] getNames(String uuid) throws SQLException {
         if (!playerExists(uuid)) {
-            throw new IllegalArgumentException("Target does not exist!");
+            throw new IllegalArgumentException("Player does not exist!");
         }
 
         return getContext()

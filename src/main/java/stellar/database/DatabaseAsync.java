@@ -279,7 +279,7 @@ public class DatabaseAsync {
                         .fetchOne();
                 long time = 0;
                 if (timeFetch == null) {
-                    Log.warn("Player @ doesn't exist", uuid);
+                    Log.warn("Player @ does not exist", uuid);
                     createPlaytimeAsync(uuid).join();
                 } else {
                     time = timeFetch.value1();
@@ -306,7 +306,7 @@ public class DatabaseAsync {
                         .fetchOne();
                 long time = 0;
                 if (timeFetch == null) {
-                    Log.warn("Player @ doesn't exist", uuid);
+                    Log.warn("Player @ does not exist", uuid);
                     createPlaytimeAsync(uuid).join();
                 } else {
                     for (Field<?> field : timeFetch.fields()) {
@@ -375,6 +375,60 @@ public class DatabaseAsync {
                         .store();
             } catch (DataAccessException e) {
                 throw new RuntimeException("Error creating stats.", e);
+            }
+        });
+    }
+
+    /**
+     * Asynchronously retrieves an array of IP addresses used by a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return A CompletableFuture that holds an array of IP addresses used by the specified player.
+     */
+    public static CompletableFuture<String[]> getIpsAsync(String uuid) {
+        return playerExistsAsync(uuid).thenComposeAsync(exists -> {
+            if (!exists) {
+                throw new IllegalArgumentException("Player does not exist!");
+            }
+
+            return getContextAsync();
+        }).thenApplyAsync(context -> {
+                try {
+                    return context
+                            .select(Tables.logins.ip)
+                            .from(Tables.logins)
+                            .where(Tables.logins.uuid.eq(uuid))
+                            .groupBy(Tables.logins.ip)
+                            .fetchArray(0, String.class);
+                } catch (DataAccessException e) {
+                    throw new RuntimeException("Error fetching IPs.", e);
+                }
+        });
+    }
+
+    /**
+     * Asynchronously retrieves an array of names used by a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return A CompletableFuture that holds an array of names used by the specified player.
+     */
+    public static CompletableFuture<String[]> getNamesAsync(String uuid) {
+        return playerExistsAsync(uuid).thenComposeAsync(exists -> {
+            if (!exists) {
+                throw new IllegalArgumentException("Player does not exist!");
+            }
+
+            return getContextAsync();
+        }).thenApplyAsync(context -> {
+            try {
+                return context
+                        .select(Tables.logins.name)
+                        .from(Tables.logins)
+                        .where(Tables.logins.uuid.eq(uuid))
+                        .groupBy(Tables.logins.name)
+                        .fetchArray(0, String.class);
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error fetching names.", e);
             }
         });
     }
