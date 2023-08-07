@@ -18,9 +18,9 @@ import java.util.concurrent.CompletableFuture;
 import static stellar.database.Config.*;
 
 /**
- * A utility class for handling database operations asynchronously.
+ * A utility class for asynchronously handling database operations.
  */
-@SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted"})
+@SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted", "UnusedReturnValue"})
 public class DatabaseAsync {
     // region loading
 
@@ -59,7 +59,7 @@ public class DatabaseAsync {
      * Asynchronously retrieves a player's record by UUID from the database.
      *
      * @param uuid The UUID of the player.
-     * @return A CompletableFuture that holds the UsersRecord representing the player's data or null if not found.
+     * @return A CompletableFuture that holds the {@link UsersRecord} representing the player's data or null if not found.
      */
     public static CompletableFuture<UsersRecord> getPlayerAsync(String uuid) {
         return getContextAsync().thenApplyAsync(context -> {
@@ -77,7 +77,7 @@ public class DatabaseAsync {
      * Asynchronously retrieves a player's record by ID from the database.
      *
      * @param id The ID of the player.
-     * @return A CompletableFuture that holds the UsersRecord representing the player's data or null if not found.
+     * @return A CompletableFuture that holds the {@link UsersRecord} representing the player's data or null if not found.
      */
     public static CompletableFuture<UsersRecord> getPlayerAsync(int id) {
         return getContextAsync().thenApplyAsync(context -> {
@@ -115,7 +115,7 @@ public class DatabaseAsync {
      * @param name   The name of the player.
      * @param locale The locale of the player.
      * @param admin  True if the player is an admin, false otherwise.
-     * @return A CompletableFuture that holds the created record.
+     * @return A CompletableFuture that holds the created {@link UsersRecord}.
      */
     public static CompletableFuture<UsersRecord> createPlayerAsync(String uuid, String ip, String name, String locale, boolean admin) {
         return getContextAsync().thenApplyAsync(context -> {
@@ -142,7 +142,7 @@ public class DatabaseAsync {
      * @param name   The name of the player.
      * @param locale The locale of the player.
      * @param admin  True if the player is an admin, false otherwise.
-     * @return A CompletableFuture that holds the created player record.
+     * @return A CompletableFuture that holds the created {@link UsersRecord}.
      */
     public static CompletableFuture<UsersRecord> createFullPlayerAsync(String uuid, String ip, String name, String locale, boolean admin) {
         return CompletableFuture.allOf(
@@ -212,7 +212,7 @@ public class DatabaseAsync {
      * Asynchronously retrieves the latest ban record for a player from the database.
      *
      * @param uuid The UUID of the player.
-     * @return A CompletableFuture that holds the BansRecord representing the latest ban or null if no ban is found.
+     * @return A CompletableFuture that holds the {@link BansRecord} representing the latest ban or null if no ban is found.
      */
     public static CompletableFuture<BansRecord> latestBanAsync(String uuid) {
         return getContextAsync().thenApplyAsync(context -> {
@@ -256,7 +256,7 @@ public class DatabaseAsync {
      * @param target The UUID of the player to be banned.
      * @param period The ban period in days, or -1 for a permanent ban.
      * @param reason The reason for the ban.
-     * @return A CompletableFuture that holds the created ban record.
+     * @return A CompletableFuture that holds the created {@link BansRecord}.
      */
     public static CompletableFuture<BansRecord> banAsync(String admin, String target, int period, String reason) {
         return playerExistsAsync(target).thenComposeAsync(exists -> {
@@ -290,7 +290,7 @@ public class DatabaseAsync {
      * Asynchronously unbans a player.
      *
      * @param target The UUID of the player to be unbanned.
-     * @return A CompletableFuture that holds the updated ban record.
+     * @return A CompletableFuture that holds the updated {@link BansRecord}.
      */
     public static CompletableFuture<BansRecord> unbanAsync(String target) {
         return playerExistsAsync(target).thenComposeAsync(exists -> {
@@ -380,7 +380,7 @@ public class DatabaseAsync {
      * Asynchronously creates a new playtime record for a player in the database.
      *
      * @param uuid The UUID of the player.
-     * @return A CompletableFuture that holds the created playtime record.
+     * @return A CompletableFuture that holds the created {@link PlaytimeRecord}.
      */
     public static CompletableFuture<PlaytimeRecord> createPlaytimeAsync(String uuid) {
         return getContextAsync().thenApplyAsync(context -> {
@@ -399,7 +399,7 @@ public class DatabaseAsync {
      * Asynchronously retrieves the stats record of a player from the database.
      *
      * @param uuid The UUID of the player.
-     * @return A CompletableFuture that holds the StatsRecord representing the player's statistics.
+     * @return A CompletableFuture that holds the {@link StatsRecord} representing the player's statistics or null if no statistics is found.
      */
     public static CompletableFuture<StatsRecord> getStatsAsync(String uuid) {
         return getContextAsync().thenApplyAsync(context -> {
@@ -417,7 +417,7 @@ public class DatabaseAsync {
      * Asynchronously creates a new stats record for a player in the database.
      *
      * @param uuid The UUID of the player.
-     * @return A CompletableFuture that holds the created stats record.
+     * @return A CompletableFuture that holds the created {@link StatsRecord}.
      */
     public static CompletableFuture<StatsRecord> createStatsAsync(String uuid) {
         return getContextAsync().thenApplyAsync(context -> {
@@ -444,7 +444,7 @@ public class DatabaseAsync {
      * @param type   The type of the message ({@link MessageType}).
      * @param text   The content of the message.
      * @param locale The locale or language of the message.
-     * @return A CompletableFuture that holds the created messages record.
+     * @return A CompletableFuture that holds the created {@link MessagesRecord}.
      */
     public static CompletableFuture<MessagesRecord> createMessageAsync(String server, String from, String target, MessageType type, String text, String locale) {
         return getContextAsync().thenApplyAsync(context -> {
@@ -472,7 +472,7 @@ public class DatabaseAsync {
      * @param ip     The IP address of the player.
      * @param name   The name of the player.
      * @param locale The locale of the player.
-     * @return A CompletableFuture that holds the created login record.
+     * @return A CompletableFuture that holds the created {@link LoginsRecord}.
      */
     public static CompletableFuture<LoginsRecord> createLoginAsync(String server, String uuid, String ip, String name, String locale) {
         return getContextAsync().thenApplyAsync(context -> {

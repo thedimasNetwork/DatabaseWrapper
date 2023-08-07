@@ -20,7 +20,7 @@ import static stellar.database.Config.*;
 /**
  * A utility class for handling database operations.
  */
-@SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted"})
+@SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted", "UnusedReturnValue"})
 public class Database {
     // region loading
 
@@ -54,7 +54,7 @@ public class Database {
      * Retrieves a player's record by UUID from the database.
      *
      * @param uuid The UUID of the player.
-     * @return The UsersRecord representing the player's data or null if not found.
+     * @return The {@link UsersRecord} representing the player's data or null if not found.
      * @throws SQLException If a database error occurs.
      */
     @Nullable
@@ -69,7 +69,7 @@ public class Database {
      * Retrieves a player's record by ID from the database.
      *
      * @param id The ID of the player.
-     * @return The UsersRecord representing the player's data or null if not found.
+     * @return The {@link UsersRecord} representing the player's data or null if not found.
      * @throws SQLException If a database error occurs.
      */
     @Nullable
@@ -99,7 +99,7 @@ public class Database {
      * @param name   The name of the player.
      * @param locale The locale of the player.
      * @param admin  True if the player is an admin, false otherwise.
-     * @return The created record for the player.
+     * @return The created {@link UsersRecord}.
      * @throws SQLException If a database error occurs.
      */
     public static UsersRecord createPlayer(String uuid, String ip, String name, String locale, boolean admin) throws SQLException {
@@ -121,7 +121,7 @@ public class Database {
      * @param name   The name of the player.
      * @param locale The locale of the player.
      * @param admin  True if the player is an admin, false otherwise.
-     * @return The created record for the player.
+     * @return The created {@link UsersRecord}.
      * @throws SQLException If a database error occurs.
      */
     public static UsersRecord createFullPlayer(String uuid, String ip, String name, String locale, boolean admin) throws SQLException {
@@ -179,7 +179,7 @@ public class Database {
      * Retrieves the latest ban record for a player from the database.
      *
      * @param uuid The UUID of the player.
-     * @return The BansRecord representing the latest ban or null if no ban is found.
+     * @return The {@link BansRecord} representing the latest ban or null if no ban is found.
      * @throws SQLException If a database error occurs.
      */
     public static BansRecord latestBan(String uuid) throws SQLException {
@@ -222,7 +222,7 @@ public class Database {
      * @param target The UUID of the player to be banned.
      * @param period The ban period in days, or -1 for a permanent ban.
      * @param reason The reason for the ban.
-     * @return The created ban record
+     * @return The created {@link BansRecord}
      * @throws SQLException If a database error occurs.
      * @throws IllegalArgumentException If the target player does not exist or is already banned.
      */
@@ -248,7 +248,7 @@ public class Database {
      * Unbans a player.
      *
      * @param target The UUID of the player to be unbanned.
-     * @return The updated ban record
+     * @return The updated {@link BansRecord}
      * @throws SQLException If a database error occurs.
      * @throws IllegalArgumentException If the target player does not exist or is not banned.
      */
@@ -328,7 +328,7 @@ public class Database {
      * Creates a new playtime record for a player in the database and returns it.
      *
      * @param uuid The UUID of the player.
-     * @return The created playtime record for the player.
+     * @return The created {@link PlaytimeRecord} for the player.
      * @throws SQLException If a database error occurs.
      */
     public static PlaytimeRecord createPlaytime(String uuid) throws SQLException {
@@ -342,7 +342,7 @@ public class Database {
      * Retrieves the stats record of a player from the database.
      *
      * @param uuid The UUID of the player.
-     * @return The StatsRecord representing the player's statistics.
+     * @return The {@link StatsRecord} representing the player's statistics or null if no statistics is found.
      * @throws SQLException If a database error occurs.
      */
     public static StatsRecord getStats(String uuid) throws SQLException {
@@ -356,7 +356,7 @@ public class Database {
      * Creates a new stats record for a player in the database and returns it.
      *
      * @param uuid The UUID of the player.
-     * @return The created stats record for the player.
+     * @return The created {@link StatsRecord} for the player.
      * @throws SQLException If a database error occurs.
      */
     public static StatsRecord createStats(String uuid) throws SQLException {
@@ -378,7 +378,7 @@ public class Database {
      * @param type   The type of the message ({@link MessageType}).
      * @param text   The content of the message.
      * @param locale The locale or language of the message.
-     * @return The created message record.
+     * @return The created {@link MessagesRecord}.
      * @throws SQLException If a database error occurs.
      */
     public static MessagesRecord createMessage(String server, String from, String target, MessageType type, String text, String locale) throws SQLException {
@@ -401,7 +401,7 @@ public class Database {
      * @param ip     The IP address of the player.
      * @param name   The name of the player.
      * @param locale The locale of the player.
-     * @return The created login record.
+     * @return The created {@link LoginsRecord}.
      * @throws SQLException If a database error occurs.
      */
     public static LoginsRecord createLogin(String server, String uuid, String ip, String name, String locale) throws SQLException {
