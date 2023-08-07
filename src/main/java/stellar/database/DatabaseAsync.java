@@ -15,7 +15,7 @@ import stellar.database.gen.tables.records.*;
 import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 
-import static stellar.database.Config.*;
+import static stellar.database.Config.getConnectionAsync;
 
 /**
  * A utility class for asynchronously handling database operations.

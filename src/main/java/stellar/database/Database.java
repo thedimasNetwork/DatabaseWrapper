@@ -15,7 +15,7 @@ import stellar.database.gen.tables.records.*;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-import static stellar.database.Config.*;
+import static stellar.database.Config.getConnection;
 
 /**
  * A utility class for handling database operations.
@@ -135,7 +135,7 @@ public class Database {
      *
      * @param uuid The UUID of the player.
      * @return An array of IP addresses used by the specified player.
-     * @throws SQLException If a database error occurs.
+     * @throws SQLException             If a database error occurs.
      * @throws IllegalArgumentException If the player does not exist.
      */
     public static String[] getIps(String uuid) throws SQLException {
@@ -156,7 +156,7 @@ public class Database {
      *
      * @param uuid The UUID of the player.
      * @return An array of names used by the specified player.
-     * @throws SQLException If a database error occurs.
+     * @throws SQLException             If a database error occurs.
      * @throws IllegalArgumentException If the player does not exist.
      */
     public static String[] getNames(String uuid) throws SQLException {
@@ -223,7 +223,7 @@ public class Database {
      * @param period The ban period in days, or -1 for a permanent ban.
      * @param reason The reason for the ban.
      * @return The created {@link BansRecord}
-     * @throws SQLException If a database error occurs.
+     * @throws SQLException             If a database error occurs.
      * @throws IllegalArgumentException If the target player does not exist or is already banned.
      */
     public static BansRecord ban(String admin, String target, int period, String reason) throws SQLException {
@@ -249,7 +249,7 @@ public class Database {
      *
      * @param target The UUID of the player to be unbanned.
      * @return The updated {@link BansRecord}
-     * @throws SQLException If a database error occurs.
+     * @throws SQLException             If a database error occurs.
      * @throws IllegalArgumentException If the target player does not exist or is not banned.
      */
     public static BansRecord unban(String target) throws SQLException {
@@ -273,7 +273,7 @@ public class Database {
      * Retrieves the playtime of a player for a specific field.
      *
      * @param uuid  The UUID of the player.
-     * @param field  The playtime field to retrieve.
+     * @param field The playtime field to retrieve.
      * @return The playtime value for the specified field in seconds.
      * @throws SQLException If a database error occurs.
      */
