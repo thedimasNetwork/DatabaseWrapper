@@ -256,9 +256,9 @@ public class DatabaseAsync {
      * @param target The UUID of the player to be banned.
      * @param period The ban period in days, or -1 for a permanent ban.
      * @param reason The reason for the ban.
-     * @return A CompletableFuture that completes when the player is banned.
+     * @return A CompletableFuture that holds the created ban record.
      */
-    public static CompletableFuture<Void> banAsync(String admin, String target, int period, String reason) {
+    public static CompletableFuture<BansRecord> banAsync(String admin, String target, int period, String reason) {
         return playerExistsAsync(target).thenComposeAsync(exists -> {
             if (!exists) {
                 throw new IllegalArgumentException("Target does not exist!");
@@ -269,17 +269,17 @@ public class DatabaseAsync {
                 throw new IllegalArgumentException("Target is already banned!");
             }
             return getContextAsync();
-        }).thenComposeAsync(context -> {
+        }).thenApplyAsync(context -> {
             try {
                 LocalDateTime until = (period > -1) ? LocalDateTime.now().plusDays(period) : null;
-                context.newRecord(Tables.bans)
+                BansRecord record = context.newRecord(Tables.bans)
                         .setAdmin(admin)
                         .setTarget(target)
                         .setCreated(LocalDateTime.now())
                         .setUntil(until)
-                        .setReason(reason)
-                        .store();
-                return null;
+                        .setReason(reason);
+                record.store();
+                return record;
             } catch (DataAccessException e) {
                 throw new RuntimeException("Error banning player.", e);
             }
@@ -290,23 +290,23 @@ public class DatabaseAsync {
      * Asynchronously unbans a player.
      *
      * @param target The UUID of the player to be unbanned.
-     * @return A CompletableFuture that completes when the player is unbanned.
+     * @return A CompletableFuture that holds the updated ban record.
      */
-    public static CompletableFuture<Void> unbanAsync(String target) {
+    public static CompletableFuture<BansRecord> unbanAsync(String target) {
         return playerExistsAsync(target).thenComposeAsync(exists -> {
             if (!exists) {
                 throw new IllegalArgumentException("Target does not exist!");
             }
             return isBannedAsync(target);
-        }).thenComposeAsync(isBanned -> {
+        }).thenAcceptAsync(isBanned -> {
             if (!isBanned) {
                 throw new IllegalArgumentException("Target is already unbanned!");
             }
-            return null;
-        }).thenComposeAsync(ignored -> latestBanAsync(target)).thenAcceptAsync(record -> {
+        }).thenComposeAsync(ignored -> latestBanAsync(target)).thenApplyAsync(record -> {
             if (record != null) {
                 record.setActive(false).store();
             }
+            return record;
         });
     }
     // endregion

@@ -99,6 +99,7 @@ public class Database {
      * @param name   The name of the player.
      * @param locale The locale of the player.
      * @param admin  True if the player is an admin, false otherwise.
+     * @return The created record for the player.
      * @throws SQLException If a database error occurs.
      */
     public static UsersRecord createPlayer(String uuid, String ip, String name, String locale, boolean admin) throws SQLException {
@@ -221,10 +222,11 @@ public class Database {
      * @param target The UUID of the player to be banned.
      * @param period The ban period in days, or -1 for a permanent ban.
      * @param reason The reason for the ban.
+     * @return The created ban record
      * @throws SQLException If a database error occurs.
      * @throws IllegalArgumentException If the target player does not exist or is already banned.
      */
-    public static void ban(String admin, String target, int period, String reason) throws SQLException {
+    public static BansRecord ban(String admin, String target, int period, String reason) throws SQLException {
         if (!playerExists(target)) {
             throw new IllegalArgumentException("Target does not exist!");
         }
@@ -232,23 +234,25 @@ public class Database {
             throw new IllegalArgumentException("Target is already banned!");
         }
 
-        getContext().newRecord(Tables.bans)
+        BansRecord record = getContext().newRecord(Tables.bans)
                 .setAdmin(admin)
                 .setTarget(target)
                 .setCreated(LocalDateTime.now())
                 .setUntil(period > -1 ? LocalDateTime.now().plusDays(period) : null)
-                .setReason(reason)
-                .store();
+                .setReason(reason);
+        record.store();
+        return record;
     }
 
     /**
      * Unbans a player.
      *
      * @param target The UUID of the player to be unbanned.
+     * @return The updated ban record
      * @throws SQLException If a database error occurs.
      * @throws IllegalArgumentException If the target player does not exist or is not banned.
      */
-    public static void unban(String target) throws SQLException {
+    public static BansRecord unban(String target) throws SQLException {
         if (!playerExists(target)) {
             throw new IllegalArgumentException("Target does not exist!");
         }
@@ -256,9 +260,10 @@ public class Database {
             throw new IllegalArgumentException("Target is not banned!");
         }
 
-        latestBan(target)
-                .setActive(false)
-                .store();
+        BansRecord record = latestBan(target)
+                .setActive(false);
+        record.store();
+        return record;
     }
     // endregion
 
