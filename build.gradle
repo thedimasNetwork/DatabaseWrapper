@@ -10,7 +10,7 @@ apply plugin: "java"
 apply plugin: "maven-publish"
 
 group = 'stellar.database'
-version = '1.1'
+version = '1.2'
 
 sourceCompatibility = 16
 
@@ -70,11 +70,6 @@ dependencies {
     implementation "org.jooq:jooq:$jooqVersion"
     runtimeOnly "mysql:mysql-connector-java:$mysqlVersion"
 }
-
-//java {
-//    withSourcesJar()
-//    withJavadocJar()
-//}
 
 publishing {
     publications {
@@ -150,6 +145,11 @@ task codegen {
 
         GenerationTool.generate(configuration)
     }
+}
+
+javadoc {
+    options.links "https://www.jooq.org/javadoc/3.17.0/"
+    destinationDir = file("${buildDir}/docs/javadoc")
 }
 
 jar {
