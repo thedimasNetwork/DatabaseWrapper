@@ -10,10 +10,7 @@ import org.jooq.impl.DSL;
 import stellar.database.enums.MessageType;
 import stellar.database.enums.PlayerStatus;
 import stellar.database.gen.Tables;
-import stellar.database.gen.tables.records.BansRecord;
-import stellar.database.gen.tables.records.PlaytimeRecord;
-import stellar.database.gen.tables.records.StatsRecord;
-import stellar.database.gen.tables.records.UsersRecord;
+import stellar.database.gen.tables.records.*;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -95,7 +92,7 @@ public class Database {
     }
 
     /**
-     * Creates a new player record in the database.
+     * Creates a new player record in the database and returns it.
      *
      * @param uuid   The UUID of the player.
      * @param ip     The IP address of the player.
@@ -104,30 +101,32 @@ public class Database {
      * @param admin  True if the player is an admin, false otherwise.
      * @throws SQLException If a database error occurs.
      */
-    public static void createPlayer(String uuid, String ip, String name, String locale, boolean admin) throws SQLException {
-        getContext().newRecord(Tables.users)
+    public static UsersRecord createPlayer(String uuid, String ip, String name, String locale, boolean admin) throws SQLException {
+        UsersRecord record = getContext().newRecord(Tables.users)
                 .setUuid(uuid)
                 .setIp(ip)
                 .setName(name)
                 .setLocale(locale)
-                .setStatus(admin ? PlayerStatus.admin : PlayerStatus.basic)
-                .store();
+                .setStatus(admin ? PlayerStatus.admin : PlayerStatus.basic);
+        record.store();
+        return record;
     }
 
     /**
-     * Creates a new player record along with playtime and stats records in the database.
+     * Creates a new player record along with playtime and stats records in the database as returns it.
      *
      * @param uuid   The UUID of the player.
      * @param ip     The IP address of the player.
      * @param name   The name of the player.
      * @param locale The locale of the player.
      * @param admin  True if the player is an admin, false otherwise.
+     * @return The created record for the player.
      * @throws SQLException If a database error occurs.
      */
-    public static void createFullPlayer(String uuid, String ip, String name, String locale, boolean admin) throws SQLException {
-        createPlayer(uuid, ip, name, locale, admin);
+    public static UsersRecord createFullPlayer(String uuid, String ip, String name, String locale, boolean admin) throws SQLException {
         createPlaytime(uuid);
         createStats(uuid);
+        return createPlayer(uuid, ip, name, locale, admin);
     }
 
     /**
@@ -269,7 +268,7 @@ public class Database {
      * Retrieves the playtime of a player for a specific field.
      *
      * @param uuid  The UUID of the player.
-     * @param field The playtime field to retrieve.
+     * @param field  The playtime field to retrieve.
      * @return The playtime value for the specified field in seconds.
      * @throws SQLException If a database error occurs.
      */
@@ -321,15 +320,17 @@ public class Database {
     }
 
     /**
-     * Creates a new playtime record for a player in the database.
+     * Creates a new playtime record for a player in the database and returns it.
      *
      * @param uuid The UUID of the player.
+     * @return The created playtime record for the player.
      * @throws SQLException If a database error occurs.
      */
-    public static void createPlaytime(String uuid) throws SQLException {
-        getContext().newRecord(Tables.playtime)
-                .setUuid(uuid)
-                .store();
+    public static PlaytimeRecord createPlaytime(String uuid) throws SQLException {
+        PlaytimeRecord record = getContext().newRecord(Tables.playtime)
+                .setUuid(uuid);
+        record.store();
+        return record;
     }
 
     /**
@@ -347,22 +348,24 @@ public class Database {
     }
 
     /**
-     * Creates a new stats record for a player in the database.
+     * Creates a new stats record for a player in the database and returns it.
      *
      * @param uuid The UUID of the player.
+     * @return The created stats record for the player.
      * @throws SQLException If a database error occurs.
      */
-    public static void createStats(String uuid) throws SQLException {
-        getContext().newRecord(Tables.stats)
-                .setUuid(uuid)
-                .store();
+    public static StatsRecord createStats(String uuid) throws SQLException {
+        StatsRecord record = getContext().newRecord(Tables.stats)
+                .setUuid(uuid);
+        record.store();
+        return record;
     }
     // endregion
 
     // region messages & events
 
     /**
-     * Creates a new message record in the database.
+     * Creates a new message record in the database and returns it.
      *
      * @param server The name or identifier of the server where the message originates.
      * @param from   The sender of the message.
@@ -370,17 +373,19 @@ public class Database {
      * @param type   The type of the message ({@link MessageType}).
      * @param text   The content of the message.
      * @param locale The locale or language of the message.
+     * @return The created message record.
      * @throws SQLException If a database error occurs.
      */
-    public static void createMessage(String server, String from, String target, MessageType type, String text, String locale) throws SQLException {
-        getContext().newRecord(Tables.messages)
+    public static MessagesRecord createMessage(String server, String from, String target, MessageType type, String text, String locale) throws SQLException {
+        MessagesRecord record = getContext().newRecord(Tables.messages)
                 .setServer(server)
                 .setFrom(from)
                 .setTarget(target)
                 .setType(type)
                 .setText(text)
-                .setLocale(locale)
-                .store();
+                .setLocale(locale);
+        record.store();
+        return record;
     }
 
     /**
@@ -391,16 +396,18 @@ public class Database {
      * @param ip     The IP address of the player.
      * @param name   The name of the player.
      * @param locale The locale of the player.
+     * @return The created login record.
      * @throws SQLException If a database error occurs.
      */
-    public static void createLogin(String server, String uuid, String ip, String name, String locale) throws SQLException {
-        getContext().newRecord(Tables.logins)
+    public static LoginsRecord createLogin(String server, String uuid, String ip, String name, String locale) throws SQLException {
+        LoginsRecord record = getContext().newRecord(Tables.logins)
                 .setServer(server)
                 .setUuid(uuid)
                 .setIp(ip)
                 .setName(name)
-                .setLocale(locale)
-                .store();
+                .setLocale(locale);
+        record.store();
+        return record;
     }
     // endregion
 }
