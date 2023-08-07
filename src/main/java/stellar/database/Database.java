@@ -129,6 +129,48 @@ public class Database {
         createPlaytime(uuid);
         createStats(uuid);
     }
+
+    /**
+     * Retrieves an array of IP addresses used by a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return An array of IP addresses used by the specified player.
+     * @throws SQLException If a database error occurs.
+     * @throws IllegalArgumentException If the player does not exist.
+     */
+    public static String[] getIps(String uuid) throws SQLException {
+        if (!playerExists(uuid)) {
+            throw new IllegalArgumentException("Player does not exist!");
+        }
+
+        return getContext()
+                .select(Tables.logins.ip)
+                .from(Tables.logins)
+                .where(Tables.logins.uuid.eq(uuid))
+                .groupBy(Tables.logins.ip)
+                .fetchArray(0, String.class);
+    }
+
+    /**
+     * Retrieves an array of names used by a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return An array of names used by the specified player.
+     * @throws SQLException If a database error occurs.
+     * @throws IllegalArgumentException If the player does not exist.
+     */
+    public static String[] getNames(String uuid) throws SQLException {
+        if (!playerExists(uuid)) {
+            throw new IllegalArgumentException("Player does not exist!");
+        }
+
+        return getContext()
+                .select(Tables.logins.name)
+                .from(Tables.logins)
+                .where(Tables.logins.uuid.eq(uuid))
+                .groupBy(Tables.logins.name)
+                .fetchArray(0, String.class);
+    }
     // endregion
 
     // region bans
@@ -318,6 +360,7 @@ public class Database {
     // endregion
 
     // region messages & events
+
     /**
      * Creates a new message record in the database.
      *
@@ -358,51 +401,6 @@ public class Database {
                 .setName(name)
                 .setLocale(locale)
                 .store();
-    }
-
-
-    // Maybe move getIps and getNames to players region
-
-    /**
-     * Retrieves an array of IP addresses used by a player from the database.
-     *
-     * @param uuid The UUID of the player.
-     * @return An array of IP addresses used by the specified player.
-     * @throws SQLException If a database error occurs.
-     * @throws IllegalArgumentException If the player does not exist.
-     */
-    public static String[] getIps(String uuid) throws SQLException {
-        if (!playerExists(uuid)) {
-            throw new IllegalArgumentException("Player does not exist!");
-        }
-
-        return getContext()
-                .select(Tables.logins.ip)
-                .from(Tables.logins)
-                .where(Tables.logins.uuid.eq(uuid))
-                .groupBy(Tables.logins.ip)
-                .fetchArray(0, String.class);
-    }
-
-    /**
-     * Retrieves an array of names used by a player from the database.
-     *
-     * @param uuid The UUID of the player.
-     * @return An array of names used by the specified player.
-     * @throws SQLException If a database error occurs.
-     * @throws IllegalArgumentException If the player does not exist.
-     */
-    public static String[] getNames(String uuid) throws SQLException {
-        if (!playerExists(uuid)) {
-            throw new IllegalArgumentException("Player does not exist!");
-        }
-
-        return getContext()
-                .select(Tables.logins.name)
-                .from(Tables.logins)
-                .where(Tables.logins.uuid.eq(uuid))
-                .groupBy(Tables.logins.name)
-                .fetchArray(0, String.class);
     }
     // endregion
 }
