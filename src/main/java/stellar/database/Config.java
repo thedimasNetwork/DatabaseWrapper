@@ -36,6 +36,8 @@ class Config {
         Config.name = name;
         Config.user = user;
         Config.password = password;
+        System.setProperty("org.jooq.no-tips", "true");
+        System.setProperty("org.jooq.no-logo", "true");
     }
 
     /**
