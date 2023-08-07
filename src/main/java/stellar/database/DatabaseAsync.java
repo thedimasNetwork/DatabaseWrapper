@@ -12,7 +12,6 @@ import stellar.database.enums.PlayerStatus;
 import stellar.database.gen.Tables;
 import stellar.database.gen.tables.records.*;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 
@@ -116,18 +115,19 @@ public class DatabaseAsync {
      * @param name   The name of the player.
      * @param locale The locale of the player.
      * @param admin  True if the player is an admin, false otherwise.
-     * @return A CompletableFuture that completes when the player record is created.
+     * @return A CompletableFuture that holds the created record.
      */
-    public static CompletableFuture<Void> createPlayerAsync(String uuid, String ip, String name, String locale, boolean admin) {
-        return getContextAsync().thenAcceptAsync(context -> {
+    public static CompletableFuture<UsersRecord> createPlayerAsync(String uuid, String ip, String name, String locale, boolean admin) {
+        return getContextAsync().thenApplyAsync(context -> {
             try {
-                context.newRecord(Tables.users)
+                UsersRecord record = context.newRecord(Tables.users)
                         .setUuid(uuid)
                         .setIp(ip)
                         .setName(name)
                         .setLocale(locale)
-                        .setStatus(admin ? PlayerStatus.admin : PlayerStatus.basic)
-                        .store();
+                        .setStatus(admin ? PlayerStatus.admin : PlayerStatus.basic);
+                record.store();
+                return record;
             } catch (DataAccessException e) {
                 throw new RuntimeException("Error creating player.", e);
             }
@@ -142,15 +142,13 @@ public class DatabaseAsync {
      * @param name   The name of the player.
      * @param locale The locale of the player.
      * @param admin  True if the player is an admin, false otherwise.
-     * @return A CompletableFuture that completes when the player record and associated records are created.
+     * @return A CompletableFuture that holds the created player record.
      */
-    public static CompletableFuture<Void> createFullPlayerAsync(String uuid, String ip, String name, String locale, boolean admin) {
-        return createPlayerAsync(uuid, ip, name, locale, admin).thenComposeAsync(ignored ->
-                CompletableFuture.allOf(
-                        createPlaytimeAsync(uuid),
-                        createStatsAsync(uuid)
-                )
-        );
+    public static CompletableFuture<UsersRecord> createFullPlayerAsync(String uuid, String ip, String name, String locale, boolean admin) {
+        return CompletableFuture.allOf(
+                createPlaytimeAsync(uuid),
+                createStatsAsync(uuid)
+        ).thenComposeAsync(ignored -> createPlayerAsync(uuid, ip, name, locale, admin));
     }
 
     /**
@@ -307,7 +305,7 @@ public class DatabaseAsync {
             return null;
         }).thenComposeAsync(ignored -> latestBanAsync(target)).thenAcceptAsync(record -> {
             if (record != null) {
-                record.setActive(false).update();
+                record.setActive(false).store();
             }
         });
     }
@@ -382,14 +380,15 @@ public class DatabaseAsync {
      * Asynchronously creates a new playtime record for a player in the database.
      *
      * @param uuid The UUID of the player.
-     * @return A CompletableFuture that completes when the playtime record is created.
+     * @return A CompletableFuture that holds the created playtime record.
      */
-    public static CompletableFuture<Void> createPlaytimeAsync(String uuid) {
-        return getContextAsync().thenAcceptAsync(context -> {
+    public static CompletableFuture<PlaytimeRecord> createPlaytimeAsync(String uuid) {
+        return getContextAsync().thenApplyAsync(context -> {
             try {
-                context.newRecord(Tables.playtime)
-                        .setUuid(uuid)
-                        .store();
+                PlaytimeRecord record = context.newRecord(Tables.playtime)
+                        .setUuid(uuid);
+                record.store();
+                return record;
             } catch (DataAccessException e) {
                 throw new RuntimeException("Error creating playtime.", e);
             }
@@ -418,14 +417,15 @@ public class DatabaseAsync {
      * Asynchronously creates a new stats record for a player in the database.
      *
      * @param uuid The UUID of the player.
-     * @return A CompletableFuture that completes when the stats record is created.
+     * @return A CompletableFuture that holds the created stats record.
      */
-    public static CompletableFuture<Void> createStatsAsync(String uuid) {
-        return getContextAsync().thenAcceptAsync(context -> {
+    public static CompletableFuture<StatsRecord> createStatsAsync(String uuid) {
+        return getContextAsync().thenApplyAsync(context -> {
             try {
-                context.newRecord(Tables.stats)
-                        .setUuid(uuid)
-                        .store();
+                StatsRecord record = context.newRecord(Tables.stats)
+                        .setUuid(uuid);
+                record.store();
+                return record;
             } catch (DataAccessException e) {
                 throw new RuntimeException("Error creating stats.", e);
             }
@@ -444,18 +444,23 @@ public class DatabaseAsync {
      * @param type   The type of the message ({@link MessageType}).
      * @param text   The content of the message.
      * @param locale The locale or language of the message.
-     * @return A CompletableFuture that completes when the message record is created.
+     * @return A CompletableFuture that holds the created messages record.
      */
-    public static CompletableFuture<Void> createMessageAsync(String server, String from, String target, MessageType type, String text, String locale) {
-        return getContextAsync().thenAcceptAsync(context -> {
-            context.newRecord(Tables.messages)
-                    .setServer(server)
-                    .setFrom(from)
-                    .setTarget(target)
-                    .setType(type)
-                    .setText(text)
-                    .setLocale(locale)
-                    .store();
+    public static CompletableFuture<MessagesRecord> createMessageAsync(String server, String from, String target, MessageType type, String text, String locale) {
+        return getContextAsync().thenApplyAsync(context -> {
+            try {
+                MessagesRecord record = context.newRecord(Tables.messages)
+                        .setServer(server)
+                        .setFrom(from)
+                        .setTarget(target)
+                        .setType(type)
+                        .setText(text)
+                        .setLocale(locale);
+                record.store();
+                return record;
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error creating message.", e);
+            }
         });
     }
 
@@ -467,16 +472,21 @@ public class DatabaseAsync {
      * @param ip     The IP address of the player.
      * @param name   The name of the player.
      * @param locale The locale of the player.
-     * @return A CompletableFuture that completes when the login record is created.
+     * @return A CompletableFuture that holds the created login record.
      */
-    public static CompletableFuture<Void> createLoginAsync(String server, String uuid, String ip, String name, String locale) {
-        return getContextAsync().thenAcceptAsync(context -> {
-            context.newRecord(Tables.logins)
-                    .setServer(server)
-                    .setUuid(uuid)
-                    .setName(name)
-                    .setLocale(locale)
-                    .store();
+    public static CompletableFuture<LoginsRecord> createLoginAsync(String server, String uuid, String ip, String name, String locale) {
+        return getContextAsync().thenApplyAsync(context -> {
+            try {
+                LoginsRecord record = context.newRecord(Tables.logins)
+                        .setServer(server)
+                        .setUuid(uuid)
+                        .setName(name)
+                        .setLocale(locale);
+                record.store();
+                return record;
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error creating login.", e);
+            }
         });
     }
     // endregion
