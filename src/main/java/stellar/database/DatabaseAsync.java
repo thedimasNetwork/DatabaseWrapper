@@ -7,13 +7,12 @@ import org.jooq.Record1;
 import org.jooq.SQLDialect;
 import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
+import stellar.database.enums.MessageType;
 import stellar.database.enums.PlayerStatus;
 import stellar.database.gen.Tables;
-import stellar.database.gen.tables.records.BansRecord;
-import stellar.database.gen.tables.records.PlaytimeRecord;
-import stellar.database.gen.tables.records.StatsRecord;
-import stellar.database.gen.tables.records.UsersRecord;
+import stellar.database.gen.tables.records.*;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 
@@ -152,6 +151,60 @@ public class DatabaseAsync {
                         createStatsAsync(uuid)
                 )
         );
+    }
+
+    /**
+     * Asynchronously retrieves an array of IP addresses used by a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return A CompletableFuture that holds an array of IP addresses used by the specified player.
+     */
+    public static CompletableFuture<String[]> getIpsAsync(String uuid) {
+        return playerExistsAsync(uuid).thenComposeAsync(exists -> {
+            if (!exists) {
+                throw new IllegalArgumentException("Player does not exist!");
+            }
+
+            return getContextAsync();
+        }).thenApplyAsync(context -> {
+            try {
+                return context
+                        .select(Tables.logins.ip)
+                        .from(Tables.logins)
+                        .where(Tables.logins.uuid.eq(uuid))
+                        .groupBy(Tables.logins.ip)
+                        .fetchArray(0, String.class);
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error fetching IPs.", e);
+            }
+        });
+    }
+
+    /**
+     * Asynchronously retrieves an array of names used by a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return A CompletableFuture that holds an array of names used by the specified player.
+     */
+    public static CompletableFuture<String[]> getNamesAsync(String uuid) {
+        return playerExistsAsync(uuid).thenComposeAsync(exists -> {
+            if (!exists) {
+                throw new IllegalArgumentException("Player does not exist!");
+            }
+
+            return getContextAsync();
+        }).thenApplyAsync(context -> {
+            try {
+                return context
+                        .select(Tables.logins.name)
+                        .from(Tables.logins)
+                        .where(Tables.logins.uuid.eq(uuid))
+                        .groupBy(Tables.logins.name)
+                        .fetchArray(0, String.class);
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error fetching names.", e);
+            }
+        });
     }
     // endregion
 
@@ -378,58 +431,52 @@ public class DatabaseAsync {
             }
         });
     }
+    // endregion
+
+    // region messages & events
 
     /**
-     * Asynchronously retrieves an array of IP addresses used by a player from the database.
+     * Asynchronously creates a new message record in the database.
      *
-     * @param uuid The UUID of the player.
-     * @return A CompletableFuture that holds an array of IP addresses used by the specified player.
+     * @param server The name or identifier of the server where the message originates.
+     * @param from   The sender of the message.
+     * @param target The target recipient of the message (player's UUID or team).
+     * @param type   The type of the message ({@link MessageType}).
+     * @param text   The content of the message.
+     * @param locale The locale or language of the message.
+     * @return A CompletableFuture that completes when the message record is created.
      */
-    public static CompletableFuture<String[]> getIpsAsync(String uuid) {
-        return playerExistsAsync(uuid).thenComposeAsync(exists -> {
-            if (!exists) {
-                throw new IllegalArgumentException("Player does not exist!");
-            }
-
-            return getContextAsync();
-        }).thenApplyAsync(context -> {
-                try {
-                    return context
-                            .select(Tables.logins.ip)
-                            .from(Tables.logins)
-                            .where(Tables.logins.uuid.eq(uuid))
-                            .groupBy(Tables.logins.ip)
-                            .fetchArray(0, String.class);
-                } catch (DataAccessException e) {
-                    throw new RuntimeException("Error fetching IPs.", e);
-                }
+    public static CompletableFuture<Void> createMessageAsync(String server, String from, String target, MessageType type, String text, String locale) {
+        return getContextAsync().thenAcceptAsync(context -> {
+            context.newRecord(Tables.messages)
+                    .setServer(server)
+                    .setFrom(from)
+                    .setTarget(target)
+                    .setType(type)
+                    .setText(text)
+                    .setLocale(locale)
+                    .store();
         });
     }
 
     /**
-     * Asynchronously retrieves an array of names used by a player from the database.
+     * Creates a new login record in the database.
      *
-     * @param uuid The UUID of the player.
-     * @return A CompletableFuture that holds an array of names used by the specified player.
+     * @param server The name or identifier of the server where the message originates.
+     * @param uuid   The UUID of the player.
+     * @param ip     The IP address of the player.
+     * @param name   The name of the player.
+     * @param locale The locale of the player.
+     * @return A CompletableFuture that completes when the login record is created.
      */
-    public static CompletableFuture<String[]> getNamesAsync(String uuid) {
-        return playerExistsAsync(uuid).thenComposeAsync(exists -> {
-            if (!exists) {
-                throw new IllegalArgumentException("Player does not exist!");
-            }
-
-            return getContextAsync();
-        }).thenApplyAsync(context -> {
-            try {
-                return context
-                        .select(Tables.logins.name)
-                        .from(Tables.logins)
-                        .where(Tables.logins.uuid.eq(uuid))
-                        .groupBy(Tables.logins.name)
-                        .fetchArray(0, String.class);
-            } catch (DataAccessException e) {
-                throw new RuntimeException("Error fetching names.", e);
-            }
+    public static CompletableFuture<Void> createLoginAsync(String server, String uuid, String ip, String name, String locale) {
+        return getContextAsync().thenAcceptAsync(context -> {
+            context.newRecord(Tables.logins)
+                    .setServer(server)
+                    .setUuid(uuid)
+                    .setName(name)
+                    .setLocale(locale)
+                    .store();
         });
     }
     // endregion
