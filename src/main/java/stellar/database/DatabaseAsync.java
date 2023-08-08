@@ -56,7 +56,7 @@ public class DatabaseAsync {
     // region players
 
     /**
-     * Asynchronously retrieves a player's record by UUID from the database.
+     * Asynchronously retrieves a {@link UsersRecord} by UUID from the database.
      *
      * @param uuid The UUID of the player.
      * @return A CompletableFuture that holds the {@link UsersRecord} representing the player's data or null if not found.
@@ -74,7 +74,7 @@ public class DatabaseAsync {
     }
 
     /**
-     * Asynchronously retrieves a player's record by ID from the database.
+     * Asynchronously retrieves a {@link UsersRecord} by ID from the database.
      *
      * @param id The ID of the player.
      * @return A CompletableFuture that holds the {@link UsersRecord} representing the player's data or null if not found.
@@ -108,7 +108,7 @@ public class DatabaseAsync {
     }
 
     /**
-     * Asynchronously creates a new player record in the database.
+     * Asynchronously creates a new {@link UsersRecord} in the database and returns it.
      *
      * @param uuid   The UUID of the player.
      * @param ip     The IP address of the player.
@@ -162,7 +162,7 @@ public class DatabaseAsync {
     }
 
     /**
-     * Asynchronously creates a new player record along with playtime and stats records in the database.
+     * Asynchronously creates a new {@link UsersRecord} along with {@link PlaytimeRecord} and stats {@link StatsRecord} in the database.
      *
      * @param uuid   The UUID of the player.
      * @param ip     The IP address of the player.
@@ -179,7 +179,7 @@ public class DatabaseAsync {
     }
 
     /**
-     * Asynchronously creates a new IP record in the database.
+     * Asynchronously creates a new {@link IpCachedRecord} in the database and returns it.
      *
      * @param ip    The IP address for which the record is being created.
      * @param proxy True if the IP is associated with a proxy, false otherwise.
@@ -262,7 +262,7 @@ public class DatabaseAsync {
     // region bans
 
     /**
-     * Asynchronously retrieves the latest ban record for a player from the database.
+     * Asynchronously retrieves the latest {@link BansRecord} for a player from the database.
      *
      * @param uuid The UUID of the player.
      * @return A CompletableFuture that holds the {@link BansRecord} representing the latest ban or null if no ban is found.
@@ -428,7 +428,7 @@ public class DatabaseAsync {
     }
 
     /**
-     * Asynchronously creates a new playtime record for a player in the database.
+     * Asynchronously creates a new {@link PlaytimeRecord} for a player in the database.
      *
      * @param uuid The UUID of the player.
      * @return A CompletableFuture that holds the created {@link PlaytimeRecord}.
@@ -465,7 +465,7 @@ public class DatabaseAsync {
     }
 
     /**
-     * Asynchronously creates a new stats record for a player in the database.
+     * Asynchronously creates a new {@link StatsRecord} for a player in the database and returns it.
      *
      * @param uuid The UUID of the player.
      * @return A CompletableFuture that holds the created {@link StatsRecord}.
@@ -487,7 +487,7 @@ public class DatabaseAsync {
     // region messages & events
 
     /**
-     * Asynchronously creates a new message record in the database.
+     * Asynchronously creates a new {@link MessagesRecord} in the database and returns it.
      *
      * @param server The name or identifier of the server where the message originates.
      * @param from   The sender of the message.

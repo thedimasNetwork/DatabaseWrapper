@@ -51,7 +51,7 @@ public class Database {
     // region players
 
     /**
-     * Retrieves a player's record by UUID from the database.
+     * Retrieves a {@link UsersRecord} by UUID from the database.
      *
      * @param uuid The UUID of the player.
      * @return The {@link UsersRecord} representing the player's data or null if not found.
@@ -66,7 +66,7 @@ public class Database {
     }
 
     /**
-     * Retrieves a player's record by ID from the database.
+     * Retrieves a {@link UsersRecord} by ID from the database.
      *
      * @param id The ID of the player.
      * @return The {@link UsersRecord} representing the player's data or null if not found.
@@ -92,7 +92,7 @@ public class Database {
     }
 
     /**
-     * Creates a new player record in the database and returns it.
+     * Creates a new {@link UsersRecord} in the database and returns it.
      *
      * @param uuid   The UUID of the player.
      * @param ip     The IP address of the player.
@@ -138,7 +138,7 @@ public class Database {
 
 
     /**
-     * Creates a new player record along with playtime and stats records in the database as returns it.
+     * Creates a new {@link UsersRecord} along with {@link PlaytimeRecord} and {@link StatsRecord} in the database as returns it.
      *
      * @param uuid   The UUID of the player.
      * @param ip     The IP address of the player.
@@ -155,7 +155,7 @@ public class Database {
     }
 
     /**
-     * Creates a new IP record in the database.
+     * Creates a new {@link IpCachedRecord} in the database and returns it.
      *
      * @param ip    The IP address for which the record is being created.
      * @param proxy True if the IP is associated with a proxy, false otherwise.
@@ -223,7 +223,7 @@ public class Database {
     // region bans
 
     /**
-     * Retrieves the latest ban record for a player from the database.
+     * Retrieves the latest {@link BansRecord} for a player from the database.
      *
      * @param uuid The UUID of the player.
      * @return The {@link BansRecord} representing the latest ban or null if no ban is found.
@@ -372,7 +372,7 @@ public class Database {
     }
 
     /**
-     * Creates a new playtime record for a player in the database and returns it.
+     * Creates a new {@link PlaytimeRecord} for a player in the database and returns it.
      *
      * @param uuid The UUID of the player.
      * @return The created {@link PlaytimeRecord} for the player.
@@ -386,7 +386,7 @@ public class Database {
     }
 
     /**
-     * Retrieves the stats record of a player from the database.
+     * Retrieves the {@link StatsRecord} of a player from the database.
      *
      * @param uuid The UUID of the player.
      * @return The {@link StatsRecord} representing the player's statistics or null if no statistics is found.
@@ -400,7 +400,7 @@ public class Database {
     }
 
     /**
-     * Creates a new stats record for a player in the database and returns it.
+     * Creates a new {@link StatsRecord} for a player in the database and returns it.
      *
      * @param uuid The UUID of the player.
      * @return The created {@link StatsRecord} for the player.
@@ -417,7 +417,7 @@ public class Database {
     // region messages & events
 
     /**
-     * Creates a new message record in the database and returns it.
+     * Creates a new {@link MessagesRecord} in the database and returns it.
      *
      * @param server The name or identifier of the server where the message originates.
      * @param from   The sender of the message.
@@ -441,7 +441,7 @@ public class Database {
     }
 
     /**
-     * Creates a new login record in the database.
+     * Creates a new {@link LoginsRecord} in the database and returns it.
      *
      * @param server The name or identifier of the server where the message originates.
      * @param uuid   The UUID of the player.
