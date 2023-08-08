@@ -114,6 +114,30 @@ public class Database {
     }
 
     /**
+     * Asynchronously updates player's info in the database.
+     *
+     * @param uuid   The UUID of the player.
+     * @param ip     The IP address of the player.
+     * @param name   The name of the player.
+     * @param locale The locale of the player.
+     * @return The updated {@link UsersRecord}.
+     * @throws SQLException             If a database error occurs.
+     * @throws IllegalArgumentException If the player does not exist.
+     */
+    public static UsersRecord updatePlayer(String uuid, String name, String locale, String ip) throws SQLException {
+        if (!Database.playerExists(uuid)) {
+            throw new IllegalArgumentException("Player does not exists!");
+        }
+
+        UsersRecord record = Database.getPlayer(uuid).setName(name)
+                .setLocale(locale)
+                .setIp(ip);
+        record.store();
+        return record;
+    }
+
+
+    /**
      * Creates a new player record along with playtime and stats records in the database as returns it.
      *
      * @param uuid   The UUID of the player.
@@ -128,6 +152,29 @@ public class Database {
         createPlaytime(uuid);
         createStats(uuid);
         return createPlayer(uuid, ip, name, locale, admin);
+    }
+
+    /**
+     * Creates a new IP record in the database.
+     *
+     * @param ip    The IP address for which the record is being created.
+     * @param proxy True if the IP is associated with a proxy, false otherwise.
+     * @param vpn   True if the IP is associated with a VPN, false otherwise.
+     * @param type  The <a href="https://proxycheck.io/api/#type_responses">Type</a> of the IP address.
+     * @param risk  The <a href="https://proxycheck.io/api/#risk_score">Risk Score</a> of the IP address.
+     * @return The created {@link IpCachedRecord}.
+     * @throws SQLException If a database error occurs.
+     * @see <a href="https://proxycheck.io/api/">Proxycheck API docs</a>
+     */
+    public static IpCachedRecord createIp(String ip, boolean proxy, boolean vpn, String type, int risk) throws SQLException {
+        IpCachedRecord record = getContext().newRecord(Tables.ipCached)
+                .setIp(ip)
+                .setProxy(proxy)
+                .setVpn(vpn)
+                .setType(type)
+                .setRisk((short) risk);
+        record.store();
+        return record;
     }
 
     /**

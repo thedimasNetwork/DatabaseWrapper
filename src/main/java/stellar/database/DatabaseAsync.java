@@ -135,6 +135,33 @@ public class DatabaseAsync {
     }
 
     /**
+     * Asynchronously updates player's info in the database.
+     *
+     * @param uuid   The UUID of the player.
+     * @param ip     The IP address of the player.
+     * @param name   The name of the player.
+     * @param locale The locale of the player.
+     * @return A CompletableFuture that holds the updated {@link UsersRecord}.
+     */
+    public static CompletableFuture<UsersRecord> updatePlayerAsync(String uuid, String name, String locale, String ip) {
+        return getPlayerAsync(uuid).thenApplyAsync(record -> {
+            if (record == null) {
+                throw new IllegalArgumentException("Player does not exist!");
+            }
+
+            try {
+                record.setName(name)
+                        .setLocale(locale)
+                        .setIp(ip);
+                record.store();
+                return record;
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error updating player info.", e);
+            }
+        });
+    }
+
+    /**
      * Asynchronously creates a new player record along with playtime and stats records in the database.
      *
      * @param uuid   The UUID of the player.
@@ -152,6 +179,34 @@ public class DatabaseAsync {
     }
 
     /**
+     * Asynchronously creates a new IP record in the database.
+     *
+     * @param ip    The IP address for which the record is being created.
+     * @param proxy True if the IP is associated with a proxy, false otherwise.
+     * @param vpn   True if the IP is associated with a VPN, false otherwise.
+     * @param type  The <a href="https://proxycheck.io/api/#type_responses">Type</a> of the IP address.
+     * @param risk  The <a href="https://proxycheck.io/api/#risk_score">Risk Score</a> of the IP address.
+     * @return A CompletableFuture that holds the created {@link IpCachedRecord}.
+     * @see <a href="https://proxycheck.io/api/">Proxycheck API docs</a>
+     */
+    public static CompletableFuture<IpCachedRecord> createIpAsync(String ip, boolean proxy, boolean vpn, String type, int risk) {
+        return getContextAsync().thenApplyAsync(context -> {
+            try {
+                IpCachedRecord record = context.newRecord(Tables.ipCached)
+                        .setIp(ip)
+                        .setProxy(proxy)
+                        .setVpn(vpn)
+                        .setType(type)
+                        .setRisk((short) risk);
+                record.store();
+                return record;
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error creating IP record.", e);
+            }
+        });
+    }
+
+    /**
      * Asynchronously retrieves an array of IP addresses used by a player from the database.
      *
      * @param uuid The UUID of the player.
@@ -166,8 +221,7 @@ public class DatabaseAsync {
             return getContextAsync();
         }).thenApplyAsync(context -> {
             try {
-                return context
-                        .select(Tables.logins.ip)
+                return context.select(Tables.logins.ip)
                         .from(Tables.logins)
                         .where(Tables.logins.uuid.eq(uuid))
                         .groupBy(Tables.logins.ip)
@@ -193,8 +247,7 @@ public class DatabaseAsync {
             return getContextAsync();
         }).thenApplyAsync(context -> {
             try {
-                return context
-                        .select(Tables.logins.name)
+                return context.select(Tables.logins.name)
                         .from(Tables.logins)
                         .where(Tables.logins.uuid.eq(uuid))
                         .groupBy(Tables.logins.name)
@@ -323,8 +376,7 @@ public class DatabaseAsync {
     public static CompletableFuture<Long> getPlaytimeAsync(String uuid, Field<Long> field) {
         return getContextAsync().thenApplyAsync(context -> {
             try {
-                Record1<Long> timeFetch = context
-                        .select(field)
+                Record1<Long> timeFetch = context.select(field)
                         .from(Tables.playtime)
                         .where(Tables.playtime.uuid.eq(uuid))
                         .fetchOne();
@@ -351,8 +403,7 @@ public class DatabaseAsync {
     public static CompletableFuture<Long> getTotalPlaytimeAsync(String uuid) {
         return getContextAsync().thenApplyAsync(context -> {
             try {
-                PlaytimeRecord timeFetch = context
-                        .selectFrom(Tables.playtime)
+                PlaytimeRecord timeFetch = context.selectFrom(Tables.playtime)
                         .where(Tables.playtime.uuid.eq(uuid))
                         .fetchOne();
                 long time = 0;
