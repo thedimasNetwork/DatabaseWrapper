@@ -531,6 +531,7 @@ public class DatabaseAsync {
                 LoginsRecord record = context.newRecord(Tables.logins)
                         .setServer(server)
                         .setUuid(uuid)
+                        .setIp(ip)
                         .setName(name)
                         .setLocale(locale);
                 record.store();
