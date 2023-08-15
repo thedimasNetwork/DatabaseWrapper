@@ -160,6 +160,16 @@ jar {
     }
 }
 
+processResources {
+    def build = (project.hasProperty("buildVersion") ? project.property("buildVersion") : "snapshot")
+    println("Compiling with build: '$version $build - $getGitHash'")
+
+    filesMatching("**/version.properties") {
+        from it.file
+        filter { line -> line.replace("%verType%", build).replace("%verNum%", version).replace("%gitHash%", getGitHash()) }
+    }
+}
+
 class CamelCaseGeneratorStrategy extends DefaultGeneratorStrategy {
     String getJavaIdentifier(Definition definition) {
         StringUtils.toCamelCaseLC(super.getJavaIdentifier(definition))

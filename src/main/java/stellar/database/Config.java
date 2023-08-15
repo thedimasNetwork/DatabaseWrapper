@@ -4,6 +4,7 @@ import arc.util.Log;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import java.lang.module.ModuleDescriptor;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,16 +15,17 @@ import java.util.concurrent.CompletableFuture;
 /**
  * A config class for handling database configuration.
  */
-class Config {
-    static Connection connection;
+public class Config {
+    private static Connection connection;
 
-    static String ip;
-    static int port;
-    static String name;
-    static String user;
-    static String password;
-    static HikariDataSource dataSource;
-    static HikariConfig hikariConfig;
+    private static String ip;
+    private static int port;
+    private static String name;
+    private static String user;
+    private static String password;
+    private static HikariDataSource dataSource;
+    private static HikariConfig hikariConfig;
+    private static Version version;
 
     /**
      * Loads the database connection parameters.
@@ -53,6 +55,17 @@ class Config {
         return "jdbc:mysql://" + ip + ":" + port + "/" + name + "?autoReconnect=true";
     }
 
+    /**
+     * Gets the current version of the Database Wrapper.
+     *
+     * @return Current version
+     */
+    public static Version getVersion() {
+        if (version == null) {
+            version = new Version();
+        }
+        return version;
+    }
 
     /**
      * Retrieves the database connection.
