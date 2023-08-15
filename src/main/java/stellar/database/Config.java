@@ -1,6 +1,8 @@
 package stellar.database;
 
 import arc.util.Log;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,6 +22,8 @@ class Config {
     static String name;
     static String user;
     static String password;
+    static HikariDataSource dataSource;
+    static HikariConfig hikariConfig;
 
     /**
      * Loads the database connection parameters.
@@ -41,11 +45,23 @@ class Config {
     }
 
     /**
+     * Gets the connection URL for the database.
+     *
+     * @return The connection URL as a string.
+     */
+    static String getConnectionUrl() {
+        return "jdbc:mysql://" + ip + ":" + port + "/" + name + "?autoReconnect=true";
+    }
+
+
+    /**
      * Retrieves the database connection.
      *
+     * @deprecated use {@link #getDataSource()} instead
      * @return The database connection.
      * @throws SQLException If a database error occurs.
      */
+    @Deprecated(forRemoval = true)
     static Connection getConnection() throws SQLException {
         if (connection == null) {
             try {
@@ -70,19 +86,12 @@ class Config {
     }
 
     /**
-     * Gets the connection URL for the database.
-     *
-     * @return The connection URL as a string.
-     */
-    static String getConnectionUrl() {
-        return "jdbc:mysql://" + ip + ":" + port + "/" + name + "?autoReconnect=true";
-    }
-
-    /**
      * Asynchronously retrieves the database connection.
      *
+     * @deprecated use {@link #getDataSourceAsync()} instead
      * @return A CompletableFuture that holds the database connection.
      */
+    @Deprecated(forRemoval = true)
     static CompletableFuture<Connection> getConnectionAsync() {
         return CompletableFuture.supplyAsync(() -> {
             try {
@@ -94,4 +103,41 @@ class Config {
             }
         });
     }
+
+    /**
+     * Retrieves the database {@link HikariDataSource}.
+     *
+     * @return The database {@link HikariDataSource}.
+     */
+    static HikariDataSource getDataSource() {
+        if (dataSource == null || dataSource.isClosed()) {
+            hikariConfig = new HikariConfig();
+            hikariConfig.setJdbcUrl(getConnectionUrl());
+            hikariConfig.setUsername(user);
+            hikariConfig.setPassword(password);
+
+            dataSource = new HikariDataSource(hikariConfig);
+        }
+        return dataSource;
+    }
+
+    /**
+     * Asynchronously retrieves the database {@link HikariDataSource}.
+     *
+     * @return CompletableFuture that holds the database {@link HikariDataSource}.
+     */
+    static CompletableFuture<HikariDataSource> getDataSourceAsync() {
+        return CompletableFuture.supplyAsync(() -> {
+            if (dataSource == null || dataSource.isClosed()) {
+                hikariConfig = new HikariConfig();
+                hikariConfig.setJdbcUrl(getConnectionUrl());
+                hikariConfig.setUsername(user);
+                hikariConfig.setPassword(password);
+
+                dataSource = new HikariDataSource(hikariConfig);
+            }
+            return dataSource;
+        });
+    }
+
 }

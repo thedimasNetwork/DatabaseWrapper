@@ -15,7 +15,7 @@ import stellar.database.gen.tables.records.*;
 import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 
-import static stellar.database.Config.getConnectionAsync;
+import static stellar.database.Config.getDataSourceAsync;
 
 /**
  * A utility class for asynchronously handling database operations.
@@ -45,7 +45,7 @@ public class DatabaseAsync {
     public static CompletableFuture<DSLContext> getContextAsync() {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return DSL.using(getConnectionAsync().get(), SQLDialect.MYSQL);
+                return DSL.using(getDataSourceAsync().get(), SQLDialect.MYSQL);
             } catch (Throwable t) {
                 throw new RuntimeException("Failed to get a DSL context.", t);
             }

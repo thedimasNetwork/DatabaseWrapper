@@ -15,7 +15,7 @@ import stellar.database.gen.tables.records.*;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
-import static stellar.database.Config.getConnection;
+import static stellar.database.Config.getDataSource;
 
 /**
  * A utility class for handling database operations.
@@ -44,7 +44,7 @@ public class Database {
      * @throws SQLException If a database error occurs.
      */
     public static DSLContext getContext() throws SQLException {
-        return DSL.using(getConnection(), SQLDialect.MYSQL);
+        return DSL.using(getDataSource(), SQLDialect.MYSQL);
     }
     // endregion
 
