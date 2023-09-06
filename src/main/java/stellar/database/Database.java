@@ -12,7 +12,6 @@ import stellar.database.enums.PlayerStatus;
 import stellar.database.gen.Tables;
 import stellar.database.gen.tables.records.*;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 import static stellar.database.Config.getDataSource;
@@ -41,9 +40,8 @@ public class Database {
      * Retrieves the DSL context for database queries.
      *
      * @return The DSL context.
-     * @throws SQLException If a database error occurs.
      */
-    public static DSLContext getContext() throws SQLException {
+    public static DSLContext getContext() {
         return DSL.using(getDataSource(), SQLDialect.MYSQL);
     }
     // endregion
@@ -55,10 +53,9 @@ public class Database {
      *
      * @param uuid The UUID of the player.
      * @return The {@link UsersRecord} representing the player's data or null if not found.
-     * @throws SQLException If a database error occurs.
      */
     @Nullable
-    public static UsersRecord getPlayer(String uuid) throws SQLException {
+    public static UsersRecord getPlayer(String uuid) {
         return getContext()
                 .selectFrom(Tables.users)
                 .where(Tables.users.uuid.eq(uuid))
@@ -70,10 +67,9 @@ public class Database {
      *
      * @param id The ID of the player.
      * @return The {@link UsersRecord} representing the player's data or null if not found.
-     * @throws SQLException If a database error occurs.
      */
     @Nullable
-    public static UsersRecord getPlayer(int id) throws SQLException {
+    public static UsersRecord getPlayer(int id) {
         return getContext()
                 .selectFrom(Tables.users)
                 .where(Tables.users.id.eq(id))
@@ -85,9 +81,8 @@ public class Database {
      *
      * @param uuid The UUID of the player.
      * @return True if the player exists, false otherwise.
-     * @throws SQLException If a database error occurs.
      */
-    public static boolean playerExists(String uuid) throws SQLException {
+    public static boolean playerExists(String uuid) {
         return getContext().fetchExists(Tables.users, Tables.users.uuid.eq(uuid));
     }
 
@@ -100,9 +95,8 @@ public class Database {
      * @param locale The locale of the player.
      * @param admin  True if the player is an admin, false otherwise.
      * @return The created {@link UsersRecord}.
-     * @throws SQLException If a database error occurs.
      */
-    public static UsersRecord createPlayer(String uuid, String ip, String name, String locale, boolean admin) throws SQLException {
+    public static UsersRecord createPlayer(String uuid, String ip, String name, String locale, boolean admin) {
         UsersRecord record = getContext().newRecord(Tables.users)
                 .setUuid(uuid)
                 .setIp(ip)
@@ -121,10 +115,9 @@ public class Database {
      * @param name   The name of the player.
      * @param locale The locale of the player.
      * @return The updated {@link UsersRecord}.
-     * @throws SQLException             If a database error occurs.
      * @throws IllegalArgumentException If the player does not exist.
      */
-    public static UsersRecord updatePlayer(String uuid, String name, String locale, String ip) throws SQLException {
+    public static UsersRecord updatePlayer(String uuid, String name, String locale, String ip) {
         if (!Database.playerExists(uuid)) {
             throw new IllegalArgumentException("Player does not exists!");
         }
@@ -146,9 +139,8 @@ public class Database {
      * @param locale The locale of the player.
      * @param admin  True if the player is an admin, false otherwise.
      * @return The created {@link UsersRecord}.
-     * @throws SQLException If a database error occurs.
      */
-    public static UsersRecord createFullPlayer(String uuid, String ip, String name, String locale, boolean admin) throws SQLException {
+    public static UsersRecord createFullPlayer(String uuid, String ip, String name, String locale, boolean admin) {
         createPlaytime(uuid);
         createStats(uuid);
         return createPlayer(uuid, ip, name, locale, admin);
@@ -163,10 +155,9 @@ public class Database {
      * @param type  The <a href="https://proxycheck.io/api/#type_responses">Type</a> of the IP address.
      * @param risk  The <a href="https://proxycheck.io/api/#risk_score">Risk Score</a> of the IP address.
      * @return The created {@link IpCachedRecord}.
-     * @throws SQLException If a database error occurs.
      * @see <a href="https://proxycheck.io/api/">Proxycheck API docs</a>
      */
-    public static IpCachedRecord createIp(String ip, boolean proxy, boolean vpn, String type, int risk) throws SQLException {
+    public static IpCachedRecord createIp(String ip, boolean proxy, boolean vpn, String type, int risk) {
         IpCachedRecord record = getContext().newRecord(Tables.ipCached)
                 .setIp(ip)
                 .setProxy(proxy)
@@ -182,10 +173,9 @@ public class Database {
      *
      * @param uuid The UUID of the player.
      * @return An array of IP addresses used by the specified player.
-     * @throws SQLException             If a database error occurs.
      * @throws IllegalArgumentException If the player does not exist.
      */
-    public static String[] getIps(String uuid) throws SQLException {
+    public static String[] getIps(String uuid) {
         if (!playerExists(uuid)) {
             throw new IllegalArgumentException("Player does not exist!");
         }
@@ -203,10 +193,9 @@ public class Database {
      *
      * @param uuid The UUID of the player.
      * @return An array of names used by the specified player.
-     * @throws SQLException             If a database error occurs.
      * @throws IllegalArgumentException If the player does not exist.
      */
-    public static String[] getNames(String uuid) throws SQLException {
+    public static String[] getNames(String uuid) {
         if (!playerExists(uuid)) {
             throw new IllegalArgumentException("Player does not exist!");
         }
@@ -227,9 +216,8 @@ public class Database {
      *
      * @param uuid The UUID of the player.
      * @return The {@link BansRecord} representing the latest ban or null if no ban is found.
-     * @throws SQLException If a database error occurs.
      */
-    public static BansRecord latestBan(String uuid) throws SQLException {
+    public static BansRecord latestBan(String uuid) {
         return getContext()
                 .selectFrom(Tables.bans)
                 .where(Tables.bans.target.eq(uuid))
@@ -243,9 +231,8 @@ public class Database {
      *
      * @param uuid The UUID of the player.
      * @return True if the player is banned, false otherwise.
-     * @throws SQLException If a database error occurs.
      */
-    public static boolean isBanned(String uuid) throws SQLException {
+    public static boolean isBanned(String uuid) {
         BansRecord record = latestBan(uuid);
         if (record == null) {
             return false;
@@ -270,10 +257,9 @@ public class Database {
      * @param period The ban period in days, or -1 for a permanent ban.
      * @param reason The reason for the ban.
      * @return The created {@link BansRecord}
-     * @throws SQLException             If a database error occurs.
      * @throws IllegalArgumentException If the target player does not exist or is already banned.
      */
-    public static BansRecord ban(String admin, String target, int period, String reason) throws SQLException {
+    public static BansRecord ban(String admin, String target, int period, String reason) {
         if (!playerExists(target)) {
             throw new IllegalArgumentException("Target does not exist!");
         }
@@ -296,10 +282,9 @@ public class Database {
      *
      * @param target The UUID of the player to be unbanned.
      * @return The updated {@link BansRecord}
-     * @throws SQLException             If a database error occurs.
      * @throws IllegalArgumentException If the target player does not exist or is not banned.
      */
-    public static BansRecord unban(String target) throws SQLException {
+    public static BansRecord unban(String target) {
         if (!playerExists(target)) {
             throw new IllegalArgumentException("Target does not exist!");
         }
@@ -322,9 +307,8 @@ public class Database {
      * @param uuid  The UUID of the player.
      * @param field The playtime field to retrieve.
      * @return The playtime value for the specified field in seconds.
-     * @throws SQLException If a database error occurs.
      */
-    public static long getPlaytime(String uuid, Field<Long> field) throws SQLException {
+    public static long getPlaytime(String uuid, Field<Long> field) {
         Record1<Long> timeFetch = getContext()
                 .select(field)
                 .from(Tables.playtime)
@@ -346,9 +330,8 @@ public class Database {
      *
      * @param uuid The UUID of the player.
      * @return The total playtime in seconds.
-     * @throws SQLException If a database error occurs.
      */
-    public static long getTotalPlaytime(String uuid) throws SQLException {
+    public static long getTotalPlaytime(String uuid) {
         PlaytimeRecord timeFetch = getContext()
                 .selectFrom(Tables.playtime)
                 .where(Tables.playtime.uuid.eq(uuid))
@@ -376,9 +359,8 @@ public class Database {
      *
      * @param uuid The UUID of the player.
      * @return The created {@link PlaytimeRecord} for the player.
-     * @throws SQLException If a database error occurs.
      */
-    public static PlaytimeRecord createPlaytime(String uuid) throws SQLException {
+    public static PlaytimeRecord createPlaytime(String uuid) {
         PlaytimeRecord record = getContext().newRecord(Tables.playtime)
                 .setUuid(uuid);
         record.store();
@@ -390,9 +372,8 @@ public class Database {
      *
      * @param uuid The UUID of the player.
      * @return The {@link StatsRecord} representing the player's statistics or null if no statistics is found.
-     * @throws SQLException If a database error occurs.
      */
-    public static StatsRecord getStats(String uuid) throws SQLException {
+    public static StatsRecord getStats(String uuid) {
         return getContext()
                 .selectFrom(Tables.stats)
                 .where(Tables.stats.uuid.eq(uuid))
@@ -404,9 +385,8 @@ public class Database {
      *
      * @param uuid The UUID of the player.
      * @return The created {@link StatsRecord} for the player.
-     * @throws SQLException If a database error occurs.
      */
-    public static StatsRecord createStats(String uuid) throws SQLException {
+    public static StatsRecord createStats(String uuid) {
         StatsRecord record = getContext().newRecord(Tables.stats)
                 .setUuid(uuid);
         record.store();
@@ -426,9 +406,8 @@ public class Database {
      * @param text   The content of the message.
      * @param locale The locale or language of the message.
      * @return The created {@link MessagesRecord}.
-     * @throws SQLException If a database error occurs.
      */
-    public static MessagesRecord createMessage(String server, String from, String target, MessageType type, String text, String locale) throws SQLException {
+    public static MessagesRecord createMessage(String server, String from, String target, MessageType type, String text, String locale) {
         MessagesRecord record = getContext().newRecord(Tables.messages)
                 .setServer(server)
                 .setFrom(from)
@@ -449,9 +428,8 @@ public class Database {
      * @param name   The name of the player.
      * @param locale The locale of the player.
      * @return The created {@link LoginsRecord}.
-     * @throws SQLException If a database error occurs.
      */
-    public static LoginsRecord createLogin(String server, String uuid, String ip, String name, String locale) throws SQLException {
+    public static LoginsRecord createLogin(String server, String uuid, String ip, String name, String locale) {
         LoginsRecord record = getContext().newRecord(Tables.logins)
                 .setServer(server)
                 .setUuid(uuid)
