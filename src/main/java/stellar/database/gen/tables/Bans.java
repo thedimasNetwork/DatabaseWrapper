@@ -4,7 +4,7 @@
 package stellar.database.gen.tables;
 
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.function.Function;
 
 import org.jooq.Field;
@@ -69,12 +69,12 @@ public class Bans extends TableImpl<BansRecord> {
     /**
      * The column <code>mindustry.bans.created</code>.
      */
-    public final TableField<BansRecord, LocalDateTime> created = createField(DSL.name("created"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+    public final TableField<BansRecord, OffsetDateTime> created = createField(DSL.name("created"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.TIMESTAMPWITHTIMEZONE)), this, "");
 
     /**
      * The column <code>mindustry.bans.until</code>.
      */
-    public final TableField<BansRecord, LocalDateTime> until = createField(DSL.name("until"), SQLDataType.LOCALDATETIME(0), this, "");
+    public final TableField<BansRecord, OffsetDateTime> until = createField(DSL.name("until"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "");
 
     /**
      * The column <code>mindustry.bans.reason</code>.
@@ -84,7 +84,7 @@ public class Bans extends TableImpl<BansRecord> {
     /**
      * The column <code>mindustry.bans.active</code>.
      */
-    public final TableField<BansRecord, Boolean> active = createField(DSL.name("active"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("1", SQLDataType.BOOLEAN)), this, "");
+    public final TableField<BansRecord, Boolean> active = createField(DSL.name("active"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field("true", SQLDataType.BOOLEAN)), this, "");
 
     private Bans(Name alias, Table<BansRecord> aliased) {
         this(alias, aliased, null);
@@ -131,7 +131,7 @@ public class Bans extends TableImpl<BansRecord> {
 
     @Override
     public UniqueKey<BansRecord> getPrimaryKey() {
-        return Keys.keyBansPrimary;
+        return Keys.idx_16388Primary;
     }
 
     @Override
@@ -178,21 +178,21 @@ public class Bans extends TableImpl<BansRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row7<Integer, String, String, LocalDateTime, LocalDateTime, String, Boolean> fieldsRow() {
+    public Row7<Integer, String, String, OffsetDateTime, OffsetDateTime, String, Boolean> fieldsRow() {
         return (Row7) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function7<? super Integer, ? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super Boolean, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function7<? super Integer, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? super String, ? super Boolean, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Class, Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super Integer, ? super String, ? super String, ? super LocalDateTime, ? super LocalDateTime, ? super String, ? super Boolean, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super Integer, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? super String, ? super Boolean, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

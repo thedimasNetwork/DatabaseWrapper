@@ -36,13 +36,11 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<BansRecord> keyBansPrimary = Internal.createUniqueKey(Bans.bans, DSL.name("KEY_bans_PRIMARY"), new TableField[] { Bans.bans.id }, true);
-    public static final UniqueKey<IpCachedRecord> keyIpCachedPrimary = Internal.createUniqueKey(IpCached.ipCached, DSL.name("KEY_ip_cached_PRIMARY"), new TableField[] { IpCached.ipCached.id }, true);
-    public static final UniqueKey<IpCachedRecord> keyIpCachedSecondary = Internal.createUniqueKey(IpCached.ipCached, DSL.name("KEY_ip_cached_SECONDARY"), new TableField[] { IpCached.ipCached.ip }, true);
-    public static final UniqueKey<LoginsRecord> keyLoginsPrimary = Internal.createUniqueKey(Logins.logins, DSL.name("KEY_logins_PRIMARY"), new TableField[] { Logins.logins.id }, true);
-    public static final UniqueKey<MessagesRecord> keyMessagesPrimary = Internal.createUniqueKey(Messages.messages, DSL.name("KEY_messages_PRIMARY"), new TableField[] { Messages.messages.id }, true);
-    public static final UniqueKey<PlaytimeRecord> keyPlaytimePrimary = Internal.createUniqueKey(Playtime.playtime, DSL.name("KEY_playtime_PRIMARY"), new TableField[] { Playtime.playtime.uuid }, true);
-    public static final UniqueKey<StatsRecord> keyStatsPrimary = Internal.createUniqueKey(Stats.stats, DSL.name("KEY_stats_PRIMARY"), new TableField[] { Stats.stats.uuid }, true);
-    public static final UniqueKey<UsersRecord> keyUsersPrimary = Internal.createUniqueKey(Users.users, DSL.name("KEY_users_PRIMARY"), new TableField[] { Users.users.uuid }, true);
-    public static final UniqueKey<UsersRecord> keyUsersSecondary = Internal.createUniqueKey(Users.users, DSL.name("KEY_users_SECONDARY"), new TableField[] { Users.users.id }, true);
+    public static final UniqueKey<BansRecord> idx_16388Primary = Internal.createUniqueKey(Bans.bans, DSL.name("idx_16388_primary"), new TableField[] { Bans.bans.id }, true);
+    public static final UniqueKey<IpCachedRecord> idx_16395Primary = Internal.createUniqueKey(IpCached.ipCached, DSL.name("idx_16395_primary"), new TableField[] { IpCached.ipCached.id }, true);
+    public static final UniqueKey<LoginsRecord> idx_16403Primary = Internal.createUniqueKey(Logins.logins, DSL.name("idx_16403_primary"), new TableField[] { Logins.logins.id }, true);
+    public static final UniqueKey<MessagesRecord> idx_16409Primary = Internal.createUniqueKey(Messages.messages, DSL.name("idx_16409_primary"), new TableField[] { Messages.messages.id }, true);
+    public static final UniqueKey<PlaytimeRecord> idx_16414Primary = Internal.createUniqueKey(Playtime.playtime, DSL.name("idx_16414_primary"), new TableField[] { Playtime.playtime.uuid }, true);
+    public static final UniqueKey<StatsRecord> idx_16431Primary = Internal.createUniqueKey(Stats.stats, DSL.name("idx_16431_primary"), new TableField[] { Stats.stats.uuid }, true);
+    public static final UniqueKey<UsersRecord> idx_16451Primary = Internal.createUniqueKey(Users.users, DSL.name("idx_16451_primary"), new TableField[] { Users.users.uuid }, true);
 }

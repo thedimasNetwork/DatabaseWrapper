@@ -57,82 +57,82 @@ public class Stats extends TableImpl<StatsRecord> {
     /**
      * The column <code>mindustry.stats.waves</code>.
      */
-    public final TableField<StatsRecord, Integer> waves = createField(DSL.name("waves"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<StatsRecord, Integer> waves = createField(DSL.name("waves"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.stats.survivals</code>.
      */
-    public final TableField<StatsRecord, Integer> survivals = createField(DSL.name("survivals"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<StatsRecord, Integer> survivals = createField(DSL.name("survivals"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.stats.attacks</code>.
      */
-    public final TableField<StatsRecord, Integer> attacks = createField(DSL.name("attacks"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<StatsRecord, Integer> attacks = createField(DSL.name("attacks"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.stats.pvp</code>.
      */
-    public final TableField<StatsRecord, Integer> pvp = createField(DSL.name("pvp"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<StatsRecord, Integer> pvp = createField(DSL.name("pvp"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.stats.hexes_captured</code>.
      */
-    public final TableField<StatsRecord, Integer> hexesCaptured = createField(DSL.name("hexes_captured"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<StatsRecord, Integer> hexesCaptured = createField(DSL.name("hexes_captured"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.stats.hexes_destroyed</code>.
      */
-    public final TableField<StatsRecord, Integer> hexesDestroyed = createField(DSL.name("hexes_destroyed"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<StatsRecord, Integer> hexesDestroyed = createField(DSL.name("hexes_destroyed"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.stats.hexes_lost</code>.
      */
-    public final TableField<StatsRecord, Integer> hexesLost = createField(DSL.name("hexes_lost"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<StatsRecord, Integer> hexesLost = createField(DSL.name("hexes_lost"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.stats.hex_wins</code>.
      */
-    public final TableField<StatsRecord, Integer> hexWins = createField(DSL.name("hex_wins"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<StatsRecord, Integer> hexWins = createField(DSL.name("hex_wins"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.stats.hex_losses</code>.
      */
-    public final TableField<StatsRecord, Integer> hexLosses = createField(DSL.name("hex_losses"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<StatsRecord, Integer> hexLosses = createField(DSL.name("hex_losses"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.stats.hex_score</code>.
      */
-    public final TableField<StatsRecord, Integer> hexScore = createField(DSL.name("hex_score"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<StatsRecord, Integer> hexScore = createField(DSL.name("hex_score"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.stats.built</code>.
      */
-    public final TableField<StatsRecord, Integer> built = createField(DSL.name("built"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<StatsRecord, Integer> built = createField(DSL.name("built"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.stats.broken</code>.
      */
-    public final TableField<StatsRecord, Integer> broken = createField(DSL.name("broken"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<StatsRecord, Integer> broken = createField(DSL.name("broken"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.stats.kills</code>.
      */
-    public final TableField<StatsRecord, Integer> kills = createField(DSL.name("kills"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<StatsRecord, Integer> kills = createField(DSL.name("kills"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.stats.deaths</code>.
      */
-    public final TableField<StatsRecord, Integer> deaths = createField(DSL.name("deaths"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<StatsRecord, Integer> deaths = createField(DSL.name("deaths"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.stats.logins</code>.
      */
-    public final TableField<StatsRecord, Integer> logins = createField(DSL.name("logins"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<StatsRecord, Integer> logins = createField(DSL.name("logins"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.stats.messages</code>.
      */
-    public final TableField<StatsRecord, Integer> messages = createField(DSL.name("messages"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<StatsRecord, Integer> messages = createField(DSL.name("messages"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     private Stats(Name alias, Table<StatsRecord> aliased) {
         this(alias, aliased, null);
@@ -174,7 +174,7 @@ public class Stats extends TableImpl<StatsRecord> {
 
     @Override
     public UniqueKey<StatsRecord> getPrimaryKey() {
-        return Keys.keyStatsPrimary;
+        return Keys.idx_16431Primary;
     }
 
     @Override

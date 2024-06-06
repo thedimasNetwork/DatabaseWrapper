@@ -9,10 +9,12 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import stellar.database.enums.MessageType;
 import stellar.database.enums.PlayerStatus;
+import stellar.database.gen.Mindustry;
 import stellar.database.gen.Tables;
 import stellar.database.gen.tables.records.*;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import static stellar.database.Config.getDataSource;
 
@@ -42,7 +44,7 @@ public class Database {
      * @return The DSL context.
      */
     public static DSLContext getContext() {
-        return DSL.using(getDataSource(), SQLDialect.MYSQL);
+        return DSL.using(getDataSource(), SQLDialect.POSTGRES);
     }
     // endregion
 
@@ -246,7 +248,7 @@ public class Database {
             return true;
         }
 
-        return !record.getUntil().isBefore(LocalDateTime.now());
+        return !record.getUntil().isBefore(OffsetDateTime.now());
     }
 
     /**
@@ -270,8 +272,8 @@ public class Database {
         BansRecord record = getContext().newRecord(Tables.bans)
                 .setAdmin(admin)
                 .setTarget(target)
-                .setCreated(LocalDateTime.now())
-                .setUntil(period > -1 ? LocalDateTime.now().plusDays(period) : null)
+                .setCreated(OffsetDateTime.now())
+                .setUntil(period > -1 ? OffsetDateTime.now().plusDays(period) : null)
                 .setReason(reason);
         record.store();
         return record;

@@ -4,7 +4,7 @@
 package stellar.database.gen.tables;
 
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.function.Function;
 
 import org.jooq.Field;
@@ -61,12 +61,12 @@ public class Messages extends TableImpl<MessagesRecord> {
     /**
      * The column <code>mindustry.messages.timestamp</code>.
      */
-    public final TableField<MessagesRecord, LocalDateTime> timestamp = createField(DSL.name("timestamp"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+    public final TableField<MessagesRecord, OffsetDateTime> timestamp = createField(DSL.name("timestamp"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.TIMESTAMPWITHTIMEZONE)), this, "");
 
     /**
      * The column <code>mindustry.messages.server</code>.
      */
-    public final TableField<MessagesRecord, String> server = createField(DSL.name("server"), SQLDataType.VARCHAR(10).nullable(false), this, "");
+    public final TableField<MessagesRecord, String> server = createField(DSL.name("server"), SQLDataType.VARCHAR(20).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.messages.from</code>.
@@ -138,7 +138,7 @@ public class Messages extends TableImpl<MessagesRecord> {
 
     @Override
     public UniqueKey<MessagesRecord> getPrimaryKey() {
-        return Keys.keyMessagesPrimary;
+        return Keys.idx_16409Primary;
     }
 
     @Override
@@ -185,21 +185,21 @@ public class Messages extends TableImpl<MessagesRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row8<Integer, LocalDateTime, String, String, String, MessageType, String, String> fieldsRow() {
+    public Row8<Integer, OffsetDateTime, String, String, String, MessageType, String, String> fieldsRow() {
         return (Row8) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function8<? super Integer, ? super LocalDateTime, ? super String, ? super String, ? super String, ? super MessageType, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function8<? super Integer, ? super OffsetDateTime, ? super String, ? super String, ? super String, ? super MessageType, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Class, Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super Integer, ? super LocalDateTime, ? super String, ? super String, ? super String, ? super MessageType, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super Integer, ? super OffsetDateTime, ? super String, ? super String, ? super String, ? super MessageType, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

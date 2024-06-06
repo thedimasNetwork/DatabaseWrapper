@@ -12,6 +12,7 @@ import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Function6;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
@@ -26,6 +27,7 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
+import stellar.database.gen.Indexes;
 import stellar.database.gen.Keys;
 import stellar.database.gen.Mindustry;
 import stellar.database.gen.tables.records.IpCachedRecord;
@@ -65,12 +67,12 @@ public class IpCached extends TableImpl<IpCachedRecord> {
     /**
      * The column <code>mindustry.ip_cached.proxy</code>.
      */
-    public final TableField<IpCachedRecord, Boolean> proxy = createField(DSL.name("proxy"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
+    public final TableField<IpCachedRecord, Boolean> proxy = createField(DSL.name("proxy"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field("false", SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>mindustry.ip_cached.vpn</code>.
      */
-    public final TableField<IpCachedRecord, Boolean> vpn = createField(DSL.name("vpn"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
+    public final TableField<IpCachedRecord, Boolean> vpn = createField(DSL.name("vpn"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field("false", SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>mindustry.ip_cached.type</code>.
@@ -80,7 +82,7 @@ public class IpCached extends TableImpl<IpCachedRecord> {
     /**
      * The column <code>mindustry.ip_cached.risk</code>.
      */
-    public final TableField<IpCachedRecord, Short> risk = createField(DSL.name("risk"), SQLDataType.SMALLINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.SMALLINT)), this, "");
+    public final TableField<IpCachedRecord, Short> risk = createField(DSL.name("risk"), SQLDataType.SMALLINT.nullable(false).defaultValue(DSL.field("'0'::smallint", SQLDataType.SMALLINT)), this, "");
 
     private IpCached(Name alias, Table<IpCachedRecord> aliased) {
         this(alias, aliased, null);
@@ -121,18 +123,18 @@ public class IpCached extends TableImpl<IpCachedRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.idx_16395Secondary);
+    }
+
+    @Override
     public Identity<IpCachedRecord, Integer> getIdentity() {
         return (Identity<IpCachedRecord, Integer>) super.getIdentity();
     }
 
     @Override
     public UniqueKey<IpCachedRecord> getPrimaryKey() {
-        return Keys.keyIpCachedPrimary;
-    }
-
-    @Override
-    public List<UniqueKey<IpCachedRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.keyIpCachedSecondary);
+        return Keys.idx_16395Primary;
     }
 
     @Override

@@ -4,7 +4,7 @@
 package stellar.database.gen.tables;
 
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.function.Function;
 
 import org.jooq.Field;
@@ -59,7 +59,7 @@ public class Logins extends TableImpl<LoginsRecord> {
     /**
      * The column <code>mindustry.logins.timestamp</code>.
      */
-    public final TableField<LoginsRecord, LocalDateTime> timestamp = createField(DSL.name("timestamp"), SQLDataType.LOCALDATETIME(0).nullable(false), this, "");
+    public final TableField<LoginsRecord, OffsetDateTime> timestamp = createField(DSL.name("timestamp"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false).defaultValue(DSL.field("CURRENT_TIMESTAMP", SQLDataType.TIMESTAMPWITHTIMEZONE)), this, "");
 
     /**
      * The column <code>mindustry.logins.server</code>.
@@ -131,7 +131,7 @@ public class Logins extends TableImpl<LoginsRecord> {
 
     @Override
     public UniqueKey<LoginsRecord> getPrimaryKey() {
-        return Keys.keyLoginsPrimary;
+        return Keys.idx_16403Primary;
     }
 
     @Override
@@ -178,21 +178,21 @@ public class Logins extends TableImpl<LoginsRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row7<Integer, LocalDateTime, String, String, String, String, String> fieldsRow() {
+    public Row7<Integer, OffsetDateTime, String, String, String, String, String> fieldsRow() {
         return (Row7) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function7<? super Integer, ? super LocalDateTime, ? super String, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function7<? super Integer, ? super OffsetDateTime, ? super String, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Class, Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super Integer, ? super LocalDateTime, ? super String, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super Integer, ? super OffsetDateTime, ? super String, ? super String, ? super String, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

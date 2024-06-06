@@ -45,7 +45,7 @@ public class DatabaseAsync {
     public static CompletableFuture<DSLContext> getContextAsync() {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return DSL.using(getDataSourceAsync().get(), SQLDialect.MYSQL);
+                return DSL.using(getDataSourceAsync().get(), SQLDialect.POSTGRES);
             } catch (Throwable t) {
                 throw new RuntimeException("Failed to get a DSL context.", t);
             }

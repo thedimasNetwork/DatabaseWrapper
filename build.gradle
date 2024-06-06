@@ -30,6 +30,7 @@ ext {
     mindustryVersion = "v145"
     lombokVersion = "1.18.24"
     mysqlVersion = "8.0.30"
+    postresqlVersion = "42.7.3"
     jooqVersion = "3.17.0"
     hikariVersion = "5.0.1"
 }
@@ -48,7 +49,7 @@ buildscript {
         classpath "org.jooq:jooq:3.17.0" // older version due to older MySQL version on the host
         classpath "org.jooq:jooq-codegen:3.17.0"
         classpath "org.jooq:jooq-meta:3.17.0"
-        classpath "mysql:mysql-connector-java:8.0.30"
+        classpath "org.postgresql:postgresql:42.7.3"
     }
 }
 
@@ -66,7 +67,7 @@ dependencies {
     compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
 
     implementation "org.jooq:jooq:$jooqVersion"
-    runtimeOnly "mysql:mysql-connector-java:$mysqlVersion"
+    runtimeOnly "org.postgresql:postgresql:$postresqlVersion"
     implementation "com.zaxxer:HikariCP:$hikariVersion"
 }
 
@@ -80,13 +81,13 @@ publishing {
 
 task codegen {
     doLast {
-        var host, schema, user, password
+        def host, schema, user, password
         if (!project.hasProperty("dbhost") || !project.hasProperty("dbschema") || !project.hasProperty("dbuser") || !project.hasProperty("dbpassword")) {
             if (file("./database.json").exists()) {
                 println("Using local JSON config")
-                var json = new JsonSlurper()
-                var dbFile = file("./database.json")
-                var db = json.parseText(dbFile.text)
+                def json = new JsonSlurper()
+                def dbFile = file("./database.json")
+                def db = json.parseText(dbFile.text)
 
                 host = db.host
                 schema = db.schema
@@ -105,29 +106,26 @@ task codegen {
         println(sourceSets.main.java.srcDirs.first().path)
         Configuration configuration = new Configuration()
                 .withJdbc(new Jdbc()
-                        .withDriver("com.mysql.cj.jdbc.Driver")
-                        .withUrl("jdbc:mysql://$host:3306/$schema")
+                        .withDriver("org.postgresql.Driver")
+                        .withUrl("jdbc:postgresql://$host:5432/$schema")
                         .withUser("$user")
                         .withPassword("$password")
                 )
                 .withGenerator(new Generator()
                         .withDatabase(new Database()
-                                .withName("org.jooq.meta.mysql.MySQLDatabase")
+                                .withName("org.jooq.meta.postgres.PostgresDatabase")
                                 .withIncludes(".*")
                                 .withExcludes("")
-                                .withInputSchema("$schema")
+                                .withInputSchema("${schema}")
                                 .withForcedTypes(
                                         new ForcedType()
                                                 .withUserType("stellar.database.enums.MessageType")
                                                 .withEnumConverter(true)
-                                                .withIncludeTypes("mindustry.messages.type"),
+                                                .withIncludeExpression("mindustry\\.messages\\.type"),
                                         new ForcedType()
                                                 .withUserType("stellar.database.enums.PlayerStatus")
                                                 .withEnumConverter(true)
-                                                .withIncludeTypes("mindustry.users.status"),
-                                        new ForcedType()
-                                                .withName("BOOLEAN")
-                                                .withIncludeTypes("(?i:TINYINT)")
+                                                .withIncludeExpression("mindustry\\.users\\.status")
                                 )
                         )
                         .withTarget(new Target()
@@ -177,7 +175,7 @@ class CamelCaseGeneratorStrategy extends DefaultGeneratorStrategy {
 
     String getJavaGetterName(Definition definition, Mode mode) {
         if (mode == Mode.RECORD) {
-            if (((DefaultDataTypeDefinition) definition.getProperties().get("definedType")).type.equalsIgnoreCase("tinyint")) {
+            if (((DefaultDataTypeDefinition) definition.getProperties().get("definedType")).type.equalsIgnoreCase("boolean")) {
                 return "is" + StringUtils.toCamelCase(definition.getOutputName())
             }
         }

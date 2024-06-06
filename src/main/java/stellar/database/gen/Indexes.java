@@ -9,6 +9,7 @@ import org.jooq.OrderField;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 
+import stellar.database.gen.tables.IpCached;
 import stellar.database.gen.tables.Users;
 
 
@@ -22,5 +23,7 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index usersUsersIpIndex = Internal.createIndex(DSL.name("users_ip_index"), Users.users, new OrderField[] { Users.users.ip }, false);
+    public static final Index idx_16395Secondary = Internal.createIndex(DSL.name("idx_16395_secondary"), IpCached.ipCached, new OrderField[] { IpCached.ipCached.ip }, true);
+    public static final Index idx_16451Secondary = Internal.createIndex(DSL.name("idx_16451_secondary"), Users.users, new OrderField[] { Users.users.id }, true);
+    public static final Index idx_16451UsersIpIndex = Internal.createIndex(DSL.name("idx_16451_users_ip_index"), Users.users, new OrderField[] { Users.users.ip }, false);
 }

@@ -79,32 +79,32 @@ public class Users extends TableImpl<UsersRecord> {
     /**
      * The column <code>mindustry.users.locale</code>.
      */
-    public final TableField<UsersRecord, String> locale = createField(DSL.name("locale"), SQLDataType.VARCHAR(30).nullable(false).defaultValue(DSL.inline("undefined", SQLDataType.VARCHAR)), this, "");
+    public final TableField<UsersRecord, String> locale = createField(DSL.name("locale"), SQLDataType.VARCHAR(30).nullable(false).defaultValue(DSL.field("'undefined'::character varying", SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>mindustry.users.translator</code>.
      */
-    public final TableField<UsersRecord, String> translator = createField(DSL.name("translator"), SQLDataType.VARCHAR(20).nullable(false).defaultValue(DSL.inline("double", SQLDataType.VARCHAR)), this, "");
+    public final TableField<UsersRecord, String> translator = createField(DSL.name("translator"), SQLDataType.VARCHAR(20).nullable(false).defaultValue(DSL.field("'double'::character varying", SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>mindustry.users.status</code>.
      */
-    public final TableField<UsersRecord, PlayerStatus> status = createField(DSL.name("status"), SQLDataType.SMALLINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.SMALLINT)), this, "", new EnumConverter<Short, PlayerStatus>(Short.class, PlayerStatus.class));
+    public final TableField<UsersRecord, PlayerStatus> status = createField(DSL.name("status"), SQLDataType.SMALLINT.nullable(false).defaultValue(DSL.field("'0'::smallint", SQLDataType.SMALLINT)), this, "", new EnumConverter<Short, PlayerStatus>(Short.class, PlayerStatus.class));
 
     /**
      * The column <code>mindustry.users.donated</code>.
      */
-    public final TableField<UsersRecord, Integer> donated = createField(DSL.name("donated"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
+    public final TableField<UsersRecord, Integer> donated = createField(DSL.name("donated"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>mindustry.users.popup</code>.
      */
-    public final TableField<UsersRecord, Boolean> popup = createField(DSL.name("popup"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("1", SQLDataType.BOOLEAN)), this, "");
+    public final TableField<UsersRecord, Boolean> popup = createField(DSL.name("popup"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field("true", SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>mindustry.users.discord</code>.
      */
-    public final TableField<UsersRecord, Boolean> discord = createField(DSL.name("discord"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("1", SQLDataType.BOOLEAN)), this, "");
+    public final TableField<UsersRecord, Boolean> discord = createField(DSL.name("discord"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field("true", SQLDataType.BOOLEAN)), this, "");
 
     private Users(Name alias, Table<UsersRecord> aliased) {
         this(alias, aliased, null);
@@ -146,7 +146,7 @@ public class Users extends TableImpl<UsersRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.usersUsersIpIndex);
+        return Arrays.asList(Indexes.idx_16451Secondary, Indexes.idx_16451UsersIpIndex);
     }
 
     @Override
@@ -156,12 +156,7 @@ public class Users extends TableImpl<UsersRecord> {
 
     @Override
     public UniqueKey<UsersRecord> getPrimaryKey() {
-        return Keys.keyUsersPrimary;
-    }
-
-    @Override
-    public List<UniqueKey<UsersRecord>> getUniqueKeys() {
-        return Arrays.asList(Keys.keyUsersSecondary);
+        return Keys.idx_16451Primary;
     }
 
     @Override
