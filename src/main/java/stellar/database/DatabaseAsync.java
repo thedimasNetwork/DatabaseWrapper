@@ -12,7 +12,7 @@ import stellar.database.enums.PlayerStatus;
 import stellar.database.gen.Tables;
 import stellar.database.gen.tables.records.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.concurrent.CompletableFuture;
 
 import static stellar.database.Config.getDataSourceAsync;
@@ -297,8 +297,7 @@ public class DatabaseAsync {
                 return false;
             }
 
-            LocalDateTime now = LocalDateTime.now();
-            return record.getUntil() == null || !record.getUntil().isBefore(now);
+            return record.getUntil() == null || !record.getUntil().isBefore(OffsetDateTime.now());
         });
     }
 
@@ -324,12 +323,11 @@ public class DatabaseAsync {
             return getContextAsync();
         }).thenApplyAsync(context -> {
             try {
-                LocalDateTime until = (period > -1) ? LocalDateTime.now().plusDays(period) : null;
                 BansRecord record = context.newRecord(Tables.bans)
                         .setAdmin(admin)
                         .setTarget(target)
-                        .setCreated(LocalDateTime.now())
-                        .setUntil(until)
+                        .setCreated(OffsetDateTime.now())
+                        .setUntil(period > -1 ? OffsetDateTime.now().plusDays(period) : null)
                         .setReason(reason);
                 record.store();
                 return record;
