@@ -146,7 +146,7 @@ public class Users extends TableImpl<UsersRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.idx_16451Secondary, Indexes.idx_16451UsersIpIndex);
+        return Arrays.asList(Indexes.idx_16612Secondary, Indexes.idx_16612UsersIpIndex);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class Users extends TableImpl<UsersRecord> {
 
     @Override
     public UniqueKey<UsersRecord> getPrimaryKey() {
-        return Keys.idx_16451Primary;
+        return Keys.idx_16612Primary;
     }
 
     @Override

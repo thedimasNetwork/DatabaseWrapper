@@ -52,7 +52,7 @@ public class Config {
      * @return The connection URL as a string.
      */
     static String getConnectionUrl() {
-        return "jdbc:mysql://" + ip + ":" + port + "/" + name + "?autoReconnect=true";
+        return "jdbc:postgresql://" + ip + ":" + port + "/" + name + "?autoReconnect=true";
     }
 
     /**

@@ -131,7 +131,7 @@ public class Logins extends TableImpl<LoginsRecord> {
 
     @Override
     public UniqueKey<LoginsRecord> getPrimaryKey() {
-        return Keys.idx_16403Primary;
+        return Keys.idx_16564Primary;
     }
 
     @Override

@@ -7,8 +7,11 @@ package stellar.database.gen;
 import stellar.database.gen.tables.Bans;
 import stellar.database.gen.tables.IpCached;
 import stellar.database.gen.tables.Logins;
+import stellar.database.gen.tables.Matches;
 import stellar.database.gen.tables.Messages;
 import stellar.database.gen.tables.Playtime;
+import stellar.database.gen.tables.RankedStats;
+import stellar.database.gen.tables.Results;
 import stellar.database.gen.tables.Stats;
 import stellar.database.gen.tables.Users;
 
@@ -35,6 +38,11 @@ public class Tables {
     public static final Logins logins = Logins.logins;
 
     /**
+     * The table <code>mindustry.matches</code>.
+     */
+    public static final Matches matches = Matches.matches;
+
+    /**
      * The table <code>mindustry.messages</code>.
      */
     public static final Messages messages = Messages.messages;
@@ -43,6 +51,16 @@ public class Tables {
      * The table <code>mindustry.playtime</code>.
      */
     public static final Playtime playtime = Playtime.playtime;
+
+    /**
+     * The table <code>mindustry.ranked_stats</code>.
+     */
+    public static final RankedStats rankedStats = RankedStats.rankedStats;
+
+    /**
+     * The table <code>mindustry.results</code>.
+     */
+    public static final Results results = Results.results;
 
     /**
      * The table <code>mindustry.stats</code>.

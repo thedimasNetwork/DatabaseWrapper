@@ -164,7 +164,7 @@ public class Playtime extends TableImpl<PlaytimeRecord> {
 
     @Override
     public UniqueKey<PlaytimeRecord> getPrimaryKey() {
-        return Keys.idx_16414Primary;
+        return Keys.idx_16575Primary;
     }
 
     @Override

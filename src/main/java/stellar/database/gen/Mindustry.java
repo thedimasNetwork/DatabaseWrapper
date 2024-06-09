@@ -14,8 +14,11 @@ import org.jooq.impl.SchemaImpl;
 import stellar.database.gen.tables.Bans;
 import stellar.database.gen.tables.IpCached;
 import stellar.database.gen.tables.Logins;
+import stellar.database.gen.tables.Matches;
 import stellar.database.gen.tables.Messages;
 import stellar.database.gen.tables.Playtime;
+import stellar.database.gen.tables.RankedStats;
+import stellar.database.gen.tables.Results;
 import stellar.database.gen.tables.Stats;
 import stellar.database.gen.tables.Users;
 
@@ -49,6 +52,11 @@ public class Mindustry extends SchemaImpl {
     public final Logins logins = Logins.logins;
 
     /**
+     * The table <code>mindustry.matches</code>.
+     */
+    public final Matches matches = Matches.matches;
+
+    /**
      * The table <code>mindustry.messages</code>.
      */
     public final Messages messages = Messages.messages;
@@ -57,6 +65,16 @@ public class Mindustry extends SchemaImpl {
      * The table <code>mindustry.playtime</code>.
      */
     public final Playtime playtime = Playtime.playtime;
+
+    /**
+     * The table <code>mindustry.ranked_stats</code>.
+     */
+    public final RankedStats rankedStats = RankedStats.rankedStats;
+
+    /**
+     * The table <code>mindustry.results</code>.
+     */
+    public final Results results = Results.results;
 
     /**
      * The table <code>mindustry.stats</code>.
@@ -87,8 +105,11 @@ public class Mindustry extends SchemaImpl {
             Bans.bans,
             IpCached.ipCached,
             Logins.logins,
+            Matches.matches,
             Messages.messages,
             Playtime.playtime,
+            RankedStats.rankedStats,
+            Results.results,
             Stats.stats,
             Users.users
         );

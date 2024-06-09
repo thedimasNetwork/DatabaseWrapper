@@ -125,7 +125,11 @@ task codegen {
                                         new ForcedType()
                                                 .withUserType("stellar.database.enums.PlayerStatus")
                                                 .withEnumConverter(true)
-                                                .withIncludeExpression("mindustry\\.users\\.status")
+                                                .withIncludeExpression("mindustry\\.users\\.status"),
+                                        new ForcedType()
+                                                .withUserType("stellar.database.enums.PvpMode")
+                                                .withEnumConverter(true)
+                                                .withIncludeExpression("mindustry\\.matches\\.mode")
                                 )
                         )
                         .withTarget(new Target()

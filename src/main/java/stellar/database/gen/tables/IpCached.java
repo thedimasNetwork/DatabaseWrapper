@@ -124,7 +124,7 @@ public class IpCached extends TableImpl<IpCachedRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.idx_16395Secondary);
+        return Arrays.asList(Indexes.idx_16556Secondary);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class IpCached extends TableImpl<IpCachedRecord> {
 
     @Override
     public UniqueKey<IpCachedRecord> getPrimaryKey() {
-        return Keys.idx_16395Primary;
+        return Keys.idx_16556Primary;
     }
 
     @Override

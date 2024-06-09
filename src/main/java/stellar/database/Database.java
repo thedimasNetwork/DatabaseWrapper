@@ -9,10 +9,12 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import stellar.database.enums.MessageType;
 import stellar.database.enums.PlayerStatus;
+import stellar.database.enums.PvpMode;
 import stellar.database.gen.Tables;
 import stellar.database.gen.tables.records.*;
 
 import java.time.OffsetDateTime;
+import java.util.regex.MatchResult;
 
 import static stellar.database.Config.getDataSource;
 
@@ -56,10 +58,7 @@ public class Database {
      */
     @Nullable
     public static UsersRecord getPlayer(String uuid) {
-        return getContext()
-                .selectFrom(Tables.users)
-                .where(Tables.users.uuid.eq(uuid))
-                .fetchOne();
+        return getContext().fetchOne(Tables.users, Tables.users.uuid.eq(uuid));
     }
 
     /**
@@ -70,10 +69,7 @@ public class Database {
      */
     @Nullable
     public static UsersRecord getPlayer(int id) {
-        return getContext()
-                .selectFrom(Tables.users)
-                .where(Tables.users.id.eq(id))
-                .fetchOne();
+        return getContext().fetchOne(Tables.users, Tables.users.id.eq(id));
     }
 
     /**
@@ -97,7 +93,8 @@ public class Database {
      * @return The created {@link UsersRecord}.
      */
     public static UsersRecord createPlayer(String uuid, String ip, String name, String locale, boolean admin) {
-        UsersRecord record = getContext().newRecord(Tables.users)
+        UsersRecord record = getContext()
+                .newRecord(Tables.users)
                 .setUuid(uuid)
                 .setIp(ip)
                 .setName(name)
@@ -122,7 +119,9 @@ public class Database {
             throw new IllegalArgumentException("Player does not exists!");
         }
 
-        UsersRecord record = Database.getPlayer(uuid).setName(name)
+        UsersRecord record = Database
+                .getPlayer(uuid)
+                .setName(name)
                 .setLocale(locale)
                 .setIp(ip);
         record.store();
@@ -158,7 +157,8 @@ public class Database {
      * @see <a href="https://proxycheck.io/api/">Proxycheck API docs</a>
      */
     public static IpCachedRecord createIp(String ip, boolean proxy, boolean vpn, String type, int risk) {
-        IpCachedRecord record = getContext().newRecord(Tables.ipCached)
+        IpCachedRecord record = getContext()
+                .newRecord(Tables.ipCached)
                 .setIp(ip)
                 .setProxy(proxy)
                 .setVpn(vpn)
@@ -267,7 +267,8 @@ public class Database {
             throw new IllegalArgumentException("Target is already banned!");
         }
 
-        BansRecord record = getContext().newRecord(Tables.bans)
+        BansRecord record = getContext()
+                .newRecord(Tables.bans)
                 .setAdmin(admin)
                 .setTarget(target)
                 .setCreated(OffsetDateTime.now())
@@ -292,8 +293,7 @@ public class Database {
             throw new IllegalArgumentException("Target is not banned!");
         }
 
-        BansRecord record = latestBan(target)
-                .setActive(false);
+        BansRecord record = latestBan(target).setActive(false);
         record.store();
         return record;
     }
@@ -309,17 +309,13 @@ public class Database {
      * @return The playtime value for the specified field in seconds.
      */
     public static long getPlaytime(String uuid, Field<Long> field) {
-        Record1<Long> timeFetch = getContext()
-                .select(field)
-                .from(Tables.playtime)
-                .where(Tables.playtime.uuid.eq(uuid))
-                .fetchOne();
+        PlaytimeRecord timeFetch = getContext().fetchOne(Tables.playtime, Tables.playtime.uuid.eq(uuid));
         long time = 0;
         if (timeFetch == null) {
             Log.warn("Player @ does not exist", uuid);
             createPlaytime(uuid);
         } else {
-            time = timeFetch.value1();
+            time = timeFetch.get(field);
         }
 
         return time;
@@ -332,10 +328,7 @@ public class Database {
      * @return The total playtime in seconds.
      */
     public static long getTotalPlaytime(String uuid) {
-        PlaytimeRecord timeFetch = getContext()
-                .selectFrom(Tables.playtime)
-                .where(Tables.playtime.uuid.eq(uuid))
-                .fetchOne();
+        PlaytimeRecord timeFetch = getContext().fetchOne(Tables.playtime, Tables.playtime.uuid.eq(uuid));
         long time = 0;
         if (timeFetch == null) {
             Log.warn("Player @ does not exist", uuid);
@@ -361,7 +354,8 @@ public class Database {
      * @return The created {@link PlaytimeRecord} for the player.
      */
     public static PlaytimeRecord createPlaytime(String uuid) {
-        PlaytimeRecord record = getContext().newRecord(Tables.playtime)
+        PlaytimeRecord record = getContext()
+                .newRecord(Tables.playtime)
                 .setUuid(uuid);
         record.store();
         return record;
@@ -374,10 +368,7 @@ public class Database {
      * @return The {@link StatsRecord} representing the player's statistics or null if no statistics is found.
      */
     public static StatsRecord getStats(String uuid) {
-        return getContext()
-                .selectFrom(Tables.stats)
-                .where(Tables.stats.uuid.eq(uuid))
-                .fetchOne();
+        return getContext().fetchOne(Tables.stats, Tables.stats.uuid.eq(uuid));
     }
 
     /**
@@ -387,7 +378,8 @@ public class Database {
      * @return The created {@link StatsRecord} for the player.
      */
     public static StatsRecord createStats(String uuid) {
-        StatsRecord record = getContext().newRecord(Tables.stats)
+        StatsRecord record = getContext()
+                .newRecord(Tables.stats)
                 .setUuid(uuid);
         record.store();
         return record;
@@ -408,7 +400,8 @@ public class Database {
      * @return The created {@link MessagesRecord}.
      */
     public static MessagesRecord createMessage(String server, String from, String target, MessageType type, String text, String locale) {
-        MessagesRecord record = getContext().newRecord(Tables.messages)
+        MessagesRecord record = getContext()
+                .newRecord(Tables.messages)
                 .setServer(server)
                 .setFrom(from)
                 .setTarget(target)
@@ -430,7 +423,8 @@ public class Database {
      * @return The created {@link LoginsRecord}.
      */
     public static LoginsRecord createLogin(String server, String uuid, String ip, String name, String locale) {
-        LoginsRecord record = getContext().newRecord(Tables.logins)
+        LoginsRecord record = getContext()
+                .newRecord(Tables.logins)
                 .setServer(server)
                 .setUuid(uuid)
                 .setIp(ip)
@@ -438,6 +432,59 @@ public class Database {
                 .setLocale(locale);
         record.store();
         return record;
+    }
+    // endregion
+
+    // region ranked
+
+    public static RankedStatsRecord createRankedStats(String uuid, int startElo) {
+        RankedStatsRecord record = getContext()
+                .newRecord(Tables.rankedStats)
+                .setUuid(uuid)
+                .setStartElo(startElo)
+                .setCurrentElo(startElo)
+                .setLowestElo(startElo)
+                .setHighestElo(startElo);
+        record.store();
+        return record;
+    }
+
+    @Nullable
+    public static RankedStatsRecord getRankedStats(String uuid) {
+        return getContext().fetchOne(Tables.rankedStats, Tables.rankedStats.uuid.eq(uuid));
+    }
+
+    public static boolean rankedStatsExists(String uuid) {
+        return getContext().fetchExists(Tables.rankedStats, Tables.rankedStats.uuid.eq(uuid));
+    }
+
+    public static MatchesRecord createMatch(OffsetDateTime started, OffsetDateTime finished, PvpMode mode) {
+        MatchesRecord record = getContext()
+                .newRecord(Tables.matches)
+                .setStarted(started)
+                .setFinished(finished)
+                .setMode(mode);
+        record.store();
+        return record;
+    }
+
+    @Nullable
+    public static MatchesRecord getMatch(int id) {
+        return getContext().fetchOne(Tables.matches, Tables.matches.id.eq(id));
+    }
+
+    public static MatchesRecord[] getMatches(String uuid) {
+        return (MatchesRecord[]) getContext()
+                .select()
+                .from(Tables.matches)
+                .join(Tables.results)
+                .on(Tables.results.id.eq(Tables.matches.id))
+                .where(DSL.field("{0} = any({1})", Boolean.class, DSL.val(uuid), Tables.results.players))
+                .fetchArray();
+    }
+
+    public static boolean matchExists(int id) {
+        return getContext().fetchExists(Tables.matches, Tables.matches.id.eq(id));
     }
     // endregion
 }

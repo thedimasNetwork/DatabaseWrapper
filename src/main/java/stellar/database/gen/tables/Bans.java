@@ -131,7 +131,7 @@ public class Bans extends TableImpl<BansRecord> {
 
     @Override
     public UniqueKey<BansRecord> getPrimaryKey() {
-        return Keys.idx_16388Primary;
+        return Keys.idx_16549Primary;
     }
 
     @Override

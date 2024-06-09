@@ -2,7 +2,7 @@ package stellar.database;
 
 import java.io.IOException;
 import java.util.Properties;
-class Version {
+public class Version {
     public final String type;
     public final String number;
     public final String hash;

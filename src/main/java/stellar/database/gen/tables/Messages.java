@@ -138,7 +138,7 @@ public class Messages extends TableImpl<MessagesRecord> {
 
     @Override
     public UniqueKey<MessagesRecord> getPrimaryKey() {
-        return Keys.idx_16409Primary;
+        return Keys.idx_16570Primary;
     }
 
     @Override
