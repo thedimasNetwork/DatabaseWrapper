@@ -9,12 +9,12 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function4;
+import org.jooq.Function10;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row4;
+import org.jooq.Row10;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -72,6 +72,36 @@ public class Matches extends TableImpl<MatchesRecord> {
      * The column <code>mindustry.matches.mode</code>.
      */
     public final TableField<MatchesRecord, PvpMode> mode = createField(DSL.name("mode"), SQLDataType.VARCHAR(16).nullable(false), this, "", new EnumConverter<String, PvpMode>(String.class, PvpMode.class));
+
+    /**
+     * The column <code>mindustry.matches.map</code>.
+     */
+    public final TableField<MatchesRecord, String> map = createField(DSL.name("map"), SQLDataType.VARCHAR(64).nullable(false), this, "");
+
+    /**
+     * The column <code>mindustry.matches.team_a</code>.
+     */
+    public final TableField<MatchesRecord, String[]> teamA = createField(DSL.name("team_a"), SQLDataType.VARCHAR(40).getArrayDataType(), this, "");
+
+    /**
+     * The column <code>mindustry.matches.team_b</code>.
+     */
+    public final TableField<MatchesRecord, String[]> teamB = createField(DSL.name("team_b"), SQLDataType.VARCHAR(40).getArrayDataType(), this, "");
+
+    /**
+     * The column <code>mindustry.matches.team_c</code>.
+     */
+    public final TableField<MatchesRecord, String[]> teamC = createField(DSL.name("team_c"), SQLDataType.VARCHAR(40).getArrayDataType(), this, "");
+
+    /**
+     * The column <code>mindustry.matches.team_d</code>.
+     */
+    public final TableField<MatchesRecord, String[]> teamD = createField(DSL.name("team_d"), SQLDataType.VARCHAR(40).getArrayDataType(), this, "");
+
+    /**
+     * The column <code>mindustry.matches.delta_elo</code>.
+     */
+    public final TableField<MatchesRecord, Integer[]> deltaElo = createField(DSL.name("delta_elo"), SQLDataType.INTEGER.getArrayDataType(), this, "");
 
     private Matches(Name alias, Table<MatchesRecord> aliased) {
         this(alias, aliased, null);
@@ -161,25 +191,25 @@ public class Matches extends TableImpl<MatchesRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row4 type methods
+    // Row10 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row4<Integer, OffsetDateTime, OffsetDateTime, PvpMode> fieldsRow() {
-        return (Row4) super.fieldsRow();
+    public Row10<Integer, OffsetDateTime, OffsetDateTime, PvpMode, String, String[], String[], String[], String[], Integer[]> fieldsRow() {
+        return (Row10) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function4<? super Integer, ? super OffsetDateTime, ? super OffsetDateTime, ? super PvpMode, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function10<? super Integer, ? super OffsetDateTime, ? super OffsetDateTime, ? super PvpMode, ? super String, ? super String[], ? super String[], ? super String[], ? super String[], ? super Integer[], ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Class, Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function4<? super Integer, ? super OffsetDateTime, ? super OffsetDateTime, ? super PvpMode, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function10<? super Integer, ? super OffsetDateTime, ? super OffsetDateTime, ? super PvpMode, ? super String, ? super String[], ? super String[], ? super String[], ? super String[], ? super Integer[], ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

@@ -11,7 +11,6 @@ import stellar.database.gen.tables.Matches;
 import stellar.database.gen.tables.Messages;
 import stellar.database.gen.tables.Playtime;
 import stellar.database.gen.tables.RankedStats;
-import stellar.database.gen.tables.Results;
 import stellar.database.gen.tables.Stats;
 import stellar.database.gen.tables.Users;
 
@@ -56,11 +55,6 @@ public class Tables {
      * The table <code>mindustry.ranked_stats</code>.
      */
     public static final RankedStats rankedStats = RankedStats.rankedStats;
-
-    /**
-     * The table <code>mindustry.results</code>.
-     */
-    public static final Results results = Results.results;
 
     /**
      * The table <code>mindustry.stats</code>.

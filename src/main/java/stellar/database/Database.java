@@ -4,7 +4,6 @@ import arc.util.Log;
 import arc.util.Nullable;
 import org.jooq.DSLContext;
 import org.jooq.Field;
-import org.jooq.Record1;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import stellar.database.enums.MessageType;
@@ -14,8 +13,9 @@ import stellar.database.gen.Tables;
 import stellar.database.gen.tables.records.*;
 
 import java.time.OffsetDateTime;
-import java.util.regex.MatchResult;
+import java.util.stream.Stream;
 
+import static org.jooq.util.postgres.PostgresDSL.arrayCat;
 import static stellar.database.Config.getDataSource;
 
 /**
@@ -458,12 +458,18 @@ public class Database {
         return getContext().fetchExists(Tables.rankedStats, Tables.rankedStats.uuid.eq(uuid));
     }
 
-    public static MatchesRecord createMatch(OffsetDateTime started, OffsetDateTime finished, PvpMode mode) {
+    public static MatchesRecord createMatch(OffsetDateTime started, OffsetDateTime finished, PvpMode mode, String mapName, String[] teamA, String[] teamB, String[] teamC, String[] teamD, int[] deltaElo) {
         MatchesRecord record = getContext()
                 .newRecord(Tables.matches)
                 .setStarted(started)
                 .setFinished(finished)
-                .setMode(mode);
+                .setMode(mode)
+                .setMap(mapName)
+                .setTeamA(teamA)
+                .setTeamB(teamB)
+                .setTeamC(teamC)
+                .setTeamD(teamD)
+                .setDeltaElo((Integer[]) Stream.of(deltaElo).toArray());
         record.store();
         return record;
     }
@@ -474,12 +480,19 @@ public class Database {
     }
 
     public static MatchesRecord[] getMatches(String uuid) {
-        return (MatchesRecord[]) getContext()
-                .select()
-                .from(Tables.matches)
-                .join(Tables.results)
-                .on(Tables.results.id.eq(Tables.matches.id))
-                .where(DSL.field("{0} = any({1})", Boolean.class, DSL.val(uuid), Tables.results.players))
+        Field<String[]> combined = arrayCat(arrayCat(arrayCat(Tables.matches.teamA, Tables.matches.teamB), Tables.matches.teamC), Tables.matches.teamD);
+        return getContext()
+                .selectFrom(Tables.matches)
+                .where(DSL.field("{0} = any({1})", Boolean.class, DSL.val(uuid), combined))
+                .fetchArray();
+    }
+
+    public static MatchesRecord[] getRecentMatches(int offset, int limit) {
+        return getContext()
+                .selectFrom(Tables.matches)
+                .orderBy(Tables.matches.finished.desc())
+                .limit(limit)
+                .offset(offset)
                 .fetchArray();
     }
 
