@@ -547,6 +547,13 @@ public class DatabaseAsync {
 
     // region ranked
 
+    /**
+     * Asynchronously creates a new {@link RankedStatsRecord} for a player in the database.
+     *
+     * @param uuid     The UUID of the player.
+     * @param startElo The starting Elo rating for the player.
+     * @return A CompletableFuture that holds the created {@link RankedStatsRecord}.
+     */
     public static CompletableFuture<RankedStatsRecord> createRankedStatsAsync(String uuid, int startElo) {
         return getContextAsync().thenApplyAsync(context -> {
             try {
@@ -564,6 +571,12 @@ public class DatabaseAsync {
         });
     }
 
+    /**
+     * Asynchronously retrieves the {@link RankedStatsRecord} of a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return A CompletableFuture that holds the {@link RankedStatsRecord} representing the player's ranked statistics or null if no ranked statistics is found.
+     */
     @Nullable
     public static CompletableFuture<RankedStatsRecord> getRankedStatsAsync(String uuid) {
         return getContextAsync().thenApplyAsync(context -> {
@@ -575,6 +588,12 @@ public class DatabaseAsync {
         });
     }
 
+    /**
+     * Asynchronously checks if a player has ranked statistics in the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return A CompletableFuture that holds true if the player has ranked statistics, false otherwise.
+     */
     public static CompletableFuture<Boolean> rankedStatsExistsAsync(String uuid) {
         return getContextAsync().thenApplyAsync(context -> {
             try {
@@ -585,6 +604,20 @@ public class DatabaseAsync {
         });
     }
 
+    /**
+     * Asynchronously creates a new {@link MatchesRecord} in the database and returns it.
+     *
+     * @param started  The start time of the match.
+     * @param finished The finish time of the match.
+     * @param mode     The PvP mode of the match ({@link PvpMode}).
+     * @param mapName  The name of the map played in the match.
+     * @param teamA    The array of player UUIDs in team A.
+     * @param teamB    The array of player UUIDs in team B.
+     * @param teamC    The array of player UUIDs in team C (or empty array if not applicable).
+     * @param teamD    The array of player UUIDs in team D (or empty array if not applicable).
+     * @param deltaElo The array of Elo rating changes for each player after the match.
+     * @return A CompletableFuture that holds the created {@link MatchesRecord}.
+     */
     public static CompletableFuture<MatchesRecord> createMatchAsync(OffsetDateTime started, OffsetDateTime finished, PvpMode mode, String mapName, String[] teamA, String[] teamB, String[] teamC, String[] teamD, int[] deltaElo) {
         return getContextAsync().thenApplyAsync(context -> {
             try {
@@ -606,6 +639,12 @@ public class DatabaseAsync {
         });
     }
 
+    /**
+     * Asynchronously retrieves a {@link MatchesRecord} by ID from the database.
+     *
+     * @param id The ID of the match.
+     * @return A CompletableFuture that holds the {@link MatchesRecord} representing the match or null if not found.
+     */
     @Nullable
     public static CompletableFuture<MatchesRecord> getMatchAsync(int id) {
         return getContextAsync().thenApplyAsync(context -> {
@@ -617,7 +656,13 @@ public class DatabaseAsync {
         });
     }
 
-    public static CompletableFuture<MatchesRecord[]> getMatches(String uuid) {
+    /**
+     * Asynchronously retrieves an array of {@link MatchesRecord}s for a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return A CompletableFuture that holds an array of {@link MatchesRecord}s representing the matches the player participated in, ordered by finish time in descending order.
+     */
+    public static CompletableFuture<MatchesRecord[]> getMatchesAsync(String uuid) {
         return getContextAsync().thenApplyAsync(context -> {
             try {
                 Field<String[]> combined = arrayCat(arrayCat(arrayCat(Tables.matches.teamA, Tables.matches.teamB), Tables.matches.teamC), Tables.matches.teamD);
@@ -631,6 +676,13 @@ public class DatabaseAsync {
         });
     }
 
+    /**
+     * Asynchronously retrieves an array of recent {@link MatchesRecord}s from the database.
+     *
+     * @param offset The offset from which to start retrieving matches.
+     * @param limit  The maximum number of matches to retrieve.
+     * @return A CompletableFuture that holds an array of {@link MatchesRecord}s representing recent matches, ordered by finish time in descending order.
+     */
     public static CompletableFuture<MatchesRecord[]> getRecentMatchesAsync(int offset, int limit) {
         return getContextAsync().thenApplyAsync(context -> {
             try {

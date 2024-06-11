@@ -437,6 +437,13 @@ public class Database {
 
     // region ranked
 
+    /**
+     * Creates a new {@link RankedStatsRecord} for a player in the database and returns it.
+     *
+     * @param uuid     The UUID of the player.
+     * @param startElo The starting Elo rating for the player.
+     * @return The created {@link RankedStatsRecord}.
+     */
     public static RankedStatsRecord createRankedStats(String uuid, int startElo) {
         RankedStatsRecord record = getContext()
                 .newRecord(Tables.rankedStats)
@@ -449,15 +456,41 @@ public class Database {
         return record;
     }
 
+    /**
+     * Retrieves the {@link RankedStatsRecord} of a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return The {@link RankedStatsRecord} representing the player's ranked statistics or null if no ranked statistics is found.
+     */
     @Nullable
     public static RankedStatsRecord getRankedStats(String uuid) {
         return getContext().fetchOne(Tables.rankedStats, Tables.rankedStats.uuid.eq(uuid));
     }
 
+    /**
+     * Checks if a player has ranked statistics in the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return True if the player has ranked statistics, false otherwise.
+     */
     public static boolean rankedStatsExists(String uuid) {
         return getContext().fetchExists(Tables.rankedStats, Tables.rankedStats.uuid.eq(uuid));
     }
 
+    /**
+     * Creates a new {@link MatchesRecord} in the database and returns it.
+     *
+     * @param started  The start time of the match.
+     * @param finished The finish time of the match.
+     * @param mode     The PvP mode of the match ({@link PvpMode}).
+     * @param mapName  The name of the map played in the match.
+     * @param teamA    The array of player UUIDs in team A.
+     * @param teamB    The array of player UUIDs in team B.
+     * @param teamC    The array of player UUIDs in team C (or empty array if not applicable).
+     * @param teamD    The array of player UUIDs in team D (or empty array if not applicable).
+     * @param deltaElo The array of Elo rating changes for each player after the match.
+     * @return The created {@link MatchesRecord}.
+     */
     public static MatchesRecord createMatch(OffsetDateTime started, OffsetDateTime finished, PvpMode mode, String mapName, String[] teamA, String[] teamB, String[] teamC, String[] teamD, int[] deltaElo) {
         MatchesRecord record = getContext()
                 .newRecord(Tables.matches)
@@ -474,11 +507,23 @@ public class Database {
         return record;
     }
 
+    /**
+     * Retrieves a {@link MatchesRecord} by ID from the database.
+     *
+     * @param id The ID of the match.
+     * @return The {@link MatchesRecord} representing the match or null if not found.
+     */
     @Nullable
     public static MatchesRecord getMatch(int id) {
         return getContext().fetchOne(Tables.matches, Tables.matches.id.eq(id));
     }
 
+    /**
+     * Retrieves an array of {@link MatchesRecord}s for a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return An array of {@link MatchesRecord}s representing the matches the player participated in, ordered by finish time in descending order.
+     */
     public static MatchesRecord[] getMatches(String uuid) {
         Field<String[]> combined = arrayCat(arrayCat(arrayCat(Tables.matches.teamA, Tables.matches.teamB), Tables.matches.teamC), Tables.matches.teamD);
         return getContext()
@@ -488,6 +533,13 @@ public class Database {
                 .fetchArray();
     }
 
+    /**
+     * Retrieves an array of recent {@link MatchesRecord}s from the database.
+     *
+     * @param offset The offset from which to start retrieving matches.
+     * @param limit  The maximum number of matches to retrieve.
+     * @return An array of {@link MatchesRecord}s representing recent matches, ordered by finish time in descending order.
+     */
     public static MatchesRecord[] getRecentMatches(int offset, int limit) {
         return getContext()
                 .selectFrom(Tables.matches)
