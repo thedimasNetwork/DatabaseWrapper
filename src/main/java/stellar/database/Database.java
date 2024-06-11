@@ -484,6 +484,7 @@ public class Database {
         return getContext()
                 .selectFrom(Tables.matches)
                 .where(DSL.field("{0} = any({1})", Boolean.class, DSL.val(uuid), combined))
+                .orderBy(Tables.matches.finished.desc())
                 .fetchArray();
     }
 
@@ -494,10 +495,6 @@ public class Database {
                 .limit(limit)
                 .offset(offset)
                 .fetchArray();
-    }
-
-    public static boolean matchExists(int id) {
-        return getContext().fetchExists(Tables.matches, Tables.matches.id.eq(id));
     }
     // endregion
 }

@@ -1,6 +1,7 @@
 package stellar.database;
 
 import arc.util.Log;
+import arc.util.Nullable;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record1;
@@ -9,12 +10,15 @@ import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 import stellar.database.enums.MessageType;
 import stellar.database.enums.PlayerStatus;
+import stellar.database.enums.PvpMode;
 import stellar.database.gen.Tables;
 import stellar.database.gen.tables.records.*;
 
 import java.time.OffsetDateTime;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
 
+import static org.jooq.util.postgres.PostgresDSL.arrayCat;
 import static stellar.database.Config.getDataSourceAsync;
 
 /**
@@ -536,6 +540,107 @@ public class DatabaseAsync {
                 return record;
             } catch (DataAccessException e) {
                 throw new RuntimeException("Error creating login.", e);
+            }
+        });
+    }
+    // endregion
+
+    // region ranked
+
+    public static CompletableFuture<RankedStatsRecord> createRankedStatsAsync(String uuid, int startElo) {
+        return getContextAsync().thenApplyAsync(context -> {
+            try {
+                RankedStatsRecord record = context.newRecord(Tables.rankedStats)
+                        .setUuid(uuid)
+                        .setStartElo(startElo)
+                        .setCurrentElo(startElo)
+                        .setLowestElo(startElo)
+                        .setHighestElo(startElo);
+                record.store();
+                return record;
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error creating ranked stats.", e);
+            }
+        });
+    }
+
+    @Nullable
+    public static CompletableFuture<RankedStatsRecord> getRankedStatsAsync(String uuid) {
+        return getContextAsync().thenApplyAsync(context -> {
+            try {
+                return context.fetchOne(Tables.rankedStats, Tables.rankedStats.uuid.eq(uuid));
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error fetching ranked stats.", e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Boolean> rankedStatsExistsAsync(String uuid) {
+        return getContextAsync().thenApplyAsync(context -> {
+            try {
+                return context.fetchExists(Tables.rankedStats, Tables.rankedStats.uuid.eq(uuid));
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error checking ranked stats existence.", e);
+            }
+        });
+    }
+
+    public static CompletableFuture<MatchesRecord> createMatchAsync(OffsetDateTime started, OffsetDateTime finished, PvpMode mode, String mapName, String[] teamA, String[] teamB, String[] teamC, String[] teamD, int[] deltaElo) {
+        return getContextAsync().thenApplyAsync(context -> {
+            try {
+                MatchesRecord record = context.newRecord(Tables.matches)
+                        .setStarted(started)
+                        .setFinished(finished)
+                        .setMode(mode)
+                        .setMap(mapName)
+                        .setTeamA(teamA)
+                        .setTeamB(teamB)
+                        .setTeamC(teamC)
+                        .setTeamD(teamD)
+                        .setDeltaElo((Integer[]) Stream.of(deltaElo).toArray());
+                record.store();
+                return record;
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error creating match.", e);
+            }
+        });
+    }
+
+    @Nullable
+    public static CompletableFuture<MatchesRecord> getMatchAsync(int id) {
+        return getContextAsync().thenApplyAsync(context -> {
+            try {
+                return context.fetchOne(Tables.matches, Tables.matches.id.eq(id));
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error fetching match.", e);
+            }
+        });
+    }
+
+    public static CompletableFuture<MatchesRecord[]> getMatches(String uuid) {
+        return getContextAsync().thenApplyAsync(context -> {
+            try {
+                Field<String[]> combined = arrayCat(arrayCat(arrayCat(Tables.matches.teamA, Tables.matches.teamB), Tables.matches.teamC), Tables.matches.teamD);
+                return context.selectFrom(Tables.matches)
+                        .where(DSL.field("{0} = any({1})", Boolean.class, DSL.val(uuid), combined))
+                        .orderBy(Tables.matches.finished.desc())
+                        .fetchArray();
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error fetching matches.", e);
+            }
+        });
+    }
+
+    public static CompletableFuture<MatchesRecord[]> getRecentMatchesAsync(int offset, int limit) {
+        return getContextAsync().thenApplyAsync(context -> {
+            try {
+                return context.selectFrom(Tables.matches)
+                        .orderBy(Tables.matches.finished.desc())
+                        .limit(limit)
+                        .offset(offset)
+                        .fetchArray();
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error fetching recent matches.", e);
             }
         });
     }
