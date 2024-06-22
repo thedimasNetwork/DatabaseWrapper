@@ -2,10 +2,7 @@ package stellar.database;
 
 import arc.util.Log;
 import arc.util.Nullable;
-import org.jooq.DSLContext;
-import org.jooq.Field;
-import org.jooq.Record1;
-import org.jooq.SQLDialect;
+import org.jooq.*;
 import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
 import stellar.database.enums.MessageType;
@@ -16,6 +13,7 @@ import stellar.database.gen.tables.records.*;
 
 import java.time.OffsetDateTime;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static org.jooq.util.postgres.PostgresDSL.arrayCat;
@@ -547,61 +545,78 @@ public class DatabaseAsync {
 
     // region ranked
 
-    /**
-     * Asynchronously creates a new {@link RankedStatsRecord} for a player in the database.
-     *
-     * @param uuid     The UUID of the player.
-     * @param startElo The starting Elo rating for the player.
-     * @return A CompletableFuture that holds the created {@link RankedStatsRecord}.
-     */
-    public static CompletableFuture<RankedStatsRecord> createRankedStatsAsync(String uuid, int startElo) {
+    public static CompletableFuture<EloHistoryRecord> createEloHistoryAsync(String uuid, int elo, int delta, int match, float result) {
         return getContextAsync().thenApplyAsync(context -> {
             try {
-                RankedStatsRecord record = context.newRecord(Tables.rankedStats)
-                        .setUuid(uuid)
-                        .setStartElo(startElo)
-                        .setCurrentElo(startElo)
-                        .setLowestElo(startElo)
-                        .setHighestElo(startElo);
+                EloHistoryRecord record = context.newRecord(Tables.eloHistory)
+                        .setPlayer(uuid)
+                        .setElo(elo)
+                        .setDelta(delta)
+                        .setMatch(match)
+                        .setResult(result);
                 record.store();
                 return record;
             } catch (DataAccessException e) {
-                throw new RuntimeException("Error creating ranked stats.", e);
+                throw new RuntimeException("Error creating elo history.", e);
             }
         });
     }
 
-    /**
-     * Asynchronously retrieves the {@link RankedStatsRecord} of a player from the database.
-     *
-     * @param uuid The UUID of the player.
-     * @return A CompletableFuture that holds the {@link RankedStatsRecord} representing the player's ranked statistics or null if no ranked statistics is found.
-     */
-    @Nullable
-    public static CompletableFuture<RankedStatsRecord> getRankedStatsAsync(String uuid) {
+    public static CompletableFuture<EloHistoryRecord[]> getEloHistoryAsync(String uuid) {
         return getContextAsync().thenApplyAsync(context -> {
             try {
-                return context.fetchOne(Tables.rankedStats, Tables.rankedStats.uuid.eq(uuid));
+                return context.selectFrom(Tables.eloHistory)
+                        .where(Tables.eloHistory.player.eq(uuid))
+                        .orderBy(Tables.eloHistory.timestamp.desc())
+                        .fetchArray();
             } catch (DataAccessException e) {
-                throw new RuntimeException("Error fetching ranked stats.", e);
+                throw new RuntimeException("Error fetching elo history.", e);
             }
         });
     }
 
-    /**
-     * Asynchronously checks if a player has ranked statistics in the database.
-     *
-     * @param uuid The UUID of the player.
-     * @return A CompletableFuture that holds true if the player has ranked statistics, false otherwise.
-     */
-    public static CompletableFuture<Boolean> rankedStatsExistsAsync(String uuid) {
+    public static CompletableFuture<Integer> getCurrentEloAsync(String uuid) {
         return getContextAsync().thenApplyAsync(context -> {
             try {
-                return context.fetchExists(Tables.rankedStats, Tables.rankedStats.uuid.eq(uuid));
+                Record1<Integer> fetch = context.select(Tables.eloHistory.elo)
+                        .from(Tables.eloHistory)
+                        .where(Tables.eloHistory.player.eq(uuid))
+                        .orderBy(Tables.eloHistory.timestamp.desc())
+                        .fetchOne();
+                return fetch != null ? fetch.value1() : 0;
             } catch (DataAccessException e) {
-                throw new RuntimeException("Error checking ranked stats existence.", e);
+                throw new RuntimeException("Error fetching current elo.", e);
             }
         });
+    }
+
+    public static CompletableFuture<Integer> getTotalMatchesAsync(String uuid, float result) {
+        return getContextAsync().thenApplyAsync(context -> {
+            if (result != 0 && result != 0.5f && result != 1) {
+                throw new IllegalArgumentException("Result must be 0, 0.5, or 1");
+            }
+
+            try {
+                return context.fetchCount(Tables.eloHistory, Tables.eloHistory.player.eq(uuid).and(Tables.eloHistory.result.eq(result)));
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error fetching total matches.", e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Integer> getAggregatedEloAsync(String uuid, Function<Field<Integer>, AggregateFunction<Integer>> function) {
+        return getContextAsync().thenApplyAsync(context -> {
+            try {
+                Record1<Integer> fetch = context.select(function.apply(Tables.eloHistory.elo))
+                        .from(Tables.eloHistory)
+                        .where(Tables.eloHistory.player.eq(uuid))
+                        .fetchOne();
+                return fetch != null ? fetch.value1() : 0;
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error fetching aggregated elo.", e);
+            }
+        });
+
     }
 
     /**
@@ -615,10 +630,9 @@ public class DatabaseAsync {
      * @param teamB    The array of player UUIDs in team B.
      * @param teamC    The array of player UUIDs in team C (or empty array if not applicable).
      * @param teamD    The array of player UUIDs in team D (or empty array if not applicable).
-     * @param deltaElo The array of Elo rating changes for each player after the match.
      * @return A CompletableFuture that holds the created {@link MatchesRecord}.
      */
-    public static CompletableFuture<MatchesRecord> createMatchAsync(OffsetDateTime started, OffsetDateTime finished, PvpMode mode, String mapName, String[] teamA, String[] teamB, String[] teamC, String[] teamD, int[] deltaElo) {
+    public static CompletableFuture<MatchesRecord> createMatchAsync(OffsetDateTime started, OffsetDateTime finished, PvpMode mode, String mapName, String[] teamA, String[] teamB, String[] teamC, String[] teamD) {
         return getContextAsync().thenApplyAsync(context -> {
             try {
                 MatchesRecord record = context.newRecord(Tables.matches)
@@ -629,8 +643,7 @@ public class DatabaseAsync {
                         .setTeamA(teamA)
                         .setTeamB(teamB)
                         .setTeamC(teamC)
-                        .setTeamD(teamD)
-                        .setDeltaElo((Integer[]) Stream.of(deltaElo).toArray());
+                        .setTeamD(teamD);
                 record.store();
                 return record;
             } catch (DataAccessException e) {

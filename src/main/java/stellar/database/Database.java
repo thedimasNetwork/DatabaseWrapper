@@ -496,7 +496,7 @@ public class Database {
      * @param teamD    The array of player UUIDs in team D (or empty array if not applicable).
      * @return The created {@link MatchesRecord}.
      */
-    public static MatchesRecord createMatch(OffsetDateTime started, OffsetDateTime finished, PvpMode mode, String mapName, String[] teamA, String[] teamB, String[] teamC, String[] teamD, int[] deltaElo) {
+    public static MatchesRecord createMatch(OffsetDateTime started, OffsetDateTime finished, PvpMode mode, String mapName, String[] teamA, String[] teamB, String[] teamC, String[] teamD) {
         MatchesRecord record = getContext()
                 .newRecord(Tables.matches)
                 .setStarted(started)
