@@ -546,6 +546,27 @@ public class DatabaseAsync {
     // region ranked
 
     /**
+     * Asynchronously creates a new {@link EloHistoryRecord} with the default Elo rating of 1200 in the database and returns it.
+     *
+     * @param uuid The UUID of the player.
+     * @return A CompletableFuture that holds the created {@link EloHistoryRecord}.
+     */
+    public static CompletableFuture<EloHistoryRecord> initEloHistoryAsync(String uuid) {
+        return getContextAsync().thenApplyAsync(context -> {
+            try {
+                EloHistoryRecord record = context.newRecord(Tables.eloHistory)
+                        .setPlayer(uuid)
+                        .setElo(1200)
+                        .setDelta(1200);
+                record.store();
+                return record;
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error initializing elo history.", e);
+            }
+        });
+    }
+
+    /**
      * Asynchronously creates a new {@link EloHistoryRecord} in the database and returns it.
      *
      * @param uuid   The UUID of the player.

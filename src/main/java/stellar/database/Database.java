@@ -437,6 +437,21 @@ public class Database {
     // region ranked
 
     /**
+     * Creates a new {@link EloHistoryRecord} with the default Elo rating of 1200 in the database and returns it.
+     *
+     * @param uuid The UUID of the player.
+     * @return The created {@link EloHistoryRecord}.
+     */
+    public static EloHistoryRecord initEloHistory(String uuid) {
+        EloHistoryRecord record = getContext().newRecord(Tables.eloHistory)
+                .setPlayer(uuid)
+                .setElo(1200)
+                .setDelta(1200);
+        record.store();
+        return record;
+    }
+
+    /**
      * Creates a new {@link EloHistoryRecord} in the database and returns it.
      *
      * @param uuid   The UUID of the player.
