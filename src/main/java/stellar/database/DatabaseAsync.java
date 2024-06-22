@@ -595,7 +595,7 @@ public class DatabaseAsync {
      * Asynchronously retrieves the current Elo rating for a player from the database.
      *
      * @param uuid The UUID of the player.
-     * @return A CompletableFuture that holds the current Elo rating of the player, or 0 if no rating is found.
+     * @return A CompletableFuture that holds the current Elo rating of the player, or null if no rating is found.
      */
     public static CompletableFuture<Integer> getCurrentEloAsync(String uuid) {
         return getContextAsync().thenApplyAsync(context -> {
@@ -605,7 +605,7 @@ public class DatabaseAsync {
                         .where(Tables.eloHistory.player.eq(uuid))
                         .orderBy(Tables.eloHistory.timestamp.desc())
                         .fetchOne();
-                return fetch != null ? fetch.value1() : 0;
+                return fetch != null ? fetch.value1() : null;
             } catch (DataAccessException e) {
                 throw new RuntimeException("Error fetching current elo.", e);
             }
@@ -639,7 +639,7 @@ public class DatabaseAsync {
      *
      * @param uuid     The UUID of the player.
      * @param function A function that takes a {@link Field<Integer>} and returns an {@link AggregateFunction<Integer>} to be applied to the Elo ratings.
-     * @return A CompletableFuture that holds the result of the aggregation function applied to the player's Elo ratings, or 0 if no data is found.
+     * @return A CompletableFuture that holds the result of the aggregation function applied to the player's Elo ratings, or null if no data is found.
      */
     public static CompletableFuture<Integer> getAggregatedEloAsync(String uuid, Function<Field<Integer>, AggregateFunction<Integer>> function) {
         return getContextAsync().thenApplyAsync(context -> {
@@ -648,7 +648,7 @@ public class DatabaseAsync {
                         .from(Tables.eloHistory)
                         .where(Tables.eloHistory.player.eq(uuid))
                         .fetchOne();
-                return fetch != null ? fetch.value1() : 0;
+                return fetch != null ? fetch.value1() : null;
             } catch (DataAccessException e) {
                 throw new RuntimeException("Error fetching aggregated elo.", e);
             }
