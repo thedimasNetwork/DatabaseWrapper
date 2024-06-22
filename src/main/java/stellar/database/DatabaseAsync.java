@@ -573,7 +573,7 @@ public class DatabaseAsync {
      * @param elo    The new Elo rating of the player.
      * @param delta  The change in Elo rating from the previous rating.
      * @param match  The ID of the match that caused this Elo change.
-     * @param result The result of the match (0 for loss, 0.5 for draw, 1 for win).
+     * @param result The result of the match (0 - loss, 0.5 - draw, 0.75 - win (not 1st), 1 - win (1st)).
      * @return A CompletableFuture that holds the created {@link EloHistoryRecord}.
      */
     public static CompletableFuture<EloHistoryRecord> createEloHistoryAsync(String uuid, int elo, int delta, int match, float result) {
@@ -637,14 +637,14 @@ public class DatabaseAsync {
      * Asynchronously retrieves the total number of matches played by a player with a specific result.
      *
      * @param uuid   The UUID of the player.
-     * @param result The result of the matches to count (0 for losses, 0.5 for draws, 1 for wins).
+     * @param result The result of the match (0 - loss, 0.5 - draw, 0.75 - win (not 1st), 1 - win (1st)).
      * @return A CompletableFuture that holds the total number of matches played by the player with the specified result.
-     * @throws IllegalArgumentException If the result is not 0, 0.5, or 1.
+     * @throws IllegalArgumentException If the result is not 0, 0.5, 0.75, or 1.
      */
     public static CompletableFuture<Integer> getTotalMatchesAsync(String uuid, float result) {
         return getContextAsync().thenApplyAsync(context -> {
-            if (result != 0 && result != 0.5f && result != 1) {
-                throw new IllegalArgumentException("Result must be 0, 0.5, or 1");
+            if (result != 0 && result != 0.5f && result != 0.75f && result != 1) {
+                throw new IllegalArgumentException("Result must be 0, 0.5, 0.75 or 1");
             }
 
             try {
