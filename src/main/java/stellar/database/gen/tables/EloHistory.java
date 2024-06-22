@@ -61,22 +61,22 @@ public class EloHistory extends TableImpl<EloHistoryRecord> {
     /**
      * The column <code>mindustry.elo_history.timestamp</code>.
      */
-    public final TableField<EloHistoryRecord, OffsetDateTime> timestamp = createField(DSL.name("timestamp"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "");
+    public final TableField<EloHistoryRecord, OffsetDateTime> timestamp = createField(DSL.name("timestamp"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.elo_history.player</code>.
      */
-    public final TableField<EloHistoryRecord, String> player = createField(DSL.name("player"), SQLDataType.VARCHAR(40), this, "");
+    public final TableField<EloHistoryRecord, String> player = createField(DSL.name("player"), SQLDataType.VARCHAR(40).nullable(false), this, "");
 
     /**
      * The column <code>mindustry.elo_history.elo</code>.
      */
-    public final TableField<EloHistoryRecord, Integer> elo = createField(DSL.name("elo"), SQLDataType.INTEGER, this, "");
+    public final TableField<EloHistoryRecord, Integer> elo = createField(DSL.name("elo"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>mindustry.elo_history.delta</code>.
      */
-    public final TableField<EloHistoryRecord, Integer> delta = createField(DSL.name("delta"), SQLDataType.INTEGER, this, "");
+    public final TableField<EloHistoryRecord, Integer> delta = createField(DSL.name("delta"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>mindustry.elo_history.match</code>.
