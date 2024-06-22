@@ -545,6 +545,16 @@ public class DatabaseAsync {
 
     // region ranked
 
+    /**
+     * Asynchronously creates a new {@link EloHistoryRecord} in the database and returns it.
+     *
+     * @param uuid   The UUID of the player.
+     * @param elo    The new Elo rating of the player.
+     * @param delta  The change in Elo rating from the previous rating.
+     * @param match  The ID of the match that caused this Elo change.
+     * @param result The result of the match (0 for loss, 0.5 for draw, 1 for win).
+     * @return A CompletableFuture that holds the created {@link EloHistoryRecord}.
+     */
     public static CompletableFuture<EloHistoryRecord> createEloHistoryAsync(String uuid, int elo, int delta, int match, float result) {
         return getContextAsync().thenApplyAsync(context -> {
             try {
@@ -562,6 +572,12 @@ public class DatabaseAsync {
         });
     }
 
+    /**
+     * Asynchronously retrieves the Elo history for a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return A CompletableFuture that holds an array of {@link EloHistoryRecord}s representing the player's Elo history, ordered by timestamp in descending order.
+     */
     public static CompletableFuture<EloHistoryRecord[]> getEloHistoryAsync(String uuid) {
         return getContextAsync().thenApplyAsync(context -> {
             try {
@@ -575,6 +591,12 @@ public class DatabaseAsync {
         });
     }
 
+    /**
+     * Asynchronously retrieves the current Elo rating for a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return A CompletableFuture that holds the current Elo rating of the player, or 0 if no rating is found.
+     */
     public static CompletableFuture<Integer> getCurrentEloAsync(String uuid) {
         return getContextAsync().thenApplyAsync(context -> {
             try {
@@ -590,6 +612,14 @@ public class DatabaseAsync {
         });
     }
 
+    /**
+     * Asynchronously retrieves the total number of matches played by a player with a specific result.
+     *
+     * @param uuid   The UUID of the player.
+     * @param result The result of the matches to count (0 for losses, 0.5 for draws, 1 for wins).
+     * @return A CompletableFuture that holds the total number of matches played by the player with the specified result.
+     * @throws IllegalArgumentException If the result is not 0, 0.5, or 1.
+     */
     public static CompletableFuture<Integer> getTotalMatchesAsync(String uuid, float result) {
         return getContextAsync().thenApplyAsync(context -> {
             if (result != 0 && result != 0.5f && result != 1) {
@@ -604,6 +634,13 @@ public class DatabaseAsync {
         });
     }
 
+    /**
+     * Asynchronously retrieves an aggregated Elo statistic for a player from the database.
+     *
+     * @param uuid     The UUID of the player.
+     * @param function A function that takes a {@link Field<Integer>} and returns an {@link AggregateFunction<Integer>} to be applied to the Elo ratings.
+     * @return A CompletableFuture that holds the result of the aggregation function applied to the player's Elo ratings, or 0 if no data is found.
+     */
     public static CompletableFuture<Integer> getAggregatedEloAsync(String uuid, Function<Field<Integer>, AggregateFunction<Integer>> function) {
         return getContextAsync().thenApplyAsync(context -> {
             try {

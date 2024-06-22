@@ -436,6 +436,16 @@ public class Database {
 
     // region ranked
 
+    /**
+     * Creates a new {@link EloHistoryRecord} in the database and returns it.
+     *
+     * @param uuid   The UUID of the player.
+     * @param elo    The new Elo rating of the player.
+     * @param delta  The change in Elo rating from the previous rating.
+     * @param match  The ID of the match that caused this Elo change.
+     * @param result The result of the match (0 for loss, 0.5 for draw, 1 for win).
+     * @return The created {@link EloHistoryRecord}.
+     */
     public static EloHistoryRecord createEloHistory(String uuid, int elo, int delta, int match, float result) {
         EloHistoryRecord record = getContext()
                 .newRecord(Tables.eloHistory)
@@ -448,6 +458,12 @@ public class Database {
         return record;
     }
 
+    /**
+     * Retrieves the Elo history for a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return An array of {@link EloHistoryRecord}s representing the player's Elo history, ordered by timestamp in descending order.
+     */
     public static EloHistoryRecord[] getEloHistory(String uuid) {
         return getContext()
                 .selectFrom(Tables.eloHistory)
@@ -456,6 +472,12 @@ public class Database {
                 .fetchArray();
     }
 
+    /**
+     * Retrieves the current Elo rating for a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return The current Elo rating of the player, or 0 if no rating is found.
+     */
     public static int getCurrentElo(String uuid) {
         Record1<Integer> fetch = getContext()
                 .select(Tables.eloHistory.elo)
@@ -466,6 +488,14 @@ public class Database {
         return fetch != null ? fetch.value1() : 0;
     }
 
+    /**
+     * Retrieves the total number of matches played by a player with a specific result.
+     *
+     * @param uuid   The UUID of the player.
+     * @param result The result of the matches to count (0 for losses, 0.5 for draws, 1 for wins).
+     * @return The total number of matches played by the player with the specified result.
+     * @throws IllegalArgumentException If the result is not 0, 0.5, or 1.
+     */
     public static int getTotalMatches(String uuid, float result) {
         if (result != 0 && result != 0.5f && result != 1) {
             throw new IllegalArgumentException("Result must be 0, 0.5, or 1");
@@ -474,6 +504,13 @@ public class Database {
         return getContext().fetchCount(Tables.eloHistory, Tables.eloHistory.player.eq(uuid).and(Tables.eloHistory.result.eq(result)));
     }
 
+    /**
+     * Retrieves an aggregated Elo statistic for a player from the database.
+     *
+     * @param uuid     The UUID of the player.
+     * @param function A function that takes a {@link Field<Integer>} and returns an {@link AggregateFunction<Integer>} to be applied to the Elo ratings.
+     * @return The result of the aggregation function applied to the player's Elo ratings, or 0 if no data is found.
+     */
     public static int getAggregatedElo(String uuid, Function<Field<Integer>, AggregateFunction<Integer>> function) {
         Record1<Integer> fetch = getContext()
                 .select(function.apply(Tables.eloHistory.elo))
