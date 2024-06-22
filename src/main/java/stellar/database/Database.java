@@ -2,9 +2,7 @@ package stellar.database;
 
 import arc.util.Log;
 import arc.util.Nullable;
-import org.jooq.DSLContext;
-import org.jooq.Field;
-import org.jooq.SQLDialect;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import stellar.database.enums.MessageType;
 import stellar.database.enums.PlayerStatus;
@@ -13,6 +11,7 @@ import stellar.database.gen.Tables;
 import stellar.database.gen.tables.records.*;
 
 import java.time.OffsetDateTime;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static org.jooq.util.postgres.PostgresDSL.arrayCat;
@@ -437,44 +436,51 @@ public class Database {
 
     // region ranked
 
-    /**
-     * Creates a new {@link RankedStatsRecord} for a player in the database and returns it.
-     *
-     * @param uuid     The UUID of the player.
-     * @param startElo The starting Elo rating for the player.
-     * @return The created {@link RankedStatsRecord}.
-     */
-    public static RankedStatsRecord createRankedStats(String uuid, int startElo) {
-        RankedStatsRecord record = getContext()
-                .newRecord(Tables.rankedStats)
-                .setUuid(uuid)
-                .setStartElo(startElo)
-                .setCurrentElo(startElo)
-                .setLowestElo(startElo)
-                .setHighestElo(startElo);
+    public static EloHistoryRecord createEloHistory(String uuid, int elo, int delta, int match, float result) {
+        EloHistoryRecord record = getContext()
+                .newRecord(Tables.eloHistory)
+                .setPlayer(uuid)
+                .setElo(elo)
+                .setDelta(delta)
+                .setMatch(match)
+                .setResult(result);
         record.store();
         return record;
     }
 
-    /**
-     * Retrieves the {@link RankedStatsRecord} of a player from the database.
-     *
-     * @param uuid The UUID of the player.
-     * @return The {@link RankedStatsRecord} representing the player's ranked statistics or null if no ranked statistics is found.
-     */
-    @Nullable
-    public static RankedStatsRecord getRankedStats(String uuid) {
-        return getContext().fetchOne(Tables.rankedStats, Tables.rankedStats.uuid.eq(uuid));
+    public static EloHistoryRecord[] getEloHistory(String uuid) {
+        return getContext()
+                .selectFrom(Tables.eloHistory)
+                .where(Tables.eloHistory.player.eq(uuid))
+                .orderBy(Tables.eloHistory.timestamp.desc())
+                .fetchArray();
     }
 
-    /**
-     * Checks if a player has ranked statistics in the database.
-     *
-     * @param uuid The UUID of the player.
-     * @return True if the player has ranked statistics, false otherwise.
-     */
-    public static boolean rankedStatsExists(String uuid) {
-        return getContext().fetchExists(Tables.rankedStats, Tables.rankedStats.uuid.eq(uuid));
+    public static int getCurrentElo(String uuid) {
+        Record1<Integer> fetch = getContext()
+                .select(Tables.eloHistory.elo)
+                .from(Tables.eloHistory)
+                .where(Tables.eloHistory.player.eq(uuid))
+                .orderBy(Tables.eloHistory.timestamp.desc())
+                .fetchOne();
+        return fetch != null ? fetch.value1() : 0;
+    }
+
+    public static int getTotalMatches(String uuid, float result) {
+        if (result != 0 && result != 0.5f && result != 1) {
+            throw new IllegalArgumentException("Result must be 0, 0.5, or 1");
+        }
+
+        return getContext().fetchCount(Tables.eloHistory, Tables.eloHistory.player.eq(uuid).and(Tables.eloHistory.result.eq(result)));
+    }
+
+    public static int getAggregatedElo(String uuid, Function<Field<Integer>, AggregateFunction<Integer>> function) {
+        Record1<Integer> fetch = getContext()
+                .select(function.apply(Tables.eloHistory.elo))
+                .from(Tables.eloHistory)
+                .where(Tables.eloHistory.player.eq(uuid))
+                .fetchOne();
+        return fetch != null ? fetch.value1() : 0;
     }
 
     /**
@@ -488,7 +494,6 @@ public class Database {
      * @param teamB    The array of player UUIDs in team B.
      * @param teamC    The array of player UUIDs in team C (or empty array if not applicable).
      * @param teamD    The array of player UUIDs in team D (or empty array if not applicable).
-     * @param deltaElo The array of Elo rating changes for each player after the match.
      * @return The created {@link MatchesRecord}.
      */
     public static MatchesRecord createMatch(OffsetDateTime started, OffsetDateTime finished, PvpMode mode, String mapName, String[] teamA, String[] teamB, String[] teamC, String[] teamD, int[] deltaElo) {
@@ -501,8 +506,7 @@ public class Database {
                 .setTeamA(teamA)
                 .setTeamB(teamB)
                 .setTeamC(teamC)
-                .setTeamD(teamD)
-                .setDeltaElo((Integer[]) Stream.of(deltaElo).toArray());
+                .setTeamD(teamD);
         record.store();
         return record;
     }

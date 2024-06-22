@@ -9,12 +9,12 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function10;
+import org.jooq.Function9;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row10;
+import org.jooq.Row9;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -97,11 +97,6 @@ public class Matches extends TableImpl<MatchesRecord> {
      * The column <code>mindustry.matches.team_d</code>.
      */
     public final TableField<MatchesRecord, String[]> teamD = createField(DSL.name("team_d"), SQLDataType.VARCHAR(40).getArrayDataType(), this, "");
-
-    /**
-     * The column <code>mindustry.matches.delta_elo</code>.
-     */
-    public final TableField<MatchesRecord, Integer[]> deltaElo = createField(DSL.name("delta_elo"), SQLDataType.INTEGER.getArrayDataType(), this, "");
 
     private Matches(Name alias, Table<MatchesRecord> aliased) {
         this(alias, aliased, null);
@@ -191,25 +186,25 @@ public class Matches extends TableImpl<MatchesRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row10 type methods
+    // Row9 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row10<Integer, OffsetDateTime, OffsetDateTime, PvpMode, String, String[], String[], String[], String[], Integer[]> fieldsRow() {
-        return (Row10) super.fieldsRow();
+    public Row9<Integer, OffsetDateTime, OffsetDateTime, PvpMode, String, String[], String[], String[], String[]> fieldsRow() {
+        return (Row9) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function10<? super Integer, ? super OffsetDateTime, ? super OffsetDateTime, ? super PvpMode, ? super String, ? super String[], ? super String[], ? super String[], ? super String[], ? super Integer[], ? extends U> from) {
+    public <U> SelectField<U> mapping(Function9<? super Integer, ? super OffsetDateTime, ? super OffsetDateTime, ? super PvpMode, ? super String, ? super String[], ? super String[], ? super String[], ? super String[], ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Class, Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function10<? super Integer, ? super OffsetDateTime, ? super OffsetDateTime, ? super PvpMode, ? super String, ? super String[], ? super String[], ? super String[], ? super String[], ? super Integer[], ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function9<? super Integer, ? super OffsetDateTime, ? super OffsetDateTime, ? super PvpMode, ? super String, ? super String[], ? super String[], ? super String[], ? super String[], ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

@@ -5,12 +5,12 @@ package stellar.database.gen;
 
 
 import stellar.database.gen.tables.Bans;
+import stellar.database.gen.tables.EloHistory;
 import stellar.database.gen.tables.IpCached;
 import stellar.database.gen.tables.Logins;
 import stellar.database.gen.tables.Matches;
 import stellar.database.gen.tables.Messages;
 import stellar.database.gen.tables.Playtime;
-import stellar.database.gen.tables.RankedStats;
 import stellar.database.gen.tables.Stats;
 import stellar.database.gen.tables.Users;
 
@@ -25,6 +25,11 @@ public class Tables {
      * The table <code>mindustry.bans</code>.
      */
     public static final Bans bans = Bans.bans;
+
+    /**
+     * The table <code>mindustry.elo_history</code>.
+     */
+    public static final EloHistory eloHistory = EloHistory.eloHistory;
 
     /**
      * The table <code>mindustry.ip_cached</code>.
@@ -50,11 +55,6 @@ public class Tables {
      * The table <code>mindustry.playtime</code>.
      */
     public static final Playtime playtime = Playtime.playtime;
-
-    /**
-     * The table <code>mindustry.ranked_stats</code>.
-     */
-    public static final RankedStats rankedStats = RankedStats.rankedStats;
 
     /**
      * The table <code>mindustry.stats</code>.

@@ -12,12 +12,12 @@ import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
 
 import stellar.database.gen.tables.Bans;
+import stellar.database.gen.tables.EloHistory;
 import stellar.database.gen.tables.IpCached;
 import stellar.database.gen.tables.Logins;
 import stellar.database.gen.tables.Matches;
 import stellar.database.gen.tables.Messages;
 import stellar.database.gen.tables.Playtime;
-import stellar.database.gen.tables.RankedStats;
 import stellar.database.gen.tables.Stats;
 import stellar.database.gen.tables.Users;
 
@@ -39,6 +39,11 @@ public class Mindustry extends SchemaImpl {
      * The table <code>mindustry.bans</code>.
      */
     public final Bans bans = Bans.bans;
+
+    /**
+     * The table <code>mindustry.elo_history</code>.
+     */
+    public final EloHistory eloHistory = EloHistory.eloHistory;
 
     /**
      * The table <code>mindustry.ip_cached</code>.
@@ -64,11 +69,6 @@ public class Mindustry extends SchemaImpl {
      * The table <code>mindustry.playtime</code>.
      */
     public final Playtime playtime = Playtime.playtime;
-
-    /**
-     * The table <code>mindustry.ranked_stats</code>.
-     */
-    public final RankedStats rankedStats = RankedStats.rankedStats;
 
     /**
      * The table <code>mindustry.stats</code>.
@@ -97,12 +97,12 @@ public class Mindustry extends SchemaImpl {
     public final List<Table<?>> getTables() {
         return Arrays.asList(
             Bans.bans,
+            EloHistory.eloHistory,
             IpCached.ipCached,
             Logins.logins,
             Matches.matches,
             Messages.messages,
             Playtime.playtime,
-            RankedStats.rankedStats,
             Stats.stats,
             Users.users
         );

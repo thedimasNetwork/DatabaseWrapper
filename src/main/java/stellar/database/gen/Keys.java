@@ -11,21 +11,21 @@ import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 
 import stellar.database.gen.tables.Bans;
+import stellar.database.gen.tables.EloHistory;
 import stellar.database.gen.tables.IpCached;
 import stellar.database.gen.tables.Logins;
 import stellar.database.gen.tables.Matches;
 import stellar.database.gen.tables.Messages;
 import stellar.database.gen.tables.Playtime;
-import stellar.database.gen.tables.RankedStats;
 import stellar.database.gen.tables.Stats;
 import stellar.database.gen.tables.Users;
 import stellar.database.gen.tables.records.BansRecord;
+import stellar.database.gen.tables.records.EloHistoryRecord;
 import stellar.database.gen.tables.records.IpCachedRecord;
 import stellar.database.gen.tables.records.LoginsRecord;
 import stellar.database.gen.tables.records.MatchesRecord;
 import stellar.database.gen.tables.records.MessagesRecord;
 import stellar.database.gen.tables.records.PlaytimeRecord;
-import stellar.database.gen.tables.records.RankedStatsRecord;
 import stellar.database.gen.tables.records.StatsRecord;
 import stellar.database.gen.tables.records.UsersRecord;
 
@@ -42,12 +42,12 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<BansRecord> idx_16549Primary = Internal.createUniqueKey(Bans.bans, DSL.name("idx_16549_primary"), new TableField[] { Bans.bans.id }, true);
+    public static final UniqueKey<EloHistoryRecord> eloHistoryPk = Internal.createUniqueKey(EloHistory.eloHistory, DSL.name("elo_history_pk"), new TableField[] { EloHistory.eloHistory.id }, true);
     public static final UniqueKey<IpCachedRecord> idx_16556Primary = Internal.createUniqueKey(IpCached.ipCached, DSL.name("idx_16556_primary"), new TableField[] { IpCached.ipCached.id }, true);
     public static final UniqueKey<LoginsRecord> idx_16564Primary = Internal.createUniqueKey(Logins.logins, DSL.name("idx_16564_primary"), new TableField[] { Logins.logins.id }, true);
     public static final UniqueKey<MatchesRecord> matchesPk = Internal.createUniqueKey(Matches.matches, DSL.name("matches_pk"), new TableField[] { Matches.matches.id }, true);
     public static final UniqueKey<MessagesRecord> idx_16570Primary = Internal.createUniqueKey(Messages.messages, DSL.name("idx_16570_primary"), new TableField[] { Messages.messages.id }, true);
     public static final UniqueKey<PlaytimeRecord> idx_16575Primary = Internal.createUniqueKey(Playtime.playtime, DSL.name("idx_16575_primary"), new TableField[] { Playtime.playtime.uuid }, true);
-    public static final UniqueKey<RankedStatsRecord> rankedStatsPk = Internal.createUniqueKey(RankedStats.rankedStats, DSL.name("ranked_stats_pk"), new TableField[] { RankedStats.rankedStats.uuid }, true);
     public static final UniqueKey<StatsRecord> idx_16592Primary = Internal.createUniqueKey(Stats.stats, DSL.name("idx_16592_primary"), new TableField[] { Stats.stats.uuid }, true);
     public static final UniqueKey<UsersRecord> idx_16612Primary = Internal.createUniqueKey(Users.users, DSL.name("idx_16612_primary"), new TableField[] { Users.users.uuid }, true);
 
@@ -55,5 +55,6 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final ForeignKey<RankedStatsRecord, UsersRecord> rankedStats_RankedStatsUsersUuidFk = Internal.createForeignKey(RankedStats.rankedStats, DSL.name("ranked_stats_users_uuid_fk"), new TableField[] { RankedStats.rankedStats.uuid }, Keys.idx_16612Primary, new TableField[] { Users.users.uuid }, true);
+    public static final ForeignKey<EloHistoryRecord, MatchesRecord> eloHistory_EloHistoryMatchesIdFk = Internal.createForeignKey(EloHistory.eloHistory, DSL.name("elo_history_matches_id_fk"), new TableField[] { EloHistory.eloHistory.match }, Keys.matchesPk, new TableField[] { Matches.matches.id }, true);
+    public static final ForeignKey<EloHistoryRecord, UsersRecord> eloHistory_EloHistoryUsersUuidFk = Internal.createForeignKey(EloHistory.eloHistory, DSL.name("elo_history_users_uuid_fk"), new TableField[] { EloHistory.eloHistory.player }, Keys.idx_16612Primary, new TableField[] { Users.users.uuid }, true);
 }
