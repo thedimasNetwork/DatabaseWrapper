@@ -625,6 +625,7 @@ public class DatabaseAsync {
                         .from(Tables.eloHistory)
                         .where(Tables.eloHistory.player.eq(uuid))
                         .orderBy(Tables.eloHistory.timestamp.desc())
+                        .limit(1)
                         .fetchOne();
                 return fetch != null ? fetch.value1() : null;
             } catch (DataAccessException e) {

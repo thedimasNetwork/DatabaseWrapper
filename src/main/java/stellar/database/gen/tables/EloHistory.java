@@ -61,7 +61,7 @@ public class EloHistory extends TableImpl<EloHistoryRecord> {
     /**
      * The column <code>mindustry.elo_history.timestamp</code>.
      */
-    public final TableField<EloHistoryRecord, OffsetDateTime> timestamp = createField(DSL.name("timestamp"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "");
+    public final TableField<EloHistoryRecord, OffsetDateTime> timestamp = createField(DSL.name("timestamp"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false).defaultValue(DSL.field("now()", SQLDataType.TIMESTAMPWITHTIMEZONE)), this, "");
 
     /**
      * The column <code>mindustry.elo_history.player</code>.

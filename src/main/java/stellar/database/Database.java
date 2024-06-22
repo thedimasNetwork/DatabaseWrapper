@@ -499,6 +499,7 @@ public class Database {
                 .from(Tables.eloHistory)
                 .where(Tables.eloHistory.player.eq(uuid))
                 .orderBy(Tables.eloHistory.timestamp.desc())
+                .limit(1)
                 .fetchOne();
         return fetch != null ? fetch.value1() : 0;
     }
