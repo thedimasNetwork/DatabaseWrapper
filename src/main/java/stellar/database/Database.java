@@ -445,8 +445,8 @@ public class Database {
     public static EloHistoryRecord initEloHistory(String uuid) {
         EloHistoryRecord record = getContext().newRecord(Tables.eloHistory)
                 .setPlayer(uuid)
-                .setElo(1200)
-                .setDelta(1200);
+                .setElo(800)
+                .setDelta(800);
         record.store();
         return record;
     }
