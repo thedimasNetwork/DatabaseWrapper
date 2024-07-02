@@ -3,6 +3,7 @@ package stellar.database;
 import arc.util.Log;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.SneakyThrows;
 
 import java.lang.module.ModuleDescriptor;
 import java.sql.Connection;
@@ -36,7 +37,9 @@ public class Config {
      * @param user     The username for the database connection.
      * @param password The password for the database connection.
      */
+    @SneakyThrows
     static void load(String ip, int port, String name, String user, String password) {
+        Class.forName("org.postgresql.Driver");
         Config.ip = ip;
         Config.port = port;
         Config.name = name;

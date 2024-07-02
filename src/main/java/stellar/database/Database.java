@@ -437,7 +437,7 @@ public class Database {
     // region ranked
 
     /**
-     * Creates a new {@link EloHistoryRecord} with the default Elo rating of 1200 in the database and returns it.
+     * Creates a new {@link EloHistoryRecord} with the default Elo rating of 800 in the database and returns it.
      *
      * @param uuid The UUID of the player.
      * @return The created {@link EloHistoryRecord}.
