@@ -546,7 +546,7 @@ public class DatabaseAsync {
     // region ranked
 
     /**
-     * Asynchronously creates a new {@link EloHistoryRecord} with the default Elo rating of 1200 in the database and returns it.
+     * Asynchronously creates a new {@link EloHistoryRecord} with the default Elo rating of 800 in the database and returns it.
      *
      * @param uuid The UUID of the player.
      * @return A CompletableFuture that holds the created {@link EloHistoryRecord}.
@@ -556,8 +556,8 @@ public class DatabaseAsync {
             try {
                 EloHistoryRecord record = context.newRecord(Tables.eloHistory)
                         .setPlayer(uuid)
-                        .setElo(1200)
-                        .setDelta(1200);
+                        .setElo(800)
+                        .setDelta(800);
                 record.store();
                 return record;
             } catch (DataAccessException e) {
