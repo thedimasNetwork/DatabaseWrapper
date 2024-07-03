@@ -8,11 +8,11 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function15;
+import org.jooq.Function16;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row15;
+import org.jooq.Row16;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -124,6 +124,11 @@ public class Playtime extends TableImpl<PlaytimeRecord> {
      */
     public final TableField<PlaytimeRecord, Long> test = createField(DSL.name("test"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'0'::bigint", SQLDataType.BIGINT)), this, "");
 
+    /**
+     * The column <code>mindustry.playtime.ranked_pvp</code>.
+     */
+    public final TableField<PlaytimeRecord, Long> rankedPvp = createField(DSL.name("ranked_pvp"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field("'0'::bigint", SQLDataType.BIGINT)), this, "");
+
     private Playtime(Name alias, Table<PlaytimeRecord> aliased) {
         this(alias, aliased, null);
     }
@@ -164,7 +169,7 @@ public class Playtime extends TableImpl<PlaytimeRecord> {
 
     @Override
     public UniqueKey<PlaytimeRecord> getPrimaryKey() {
-        return Keys.idx_16575Primary;
+        return Keys.idx_18457Primary;
     }
 
     @Override
@@ -207,25 +212,25 @@ public class Playtime extends TableImpl<PlaytimeRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row15 type methods
+    // Row16 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row15<String, Long, Long, Long, Long, Long, Long, Long, Long, Long, Long, Long, Long, Long, Long> fieldsRow() {
-        return (Row15) super.fieldsRow();
+    public Row16<String, Long, Long, Long, Long, Long, Long, Long, Long, Long, Long, Long, Long, Long, Long, Long> fieldsRow() {
+        return (Row16) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function15<? super String, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function16<? super String, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Class, Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function15<? super String, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function16<? super String, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? super Long, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

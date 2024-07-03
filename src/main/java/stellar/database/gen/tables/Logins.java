@@ -84,7 +84,7 @@ public class Logins extends TableImpl<LoginsRecord> {
     /**
      * The column <code>mindustry.logins.locale</code>.
      */
-    public final TableField<LoginsRecord, String> locale = createField(DSL.name("locale"), SQLDataType.VARCHAR(16).nullable(false), this, "");
+    public final TableField<LoginsRecord, String> locale = createField(DSL.name("locale"), SQLDataType.VARCHAR(30).nullable(false), this, "");
 
     private Logins(Name alias, Table<LoginsRecord> aliased) {
         this(alias, aliased, null);
@@ -131,7 +131,7 @@ public class Logins extends TableImpl<LoginsRecord> {
 
     @Override
     public UniqueKey<LoginsRecord> getPrimaryKey() {
-        return Keys.idx_16564Primary;
+        return Keys.idx_18446Primary;
     }
 
     @Override

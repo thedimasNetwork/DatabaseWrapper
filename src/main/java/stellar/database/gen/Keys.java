@@ -41,20 +41,21 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<BansRecord> idx_16549Primary = Internal.createUniqueKey(Bans.bans, DSL.name("idx_16549_primary"), new TableField[] { Bans.bans.id }, true);
+    public static final UniqueKey<BansRecord> idx_18431Primary = Internal.createUniqueKey(Bans.bans, DSL.name("idx_18431_primary"), new TableField[] { Bans.bans.id }, true);
     public static final UniqueKey<EloHistoryRecord> eloHistoryPk = Internal.createUniqueKey(EloHistory.eloHistory, DSL.name("elo_history_pk"), new TableField[] { EloHistory.eloHistory.id }, true);
-    public static final UniqueKey<IpCachedRecord> idx_16556Primary = Internal.createUniqueKey(IpCached.ipCached, DSL.name("idx_16556_primary"), new TableField[] { IpCached.ipCached.id }, true);
-    public static final UniqueKey<LoginsRecord> idx_16564Primary = Internal.createUniqueKey(Logins.logins, DSL.name("idx_16564_primary"), new TableField[] { Logins.logins.id }, true);
+    public static final UniqueKey<IpCachedRecord> idx_18438Primary = Internal.createUniqueKey(IpCached.ipCached, DSL.name("idx_18438_primary"), new TableField[] { IpCached.ipCached.id }, true);
+    public static final UniqueKey<LoginsRecord> idx_18446Primary = Internal.createUniqueKey(Logins.logins, DSL.name("idx_18446_primary"), new TableField[] { Logins.logins.id }, true);
     public static final UniqueKey<MatchesRecord> matchesPk = Internal.createUniqueKey(Matches.matches, DSL.name("matches_pk"), new TableField[] { Matches.matches.id }, true);
-    public static final UniqueKey<MessagesRecord> idx_16570Primary = Internal.createUniqueKey(Messages.messages, DSL.name("idx_16570_primary"), new TableField[] { Messages.messages.id }, true);
-    public static final UniqueKey<PlaytimeRecord> idx_16575Primary = Internal.createUniqueKey(Playtime.playtime, DSL.name("idx_16575_primary"), new TableField[] { Playtime.playtime.uuid }, true);
-    public static final UniqueKey<StatsRecord> idx_16592Primary = Internal.createUniqueKey(Stats.stats, DSL.name("idx_16592_primary"), new TableField[] { Stats.stats.uuid }, true);
-    public static final UniqueKey<UsersRecord> idx_16612Primary = Internal.createUniqueKey(Users.users, DSL.name("idx_16612_primary"), new TableField[] { Users.users.uuid }, true);
+    public static final UniqueKey<MessagesRecord> idx_18452Primary = Internal.createUniqueKey(Messages.messages, DSL.name("idx_18452_primary"), new TableField[] { Messages.messages.id }, true);
+    public static final UniqueKey<PlaytimeRecord> idx_18457Primary = Internal.createUniqueKey(Playtime.playtime, DSL.name("idx_18457_primary"), new TableField[] { Playtime.playtime.uuid }, true);
+    public static final UniqueKey<StatsRecord> idx_18474Primary = Internal.createUniqueKey(Stats.stats, DSL.name("idx_18474_primary"), new TableField[] { Stats.stats.uuid }, true);
+    public static final UniqueKey<UsersRecord> idx_18494Primary = Internal.createUniqueKey(Users.users, DSL.name("idx_18494_primary"), new TableField[] { Users.users.uuid }, true);
+    public static final UniqueKey<UsersRecord> usersUuidUnique = Internal.createUniqueKey(Users.users, DSL.name("users_uuid_unique"), new TableField[] { Users.users.uuid }, true);
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
     public static final ForeignKey<EloHistoryRecord, MatchesRecord> eloHistory_EloHistoryMatchesIdFk = Internal.createForeignKey(EloHistory.eloHistory, DSL.name("elo_history_matches_id_fk"), new TableField[] { EloHistory.eloHistory.match }, Keys.matchesPk, new TableField[] { Matches.matches.id }, true);
-    public static final ForeignKey<EloHistoryRecord, UsersRecord> eloHistory_EloHistoryUsersUuidFk = Internal.createForeignKey(EloHistory.eloHistory, DSL.name("elo_history_users_uuid_fk"), new TableField[] { EloHistory.eloHistory.player }, Keys.idx_16612Primary, new TableField[] { Users.users.uuid }, true);
+    public static final ForeignKey<EloHistoryRecord, UsersRecord> eloHistory_EloHistoryUsersUuidFk = Internal.createForeignKey(EloHistory.eloHistory, DSL.name("elo_history_users_uuid_fk"), new TableField[] { EloHistory.eloHistory.player }, Keys.idx_18494Primary, new TableField[] { Users.users.uuid }, true);
 }

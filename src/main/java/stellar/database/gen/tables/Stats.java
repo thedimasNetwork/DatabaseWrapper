@@ -174,7 +174,7 @@ public class Stats extends TableImpl<StatsRecord> {
 
     @Override
     public UniqueKey<StatsRecord> getPrimaryKey() {
-        return Keys.idx_16592Primary;
+        return Keys.idx_18474Primary;
     }
 
     @Override

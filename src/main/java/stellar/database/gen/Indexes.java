@@ -23,7 +23,7 @@ public class Indexes {
     // INDEX definitions
     // -------------------------------------------------------------------------
 
-    public static final Index idx_16556Secondary = Internal.createIndex(DSL.name("idx_16556_secondary"), IpCached.ipCached, new OrderField[] { IpCached.ipCached.ip }, true);
-    public static final Index idx_16612Secondary = Internal.createIndex(DSL.name("idx_16612_secondary"), Users.users, new OrderField[] { Users.users.id }, true);
-    public static final Index idx_16612UsersIpIndex = Internal.createIndex(DSL.name("idx_16612_users_ip_index"), Users.users, new OrderField[] { Users.users.ip }, false);
+    public static final Index idx_18438Secondary = Internal.createIndex(DSL.name("idx_18438_secondary"), IpCached.ipCached, new OrderField[] { IpCached.ipCached.ip }, true);
+    public static final Index idx_18494Secondary = Internal.createIndex(DSL.name("idx_18494_secondary"), Users.users, new OrderField[] { Users.users.id }, true);
+    public static final Index idx_18494UsersIpIndex = Internal.createIndex(DSL.name("idx_18494_users_ip_index"), Users.users, new OrderField[] { Users.users.ip }, false);
 }
