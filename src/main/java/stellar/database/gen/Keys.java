@@ -12,6 +12,8 @@ import org.jooq.impl.Internal;
 
 import stellar.database.gen.tables.Bans;
 import stellar.database.gen.tables.EloHistory;
+import stellar.database.gen.tables.HexMatches;
+import stellar.database.gen.tables.HexSnapshots;
 import stellar.database.gen.tables.IpCached;
 import stellar.database.gen.tables.Logins;
 import stellar.database.gen.tables.Matches;
@@ -21,6 +23,8 @@ import stellar.database.gen.tables.Stats;
 import stellar.database.gen.tables.Users;
 import stellar.database.gen.tables.records.BansRecord;
 import stellar.database.gen.tables.records.EloHistoryRecord;
+import stellar.database.gen.tables.records.HexMatchesRecord;
+import stellar.database.gen.tables.records.HexSnapshotsRecord;
 import stellar.database.gen.tables.records.IpCachedRecord;
 import stellar.database.gen.tables.records.LoginsRecord;
 import stellar.database.gen.tables.records.MatchesRecord;
@@ -43,6 +47,8 @@ public class Keys {
 
     public static final UniqueKey<BansRecord> idx_18431Primary = Internal.createUniqueKey(Bans.bans, DSL.name("idx_18431_primary"), new TableField[] { Bans.bans.id }, true);
     public static final UniqueKey<EloHistoryRecord> eloHistoryPk = Internal.createUniqueKey(EloHistory.eloHistory, DSL.name("elo_history_pk"), new TableField[] { EloHistory.eloHistory.id }, true);
+    public static final UniqueKey<HexMatchesRecord> hexMatchesPk = Internal.createUniqueKey(HexMatches.hexMatches, DSL.name("hex_matches_pk"), new TableField[] { HexMatches.hexMatches.id }, true);
+    public static final UniqueKey<HexSnapshotsRecord> hexSnapshotsPk = Internal.createUniqueKey(HexSnapshots.hexSnapshots, DSL.name("hex_snapshots_pk"), new TableField[] { HexSnapshots.hexSnapshots.id }, true);
     public static final UniqueKey<IpCachedRecord> idx_18438Primary = Internal.createUniqueKey(IpCached.ipCached, DSL.name("idx_18438_primary"), new TableField[] { IpCached.ipCached.id }, true);
     public static final UniqueKey<LoginsRecord> idx_18446Primary = Internal.createUniqueKey(Logins.logins, DSL.name("idx_18446_primary"), new TableField[] { Logins.logins.id }, true);
     public static final UniqueKey<MatchesRecord> matchesPk = Internal.createUniqueKey(Matches.matches, DSL.name("matches_pk"), new TableField[] { Matches.matches.id }, true);
@@ -57,5 +63,5 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final ForeignKey<EloHistoryRecord, MatchesRecord> eloHistory_EloHistoryMatchesIdFk = Internal.createForeignKey(EloHistory.eloHistory, DSL.name("elo_history_matches_id_fk"), new TableField[] { EloHistory.eloHistory.match }, Keys.matchesPk, new TableField[] { Matches.matches.id }, true);
-    public static final ForeignKey<EloHistoryRecord, UsersRecord> eloHistory_EloHistoryUsersUuidFk = Internal.createForeignKey(EloHistory.eloHistory, DSL.name("elo_history_users_uuid_fk"), new TableField[] { EloHistory.eloHistory.player }, Keys.idx_18494Primary, new TableField[] { Users.users.uuid }, true);
+    public static final ForeignKey<HexSnapshotsRecord, HexMatchesRecord> hexSnapshots_HexSnapshotsHexMatchesIdFk = Internal.createForeignKey(HexSnapshots.hexSnapshots, DSL.name("hex_snapshots_hex_matches_id_fk"), new TableField[] { HexSnapshots.hexSnapshots.match }, Keys.hexMatchesPk, new TableField[] { HexMatches.hexMatches.id }, true);
 }

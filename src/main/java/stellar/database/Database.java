@@ -1,7 +1,7 @@
 package stellar.database;
 
 import arc.util.Log;
-import arc.util.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import stellar.database.enums.MessageType;
@@ -9,10 +9,11 @@ import stellar.database.enums.PlayerStatus;
 import stellar.database.enums.PvpMode;
 import stellar.database.gen.Tables;
 import stellar.database.gen.tables.records.*;
+import stellar.database.types.UnitSnapshot;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import static org.jooq.util.postgres.PostgresDSL.arrayCat;
 import static stellar.database.Config.getDataSource;
@@ -115,7 +116,7 @@ public class Database {
      */
     public static UsersRecord updatePlayer(String uuid, String name, String locale, String ip) {
         if (!Database.playerExists(uuid)) {
-            throw new IllegalArgumentException("Player does not exists!");
+            throw new IllegalArgumentException("Player does not exist!");
         }
 
         UsersRecord record = Database
@@ -606,4 +607,47 @@ public class Database {
                 .fetchArray();
     }
     // endregion
+
+    // region hexes
+    public static HexMatchesRecord createHexMatch(String planet, String map) {
+        HexMatchesRecord record = getContext()
+                .newRecord(Tables.hexMatches)
+                .setPlanet(planet)
+                .setMap(map);
+        record.store();
+        return record;
+    }
+
+    @Nullable
+    public static HexMatchesRecord getHexMatch(int id) {
+        return getContext().fetchOne(Tables.hexMatches, Tables.hexMatches.id.eq(id));
+    }
+
+    public static HexMatchesRecord finishHexMatch(int id) {
+        if (!hexMatchExists(id)) {
+            throw new IllegalArgumentException("Match does not exist!");
+        }
+        getContext()
+                .update(Tables.hexMatches)
+                .set(Tables.hexMatches.finished, OffsetDateTime.now())
+                .where(Tables.hexMatches.id.eq(id))
+                .execute();
+        return getHexMatch(id);
+    }
+
+    public static boolean hexMatchExists(int id) {
+        return getContext().fetchExists(Tables.hexMatches, Tables.hexMatches.id.eq(id));
+    }
+
+    public static HexSnapshotsRecord createHexSnapshot(int match, UnitSnapshot[] units) {
+        if (!hexMatchExists(match)) {
+            throw new IllegalArgumentException("Match does not exist!");
+        }
+        HexSnapshotsRecord record = getContext()
+                .newRecord(Tables.hexSnapshots)
+                .setMatch(match)
+                .setUnits(List.of(units));
+        record.store();
+        return record;
+    }
 }

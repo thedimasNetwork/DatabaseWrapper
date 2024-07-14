@@ -6,6 +6,8 @@ package stellar.database.gen;
 
 import stellar.database.gen.tables.Bans;
 import stellar.database.gen.tables.EloHistory;
+import stellar.database.gen.tables.HexMatches;
+import stellar.database.gen.tables.HexSnapshots;
 import stellar.database.gen.tables.IpCached;
 import stellar.database.gen.tables.Logins;
 import stellar.database.gen.tables.Matches;
@@ -30,6 +32,16 @@ public class Tables {
      * The table <code>mindustry.elo_history</code>.
      */
     public static final EloHistory eloHistory = EloHistory.eloHistory;
+
+    /**
+     * The table <code>mindustry.hex_matches</code>.
+     */
+    public static final HexMatches hexMatches = HexMatches.hexMatches;
+
+    /**
+     * The table <code>mindustry.hex_snapshots</code>.
+     */
+    public static final HexSnapshots hexSnapshots = HexSnapshots.hexSnapshots;
 
     /**
      * The table <code>mindustry.ip_cached</code>.

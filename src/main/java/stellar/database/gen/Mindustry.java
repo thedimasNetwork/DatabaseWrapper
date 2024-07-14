@@ -13,6 +13,8 @@ import org.jooq.impl.SchemaImpl;
 
 import stellar.database.gen.tables.Bans;
 import stellar.database.gen.tables.EloHistory;
+import stellar.database.gen.tables.HexMatches;
+import stellar.database.gen.tables.HexSnapshots;
 import stellar.database.gen.tables.IpCached;
 import stellar.database.gen.tables.Logins;
 import stellar.database.gen.tables.Matches;
@@ -44,6 +46,16 @@ public class Mindustry extends SchemaImpl {
      * The table <code>mindustry.elo_history</code>.
      */
     public final EloHistory eloHistory = EloHistory.eloHistory;
+
+    /**
+     * The table <code>mindustry.hex_matches</code>.
+     */
+    public final HexMatches hexMatches = HexMatches.hexMatches;
+
+    /**
+     * The table <code>mindustry.hex_snapshots</code>.
+     */
+    public final HexSnapshots hexSnapshots = HexSnapshots.hexSnapshots;
 
     /**
      * The table <code>mindustry.ip_cached</code>.
@@ -98,6 +110,8 @@ public class Mindustry extends SchemaImpl {
         return Arrays.asList(
             Bans.bans,
             EloHistory.eloHistory,
+            HexMatches.hexMatches,
+            HexSnapshots.hexSnapshots,
             IpCached.ipCached,
             Logins.logins,
             Matches.matches,

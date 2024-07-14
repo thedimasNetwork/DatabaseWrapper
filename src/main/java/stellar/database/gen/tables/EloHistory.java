@@ -138,21 +138,10 @@ public class EloHistory extends TableImpl<EloHistoryRecord> {
 
     @Override
     public List<ForeignKey<EloHistoryRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.eloHistory_EloHistoryUsersUuidFk, Keys.eloHistory_EloHistoryMatchesIdFk);
+        return Arrays.asList(Keys.eloHistory_EloHistoryMatchesIdFk);
     }
 
-    private transient Users _users;
     private transient Matches _matches;
-
-    /**
-     * Get the implicit join path to the <code>mindustry.users</code> table.
-     */
-    public Users users() {
-        if (_users == null)
-            _users = new Users(this, Keys.eloHistory_EloHistoryUsersUuidFk);
-
-        return _users;
-    }
 
     /**
      * Get the implicit join path to the <code>mindustry.matches</code> table.

@@ -10,7 +10,7 @@ apply plugin: "java"
 apply plugin: "maven-publish"
 
 group = "stellar.database"
-version = "1.4.0"
+version = "1.5.0"
 
 sourceCompatibility = 16
 
@@ -33,6 +33,7 @@ ext {
     postresqlVersion = "42.7.3"
     jooqVersion = "3.17.0"
     hikariVersion = "5.0.1"
+    jacksonVersion = "2.17.2"
 }
 
 repositories {
@@ -69,6 +70,10 @@ dependencies {
     implementation "org.jooq:jooq:$jooqVersion"
     runtimeOnly "org.postgresql:postgresql:$postresqlVersion"
     implementation "com.zaxxer:HikariCP:$hikariVersion"
+
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
+
+    implementation "org.jetbrains:annotations:16.0.1"
 }
 
 publishing {
@@ -129,7 +134,11 @@ task codegen {
                                         new ForcedType()
                                                 .withUserType("stellar.database.enums.PvpMode")
                                                 .withEnumConverter(true)
-                                                .withIncludeExpression("mindustry\\.matches\\.mode")
+                                                .withIncludeExpression("mindustry\\.matches\\.mode"),
+                                        new ForcedType()
+                                                .withUserType("java.util.List<stellar.database.types.UnitSnapshot>")
+                                                .withConverter("stellar.database.converters.UnitSnapshotConverter")
+                                                .withIncludeExpression("mindustry\\.hex_snapshots\\.units")
                                 )
                         )
                         .withTarget(new Target()
