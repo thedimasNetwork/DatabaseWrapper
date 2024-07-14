@@ -850,8 +850,7 @@ public class DatabaseAsync {
             return getContextAsync();
         }).thenApplyAsync(context -> {
             try {
-                return context
-                        .update(Tables.hexMatches)
+                return context.update(Tables.hexMatches)
                         .set(Tables.hexMatches.finished, OffsetDateTime.now())
                         .where(Tables.hexMatches.id.eq(id))
                         .execute();
@@ -877,10 +876,11 @@ public class DatabaseAsync {
             return getContextAsync();
         }).thenApplyAsync(context -> {
             try {
-                return context
-                        .newRecord(Tables.hexSnapshots)
+                HexSnapshotsRecord record = context.newRecord(Tables.hexSnapshots)
                         .setMatch(match)
                         .setUnits(List.of(units));
+                record.store();
+                return record;
             } catch (DataAccessException e) {
                 throw new RuntimeException("Error creating hex snapshot.", e);
             }
