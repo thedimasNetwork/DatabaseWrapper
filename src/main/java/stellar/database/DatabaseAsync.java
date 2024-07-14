@@ -53,7 +53,7 @@ public class DatabaseAsync {
             }
         });
     }
-
+    
     public static <T> CompletableFuture<T> applyContextAsync(Function<DSLContext, T> func) {
         return getContextAsync().thenApplyAsync(func);
     }
@@ -68,7 +68,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the {@link UsersRecord} representing the player's data or null if not found.
      */
     public static CompletableFuture<UsersRecord> getPlayerAsync(String uuid) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 return context.selectFrom(Tables.users)
                         .where(Tables.users.uuid.eq(uuid))
@@ -86,7 +86,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the {@link UsersRecord} representing the player's data or null if not found.
      */
     public static CompletableFuture<UsersRecord> getPlayerAsync(int id) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 return context.selectFrom(Tables.users)
                         .where(Tables.users.id.eq(id))
@@ -104,7 +104,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds true if the player exists, false otherwise.
      */
     public static CompletableFuture<Boolean> playerExistsAsync(String uuid) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 return context.fetchExists(Tables.users, Tables.users.uuid.eq(uuid));
             } catch (DataAccessException e) {
@@ -124,7 +124,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the created {@link UsersRecord}.
      */
     public static CompletableFuture<UsersRecord> createPlayerAsync(String uuid, String ip, String name, String locale, boolean admin) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 UsersRecord record = context.newRecord(Tables.users)
                         .setUuid(uuid)
@@ -196,7 +196,7 @@ public class DatabaseAsync {
      * @see <a href="https://proxycheck.io/api/">Proxycheck API docs</a>
      */
     public static CompletableFuture<IpCachedRecord> createIpAsync(String ip, boolean proxy, boolean vpn, String type, int risk) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 IpCachedRecord record = context.newRecord(Tables.ipCached)
                         .setIp(ip)
@@ -274,7 +274,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the {@link BansRecord} representing the latest ban or null if no ban is found.
      */
     public static CompletableFuture<BansRecord> latestBanAsync(String uuid) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 return context.selectFrom(Tables.bans)
                         .where(Tables.bans.target.eq(uuid))
@@ -378,7 +378,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the playtime value for the specified field in seconds.
      */
     public static CompletableFuture<Long> getPlaytimeAsync(String uuid, Field<Long> field) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 Record1<Long> timeFetch = context.select(field)
                         .from(Tables.playtime)
@@ -405,7 +405,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the total playtime in seconds.
      */
     public static CompletableFuture<Long> getTotalPlaytimeAsync(String uuid) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 PlaytimeRecord timeFetch = context.selectFrom(Tables.playtime)
                         .where(Tables.playtime.uuid.eq(uuid))
@@ -438,7 +438,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the created {@link PlaytimeRecord}.
      */
     public static CompletableFuture<PlaytimeRecord> createPlaytimeAsync(String uuid) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 PlaytimeRecord record = context.newRecord(Tables.playtime)
                         .setUuid(uuid);
@@ -457,7 +457,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the {@link StatsRecord} representing the player's statistics or null if no statistics is found.
      */
     public static CompletableFuture<StatsRecord> getStatsAsync(String uuid) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 return context.selectFrom(Tables.stats)
                         .where(Tables.stats.uuid.eq(uuid))
@@ -475,7 +475,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the created {@link StatsRecord}.
      */
     public static CompletableFuture<StatsRecord> createStatsAsync(String uuid) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 StatsRecord record = context.newRecord(Tables.stats)
                         .setUuid(uuid);
@@ -502,7 +502,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the created {@link MessagesRecord}.
      */
     public static CompletableFuture<MessagesRecord> createMessageAsync(String server, String from, String target, MessageType type, String text, String locale) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 MessagesRecord record = context.newRecord(Tables.messages)
                         .setServer(server)
@@ -530,7 +530,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the created {@link LoginsRecord}.
      */
     public static CompletableFuture<LoginsRecord> createLoginAsync(String server, String uuid, String ip, String name, String locale) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 LoginsRecord record = context.newRecord(Tables.logins)
                         .setServer(server)
@@ -556,7 +556,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the created {@link EloHistoryRecord}.
      */
     public static CompletableFuture<EloHistoryRecord> initEloHistoryAsync(String uuid) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 EloHistoryRecord record = context.newRecord(Tables.eloHistory)
                         .setPlayer(uuid)
@@ -581,7 +581,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the created {@link EloHistoryRecord}.
      */
     public static CompletableFuture<EloHistoryRecord> createEloHistoryAsync(String uuid, int elo, int delta, int match, float result) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 EloHistoryRecord record = context.newRecord(Tables.eloHistory)
                         .setPlayer(uuid)
@@ -604,7 +604,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds an array of {@link EloHistoryRecord}s representing the player's Elo history, ordered by timestamp in descending order.
      */
     public static CompletableFuture<EloHistoryRecord[]> getEloHistoryAsync(String uuid) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 return context.selectFrom(Tables.eloHistory)
                         .where(Tables.eloHistory.player.eq(uuid))
@@ -623,7 +623,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the current Elo rating of the player, or null if no rating is found.
      */
     public static CompletableFuture<Integer> getCurrentEloAsync(String uuid) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 Record1<Integer> fetch = context.select(Tables.eloHistory.elo)
                         .from(Tables.eloHistory)
@@ -647,7 +647,7 @@ public class DatabaseAsync {
      * @throws IllegalArgumentException If the result is not 0, 0.5, 0.75, or 1.
      */
     public static CompletableFuture<Integer> getTotalMatchesAsync(String uuid, float result) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             if (result != 0 && result != 0.5f && result != 0.75f && result != 1) {
                 throw new IllegalArgumentException("Result must be 0, 0.5, 0.75 or 1");
             }
@@ -668,7 +668,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the result of the aggregation function applied to the player's Elo ratings, or null if no data is found.
      */
     public static CompletableFuture<Integer> getAggregatedEloAsync(String uuid, Function<Field<Integer>, AggregateFunction<Integer>> function) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 Record1<Integer> fetch = context.select(function.apply(Tables.eloHistory.elo))
                         .from(Tables.eloHistory)
@@ -696,7 +696,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the created {@link MatchesRecord}.
      */
     public static CompletableFuture<MatchesRecord> createMatchAsync(OffsetDateTime started, OffsetDateTime finished, PvpMode mode, String mapName, String[] teamA, String[] teamB, String[] teamC, String[] teamD) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 MatchesRecord record = context.newRecord(Tables.matches)
                         .setStarted(started)
@@ -722,7 +722,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds the {@link MatchesRecord} representing the match or null if not found.
      */
     public static CompletableFuture<MatchesRecord> getMatchAsync(int id) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 return context.fetchOne(Tables.matches, Tables.matches.id.eq(id));
             } catch (DataAccessException e) {
@@ -738,7 +738,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds an array of {@link MatchesRecord}s representing the matches the player participated in, ordered by finish time in descending order.
      */
     public static CompletableFuture<MatchesRecord[]> getMatchesAsync(String uuid) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 Field<String[]> combined = arrayCat(arrayCat(arrayCat(Tables.matches.teamA, Tables.matches.teamB), Tables.matches.teamC), Tables.matches.teamD);
                 return context.selectFrom(Tables.matches)
@@ -759,7 +759,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds an array of {@link MatchesRecord}s representing recent matches, ordered by finish time in descending order.
      */
     public static CompletableFuture<MatchesRecord[]> getRecentMatchesAsync(int offset, int limit) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 return context.selectFrom(Tables.matches)
                         .orderBy(Tables.matches.finished.desc())
@@ -775,7 +775,7 @@ public class DatabaseAsync {
 
     // region hexes
     public static CompletableFuture<HexMatchesRecord> createHexMatchAsync(String planet, String map) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 HexMatchesRecord record = context.newRecord(Tables.hexMatches)
                         .setPlanet(planet)
@@ -789,7 +789,7 @@ public class DatabaseAsync {
     }
 
     public static CompletableFuture<HexMatchesRecord> getHexMatchAsync(int id) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 return context.fetchOne(Tables.hexMatches, Tables.hexMatches.id.eq(id));
             } catch (DataAccessException e) {
@@ -799,7 +799,7 @@ public class DatabaseAsync {
     }
 
     public static CompletableFuture<Boolean> hexMatchExistsAsync(int id) {
-        return getContextAsync().thenApplyAsync(context -> {
+        return applyContextAsync(context -> {
             try {
                 return context.fetchExists(Tables.hexMatches, Tables.hexMatches.id.eq(id));
             } catch (DataAccessException e) {
@@ -826,7 +826,7 @@ public class DatabaseAsync {
             }
         }).thenComposeAsync(ignored -> getHexMatchAsync(id));
     }
-
+    
     public static CompletableFuture<HexSnapshotsRecord> createHexSnapshotAsync(int match, UnitSnapshot[] units) {
         return hexMatchExistsAsync(match).thenComposeAsync(exists -> {
             if (!exists) {
