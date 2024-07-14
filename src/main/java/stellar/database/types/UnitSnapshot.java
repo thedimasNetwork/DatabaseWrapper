@@ -9,5 +9,5 @@ import java.util.List;
 public class UnitSnapshot {
     private final String teamId;
     private final String teamColor;
-    private final List<UnitCount> units = new ArrayList<>();
+    private final List<UnitCount> units;
 }
