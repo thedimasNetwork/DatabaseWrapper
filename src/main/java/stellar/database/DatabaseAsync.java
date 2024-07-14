@@ -1,7 +1,6 @@
 package stellar.database;
 
 import arc.util.Log;
-import arc.util.Nullable;
 import org.jooq.*;
 import org.jooq.exception.DataAccessException;
 import org.jooq.impl.DSL;
@@ -10,11 +9,12 @@ import stellar.database.enums.PlayerStatus;
 import stellar.database.enums.PvpMode;
 import stellar.database.gen.Tables;
 import stellar.database.gen.tables.records.*;
+import stellar.database.types.UnitSnapshot;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import static org.jooq.util.postgres.PostgresDSL.arrayCat;
 import static stellar.database.Config.getDataSourceAsync;
@@ -52,6 +52,10 @@ public class DatabaseAsync {
                 throw new RuntimeException("Failed to get a DSL context.", t);
             }
         });
+    }
+
+    public static <T> CompletableFuture<T> applyContextAsync(Function<DSLContext, T> func) {
+        return getContextAsync().thenApplyAsync(func);
     }
     // endregion
 
@@ -717,7 +721,6 @@ public class DatabaseAsync {
      * @param id The ID of the match.
      * @return A CompletableFuture that holds the {@link MatchesRecord} representing the match or null if not found.
      */
-    @Nullable
     public static CompletableFuture<MatchesRecord> getMatchAsync(int id) {
         return getContextAsync().thenApplyAsync(context -> {
             try {
@@ -765,6 +768,79 @@ public class DatabaseAsync {
                         .fetchArray();
             } catch (DataAccessException e) {
                 throw new RuntimeException("Error fetching recent matches.", e);
+            }
+        });
+    }
+    // endregion
+
+    // region hexes
+    public static CompletableFuture<HexMatchesRecord> createHexMatchAsync(String planet, String map) {
+        return getContextAsync().thenApplyAsync(context -> {
+            try {
+                HexMatchesRecord record = context.newRecord(Tables.hexMatches)
+                        .setPlanet(planet)
+                        .setMap(map);
+                record.store();
+                return record;
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error creating hex match.", e);
+            }
+        });
+    }
+
+    public static CompletableFuture<HexMatchesRecord> getHexMatchAsync(int id) {
+        return getContextAsync().thenApplyAsync(context -> {
+            try {
+                return context.fetchOne(Tables.hexMatches, Tables.hexMatches.id.eq(id));
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error fetching hex match.", e);
+            }
+        });
+    }
+
+    public static CompletableFuture<Boolean> hexMatchExistsAsync(int id) {
+        return getContextAsync().thenApplyAsync(context -> {
+            try {
+                return context.fetchExists(Tables.hexMatches, Tables.hexMatches.id.eq(id));
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error checking hex match existence.", e);
+            }
+        });
+    }
+
+    public static CompletableFuture<HexMatchesRecord> finishHexMatchAsync(int id) {
+        return hexMatchExistsAsync(id).thenComposeAsync(exists -> {
+            if (!exists) {
+                throw new IllegalArgumentException("Match does not exist!");
+            }
+            return getContextAsync();
+        }).thenApplyAsync(context -> {
+            try {
+                return context
+                        .update(Tables.hexMatches)
+                        .set(Tables.hexMatches.finished, OffsetDateTime.now())
+                        .where(Tables.hexMatches.id.eq(id))
+                        .execute();
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error finishing hex match.", e);
+            }
+        }).thenComposeAsync(ignored -> getHexMatchAsync(id));
+    }
+
+    public static CompletableFuture<HexSnapshotsRecord> createHexSnapshotAsync(int match, UnitSnapshot[] units) {
+        return hexMatchExistsAsync(match).thenComposeAsync(exists -> {
+            if (!exists) {
+                throw new IllegalArgumentException("Match does not exist!");
+            }
+            return getContextAsync();
+        }).thenApplyAsync(context -> {
+            try {
+                return context
+                        .newRecord(Tables.hexSnapshots)
+                        .setMatch(match)
+                        .setUnits(List.of(units));
+            } catch (DataAccessException e) {
+                throw new RuntimeException("Error creating hex snapshot.", e);
             }
         });
     }

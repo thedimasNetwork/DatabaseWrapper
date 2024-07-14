@@ -623,6 +623,10 @@ public class Database {
         return getContext().fetchOne(Tables.hexMatches, Tables.hexMatches.id.eq(id));
     }
 
+    public static boolean hexMatchExists(int id) {
+        return getContext().fetchExists(Tables.hexMatches, Tables.hexMatches.id.eq(id));
+    }
+
     public static HexMatchesRecord finishHexMatch(int id) {
         if (!hexMatchExists(id)) {
             throw new IllegalArgumentException("Match does not exist!");
@@ -633,10 +637,6 @@ public class Database {
                 .where(Tables.hexMatches.id.eq(id))
                 .execute();
         return getHexMatch(id);
-    }
-
-    public static boolean hexMatchExists(int id) {
-        return getContext().fetchExists(Tables.hexMatches, Tables.hexMatches.id.eq(id));
     }
 
     public static HexSnapshotsRecord createHexSnapshot(int match, UnitSnapshot[] units) {
