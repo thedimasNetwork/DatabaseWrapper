@@ -657,12 +657,9 @@ public class Database {
         if (!hexMatchExists(id)) {
             throw new IllegalArgumentException("Match does not exist!");
         }
-        getContext()
-                .update(Tables.hexMatches)
-                .set(Tables.hexMatches.finished, OffsetDateTime.now())
-                .where(Tables.hexMatches.id.eq(id))
-                .execute();
-        return getHexMatch(id);
+        HexMatchesRecord record = getHexMatch(id).setFinished(OffsetDateTime.now());
+        record.store();
+        return record;
     }
 
     /**
@@ -673,7 +670,6 @@ public class Database {
      * @return The created {@link HexSnapshotsRecord}.
      * @throws IllegalArgumentException if the specified match does not exist.
      */
-
     public static HexSnapshotsRecord createHexSnapshot(int match, UnitSnapshot[] units) {
         if (!hexMatchExists(match)) {
             throw new IllegalArgumentException("Match does not exist!");
