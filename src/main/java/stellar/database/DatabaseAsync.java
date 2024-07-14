@@ -53,7 +53,15 @@ public class DatabaseAsync {
             }
         });
     }
-    
+
+    /**
+     * Applies a function to the DSL context asynchronously.
+     * Should be used instead of <code>getContextAsync().thenApplyAsync(func)</code>
+     *
+     * @param <T> The type of the result returned by the function.
+     * @param func The function to apply to the DSL context.
+     * @return A CompletableFuture that holds the result of applying the function to the DSL context.
+     */
     public static <T> CompletableFuture<T> applyContextAsync(Function<DSLContext, T> func) {
         return getContextAsync().thenApplyAsync(func);
     }
@@ -774,6 +782,13 @@ public class DatabaseAsync {
     // endregion
 
     // region hexes
+    /**
+     * Asynchronously creates a new {@link HexMatchesRecord} in the database and returns it.
+     *
+     * @param planet The name of the planet where the hex match takes place.
+     * @param map    The name of the map for the hex match.
+     * @return A CompletableFuture that holds the created {@link HexMatchesRecord}.
+     */
     public static CompletableFuture<HexMatchesRecord> createHexMatchAsync(String planet, String map) {
         return applyContextAsync(context -> {
             try {
@@ -788,6 +803,12 @@ public class DatabaseAsync {
         });
     }
 
+    /**
+     * Asynchronously retrieves a {@link HexMatchesRecord} by ID from the database.
+     *
+     * @param id The ID of the hex match.
+     * @return A CompletableFuture that holds the {@link HexMatchesRecord} representing the hex match or null if not found.
+     */
     public static CompletableFuture<HexMatchesRecord> getHexMatchAsync(int id) {
         return applyContextAsync(context -> {
             try {
@@ -798,6 +819,12 @@ public class DatabaseAsync {
         });
     }
 
+    /**
+     * Asynchronously checks if a hex match with the given ID exists in the database.
+     *
+     * @param id The ID of the hex match.
+     * @return A CompletableFuture that holds true if the hex match exists, false otherwise.
+     */
     public static CompletableFuture<Boolean> hexMatchExistsAsync(int id) {
         return applyContextAsync(context -> {
             try {
@@ -808,6 +835,13 @@ public class DatabaseAsync {
         });
     }
 
+    /**
+     * Asynchronously finishes a hex match by setting its finished time to the current time.
+     *
+     * @param id The ID of the hex match to finish.
+     * @return A CompletableFuture that holds the updated {@link HexMatchesRecord}.
+     * @throws IllegalArgumentException if the match does not exist.
+     */
     public static CompletableFuture<HexMatchesRecord> finishHexMatchAsync(int id) {
         return hexMatchExistsAsync(id).thenComposeAsync(exists -> {
             if (!exists) {
@@ -826,7 +860,15 @@ public class DatabaseAsync {
             }
         }).thenComposeAsync(ignored -> getHexMatchAsync(id));
     }
-    
+
+    /**
+     * Asynchronously creates a new {@link HexSnapshotsRecord} in the database and returns it.
+     *
+     * @param match The ID of the hex match this snapshot belongs to.
+     * @param units An array of {@link UnitSnapshot} objects representing the units in the snapshot.
+     * @return A CompletableFuture that holds the created {@link HexSnapshotsRecord}.
+     * @throws IllegalArgumentException if the specified match does not exist.
+     */
     public static CompletableFuture<HexSnapshotsRecord> createHexSnapshotAsync(int match, UnitSnapshot[] units) {
         return hexMatchExistsAsync(match).thenComposeAsync(exists -> {
             if (!exists) {

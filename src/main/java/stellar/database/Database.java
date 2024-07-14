@@ -609,6 +609,13 @@ public class Database {
     // endregion
 
     // region hexes
+    /**
+     * Creates a new {@link HexMatchesRecord} in the database and returns it.
+     *
+     * @param planet The name of the planet where the hex match takes place.
+     * @param map    The name of the map for the hex match.
+     * @return The created {@link HexMatchesRecord}.
+     */
     public static HexMatchesRecord createHexMatch(String planet, String map) {
         HexMatchesRecord record = getContext()
                 .newRecord(Tables.hexMatches)
@@ -618,15 +625,34 @@ public class Database {
         return record;
     }
 
+    /**
+     * Retrieves a {@link HexMatchesRecord} by ID from the database.
+     *
+     * @param id The ID of the match.
+     * @return The {@link HexMatchesRecord} representing the match or null if not found.
+     */
     @Nullable
     public static HexMatchesRecord getHexMatch(int id) {
         return getContext().fetchOne(Tables.hexMatches, Tables.hexMatches.id.eq(id));
     }
 
+    /**
+     * Checks if a hex match with the given ID exists in the database.
+     *
+     * @param id The ID of the hex match.
+     * @return True if the hex match exists, false otherwise.
+     */
     public static boolean hexMatchExists(int id) {
         return getContext().fetchExists(Tables.hexMatches, Tables.hexMatches.id.eq(id));
     }
 
+    /**
+     * Asynchronously finishes a hex match by setting its finished time to the current time.
+     *
+     * @param id The ID of the hex match to finish.
+     * @return The updated {@link HexMatchesRecord}.
+     * @throws IllegalArgumentException if the match does not exist.
+     */
     public static HexMatchesRecord finishHexMatch(int id) {
         if (!hexMatchExists(id)) {
             throw new IllegalArgumentException("Match does not exist!");
@@ -638,6 +664,15 @@ public class Database {
                 .execute();
         return getHexMatch(id);
     }
+
+    /**
+     * Creates a new {@link HexSnapshotsRecord} in the database and returns it.
+     *
+     * @param match The ID of the hex match this snapshot belongs to.
+     * @param units An array of {@link UnitSnapshot} objects representing the units in the snapshot.
+     * @return The created {@link HexSnapshotsRecord}.
+     * @throws IllegalArgumentException if the specified match does not exist.
+     */
 
     public static HexSnapshotsRecord createHexSnapshot(int match, UnitSnapshot[] units) {
         if (!hexMatchExists(match)) {
