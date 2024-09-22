@@ -13,6 +13,7 @@ import stellar.database.types.UnitSnapshot;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
@@ -47,7 +48,7 @@ public class DatabaseAsync {
     public static CompletableFuture<DSLContext> getContextAsync() {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return DSL.using(getDataSourceAsync().get(), SQLDialect.POSTGRES);
+                return Database.getContext();
             } catch (Throwable t) {
                 throw new RuntimeException("Failed to get a DSL context.", t);
             }
@@ -276,21 +277,64 @@ public class DatabaseAsync {
     // region bans
 
     /**
-     * Asynchronously retrieves the latest {@link BansRecord} for a player from the database.
+     * Asynchronously retrieves an array of {@link BansRecord} associated with a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return An CompletableFuture that holds an array of {@link BansRecord} associated with the specified player.
+     */
+    public static CompletableFuture<BansRecord[]> getBansAsync(String uuid) {
+        var userIps = DSL.selectDistinct(Tables.logins.ip)
+                .from(Tables.logins)
+                .where(Tables.logins.uuid.eq(uuid));
+
+        var bannedIps = DSL.selectDistinct(Tables.logins.ip, Tables.bans.asterisk())
+                .from(Tables.logins)
+                .join(Tables.users).on(Tables.logins.uuid.eq(Tables.users.uuid))
+                .join(Tables.bans).on(Tables.bans.target.eq(Tables.users.uuid))
+                .where(Tables.bans.active.isTrue()
+                        .and(Tables.bans.until.isNull()
+                                .or(Tables.bans.until.gt(OffsetDateTime.now()))
+                        )
+                );
+
+        return getContextAsync().thenComposeAsync(context ->
+                CompletableFuture.supplyAsync(() -> {
+                    try {
+                        return context.select(bannedIps.field("id"))
+                                .from(Tables.users)
+                                .join(userIps).on(Tables.users.uuid.eq(uuid))
+                                .leftJoin(bannedIps).on(userIps.field("ip", String.class).eq(bannedIps.field("ip", String.class)))
+                                .where(bannedIps.field("ip").isNotNull())
+                                .orderBy(bannedIps.field("id").desc())
+                                .fetchArray(0, Integer.class);
+                    } catch (DataAccessException e) {
+                        throw new RuntimeException("Error fetching ban IDs.", e);
+                    }
+                }).thenApplyAsync(banIds -> {
+                    try {
+                        return context.selectFrom(Tables.bans)
+                                .where(Tables.bans.id.in(banIds))
+                                .orderBy(Tables.bans.id.desc())
+                                .fetchArray();
+                    } catch (DataAccessException e) {
+                        throw new RuntimeException("Error fetching bans.", e);
+                    }
+                })
+        );
+    }
+
+    /**
+     * Asynchronously retrieves the latest active {@link BansRecord} for a player from the database.
      *
      * @param uuid The UUID of the player.
      * @return A CompletableFuture that holds the {@link BansRecord} representing the latest ban or null if no ban is found.
      */
     public static CompletableFuture<BansRecord> latestBanAsync(String uuid) {
-        return applyContextAsync(context -> {
-            try {
-                return context.selectFrom(Tables.bans)
-                        .where(Tables.bans.target.eq(uuid))
-                        .orderBy(Tables.bans.id.desc())
-                        .limit(1)
-                        .fetchOne();
-            } catch (DataAccessException e) {
-                throw new RuntimeException("Error fetching latest ban.", e);
+        return getBansAsync(uuid).thenApplyAsync(bans -> {
+            if (bans.length > 0) {
+                return bans[0];
+            } else {
+                return null;
             }
         });
     }
@@ -302,17 +346,7 @@ public class DatabaseAsync {
      * @return A CompletableFuture that holds true if the player is banned, false otherwise.
      */
     public static CompletableFuture<Boolean> isBannedAsync(String uuid) {
-        return latestBanAsync(uuid).thenApplyAsync(record -> {
-            if (record == null) {
-                return false;
-            }
-
-            if (!record.isActive()) {
-                return false;
-            }
-
-            return record.getUntil() == null || !record.getUntil().isBefore(OffsetDateTime.now());
-        });
+        return latestBanAsync(uuid).thenApplyAsync(Objects::nonNull);
     }
 
     /**
@@ -352,7 +386,7 @@ public class DatabaseAsync {
     }
 
     /**
-     * Asynchronously unbans a player.
+     * Asynchronously unbans a player. Affects <b>all</b> records associated with the player.
      *
      * @param target The UUID of the player to be unbanned.
      * @return A CompletableFuture that holds the updated {@link BansRecord}.
@@ -365,7 +399,7 @@ public class DatabaseAsync {
             return isBannedAsync(target);
         }).thenAcceptAsync(isBanned -> {
             if (!isBanned) {
-                throw new IllegalArgumentException("Target is already unbanned!");
+                throw new IllegalArgumentException("Target is not banned!");
             }
         }).thenComposeAsync(ignored -> latestBanAsync(target)).thenApplyAsync(record -> {
             if (record != null) {
