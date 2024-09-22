@@ -143,17 +143,7 @@ public class Config {
      * @return CompletableFuture that holds the database {@link HikariDataSource}.
      */
     static CompletableFuture<HikariDataSource> getDataSourceAsync() {
-        return CompletableFuture.supplyAsync(() -> {
-            if (dataSource == null || dataSource.isClosed()) {
-                hikariConfig = new HikariConfig();
-                hikariConfig.setJdbcUrl(getConnectionUrl());
-                hikariConfig.setUsername(user);
-                hikariConfig.setPassword(password);
-
-                dataSource = new HikariDataSource(hikariConfig);
-            }
-            return dataSource;
-        });
+        return CompletableFuture.supplyAsync(Config::getDataSource);
     }
 
 }
