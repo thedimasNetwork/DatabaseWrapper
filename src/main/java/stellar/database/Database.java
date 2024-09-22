@@ -12,6 +12,7 @@ import stellar.database.gen.tables.records.*;
 import stellar.database.types.UnitSnapshot;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -212,18 +213,48 @@ public class Database {
     // region bans
 
     /**
-     * Retrieves the latest {@link BansRecord} for a player from the database.
+     * Retrieves an array of {@link BansRecord} associated with a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return An array of {@link BansRecord} associated with the specified player.
+     */
+    public static BansRecord[] getBans(String uuid) {
+        var userIps = DSL.selectDistinct(Tables.logins.ip)
+                .from(Tables.logins)
+                .where(Tables.logins.uuid.eq(uuid));
+
+        var bannedIps = DSL.selectDistinct(Tables.logins.ip, Tables.bans.asterisk())
+                .from(Tables.logins)
+                .join(Tables.users).on(Tables.logins.uuid.eq(Tables.users.uuid))
+                .join(Tables.bans).on(Tables.bans.target.eq(Tables.users.uuid))
+                .where(Tables.bans.active.isTrue()
+                        .and(Tables.bans.until.isNull()
+                                .or(Tables.bans.until.gt(OffsetDateTime.now()))
+                        )
+                );
+
+        Integer[] banIds = getContext().select(bannedIps.field("id"))
+                .from(Tables.users)
+                .join(userIps).on(Tables.users.uuid.eq(uuid))
+                .leftJoin(bannedIps).on(userIps.field("ip", String.class).eq(bannedIps.field("ip", String.class)))
+                .where(bannedIps.field("ip").isNotNull())
+                .orderBy(bannedIps.field("id").desc())
+                .fetchArray(0, Integer.class);
+
+        return getContext().selectFrom(Tables.bans)
+                .where(Tables.bans.id.in(banIds))
+                .orderBy(Tables.bans.id.desc())
+                .fetchArray();
+    }
+
+    /**
+     * Retrieves the latest active {@link BansRecord} for a player from the database.
      *
      * @param uuid The UUID of the player.
      * @return The {@link BansRecord} representing the latest ban or null if no ban is found.
      */
     public static BansRecord latestBan(String uuid) {
-        return getContext()
-                .selectFrom(Tables.bans)
-                .where(Tables.bans.target.eq(uuid))
-                .orderBy(Tables.bans.id.desc())
-                .limit(1)
-                .fetchOne();
+        return getBans(uuid).length > 0 ? getBans(uuid)[0] : null;
     }
 
     /**
@@ -233,20 +264,7 @@ public class Database {
      * @return True if the player is banned, false otherwise.
      */
     public static boolean isBanned(String uuid) {
-        BansRecord record = latestBan(uuid);
-        if (record == null) {
-            return false;
-        }
-
-        if (!record.isActive()) {
-            return false;
-        }
-
-        if (record.getUntil() == null) {
-            return true;
-        }
-
-        return !record.getUntil().isBefore(OffsetDateTime.now());
+         return latestBan(uuid) != null;
     }
 
     /**
@@ -279,13 +297,13 @@ public class Database {
     }
 
     /**
-     * Unbans a player.
+     * Unbans a player. Affects <b>all</b> records associated with the player.
      *
      * @param target The UUID of the player to be unbanned.
-     * @return The updated {@link BansRecord}
+     * @return The updated {@link BansRecord}s
      * @throws IllegalArgumentException If the target player does not exist or is not banned.
      */
-    public static BansRecord unban(String target) {
+    public static BansRecord[] unban(String target) {
         if (!playerExists(target)) {
             throw new IllegalArgumentException("Target does not exist!");
         }
@@ -293,9 +311,13 @@ public class Database {
             throw new IllegalArgumentException("Target is not banned!");
         }
 
-        BansRecord record = latestBan(target).setActive(false);
-        record.store();
-        return record;
+        List<BansRecord> records = new ArrayList<>();
+        for (BansRecord record : getBans(target)) {
+            record.setActive(false).store();
+            records.add(record);
+        }
+
+        return records.toArray(new BansRecord[0]);
     }
     // endregion
 
