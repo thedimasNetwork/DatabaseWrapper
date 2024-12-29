@@ -12,6 +12,8 @@ import stellar.database.gen.tables.records.*;
 import stellar.database.types.UnitSnapshot;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -291,11 +293,52 @@ public class DatabaseAsync {
                 .from(Tables.logins)
                 .join(Tables.users).on(Tables.logins.uuid.eq(Tables.users.uuid))
                 .join(Tables.bans).on(Tables.bans.target.eq(Tables.users.uuid))
-                .where(Tables.bans.active.isTrue()
-                        .and(Tables.bans.until.isNull()
-                                .or(Tables.bans.until.gt(OffsetDateTime.now()))
-                        )
-                );
+                .where(Tables.bans.active.isTrue())
+                .and(DSL.condition("{0} <> ALL({1})", uuid, Tables.bans.whitelist)) // not contains UUID
+                .and(Tables.bans.until.isNull())
+                .or(Tables.bans.until.gt(OffsetDateTime.now()));
+
+        return getContextAsync().thenComposeAsync(context ->
+                CompletableFuture.supplyAsync(() -> {
+                    try {
+                        return context.select(bannedIps.field("id"))
+                                .from(Tables.users)
+                                .join(userIps).on(Tables.users.uuid.eq(uuid))
+                                .leftJoin(bannedIps).on(userIps.field("ip", String.class).eq(bannedIps.field("ip", String.class)))
+                                .where(bannedIps.field("ip").isNotNull())
+                                .orderBy(bannedIps.field("id").desc())
+                                .fetchArray(0, Integer.class);
+                    } catch (DataAccessException e) {
+                        throw new RuntimeException("Error fetching ban IDs.", e);
+                    }
+                }).thenApplyAsync(banIds -> {
+                    try {
+                        return context.selectFrom(Tables.bans)
+                                .where(Tables.bans.id.in(banIds))
+                                .orderBy(Tables.bans.id.desc())
+                                .fetchArray();
+                    } catch (DataAccessException e) {
+                        throw new RuntimeException("Error fetching bans.", e);
+                    }
+                })
+        );
+    }
+
+    /**
+     * Asynchronously retrieves an array of all (active and inactive) {@link BansRecord}s associated with a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return An CompletableFuture that holds an array of all (active and inactive) {@link BansRecord}s associated with the specified player.
+     */
+    public static CompletableFuture<BansRecord[]> getAllBansAsync(String uuid) {
+        var userIps = DSL.selectDistinct(Tables.logins.ip)
+                .from(Tables.logins)
+                .where(Tables.logins.uuid.eq(uuid));
+
+        var bannedIps = DSL.selectDistinct(Tables.logins.ip, Tables.bans.asterisk())
+                .from(Tables.logins)
+                .join(Tables.users).on(Tables.logins.uuid.eq(Tables.users.uuid))
+                .join(Tables.bans).on(Tables.bans.target.eq(Tables.users.uuid));
 
         return getContextAsync().thenComposeAsync(context ->
                 CompletableFuture.supplyAsync(() -> {
@@ -386,7 +429,7 @@ public class DatabaseAsync {
     }
 
     /**
-     * Asynchronously unbans a player. Affects <b>all</b> records associated with the player.
+     * Asynchronously unbans a player. Affects <b>all</b> records associated with the player by either disabling them or adding the player to the whitelist.
      *
      * @param target The UUID of the player to be unbanned.
      * @return A CompletableFuture that holds the updated {@link BansRecord}.
@@ -403,7 +446,13 @@ public class DatabaseAsync {
             }
         }).thenComposeAsync(ignored -> latestBanAsync(target)).thenApplyAsync(record -> {
             if (record != null) {
-                record.setActive(false).store();
+                List<String> whitelist = new ArrayList<>(Arrays.asList(record.getWhitelist()));
+                if (record.getTarget().equals(target)) {
+                    record.setActive(false).store();
+                } else if (!whitelist.contains(target)) {
+                    whitelist.add(target);
+                    record.setWhitelist(whitelist.toArray(new String[0])).store();
+                }
             }
             return record;
         });

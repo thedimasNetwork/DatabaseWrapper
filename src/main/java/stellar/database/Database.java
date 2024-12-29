@@ -4,6 +4,7 @@ import arc.util.Log;
 import org.jetbrains.annotations.Nullable;
 import org.jooq.*;
 import org.jooq.impl.DSL;
+import org.jooq.util.postgres.PostgresDSL;
 import stellar.database.enums.MessageType;
 import stellar.database.enums.PlayerStatus;
 import stellar.database.enums.PvpMode;
@@ -13,6 +14,7 @@ import stellar.database.types.UnitSnapshot;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -213,10 +215,10 @@ public class Database {
     // region bans
 
     /**
-     * Retrieves an array of {@link BansRecord} associated with a player from the database.
+     * Retrieves an array of active {@link BansRecord}s associated with a player from the database.
      *
      * @param uuid The UUID of the player.
-     * @return An array of {@link BansRecord} associated with the specified player.
+     * @return An array of {@link BansRecord}s associated with the specified player.
      */
     public static BansRecord[] getBans(String uuid) {
         var userIps = DSL.selectDistinct(Tables.logins.ip)
@@ -227,11 +229,40 @@ public class Database {
                 .from(Tables.logins)
                 .join(Tables.users).on(Tables.logins.uuid.eq(Tables.users.uuid))
                 .join(Tables.bans).on(Tables.bans.target.eq(Tables.users.uuid))
-                .where(Tables.bans.active.isTrue()
-                        .and(Tables.bans.until.isNull()
-                                .or(Tables.bans.until.gt(OffsetDateTime.now()))
-                        )
-                );
+                .where(Tables.bans.active.isTrue())
+                .and(DSL.condition("{0} <> ALL({1})", uuid, Tables.bans.whitelist)) // not contains UUID
+                .and(Tables.bans.until.isNull())
+                .or(Tables.bans.until.gt(OffsetDateTime.now()));
+
+        Integer[] banIds = getContext().select(bannedIps.field("id"))
+                .from(Tables.users)
+                .join(userIps).on(Tables.users.uuid.eq(uuid))
+                .leftJoin(bannedIps).on(userIps.field("ip", String.class).eq(bannedIps.field("ip", String.class)))
+                .where(bannedIps.field("ip").isNotNull())
+                .orderBy(bannedIps.field("id").desc())
+                .fetchArray(0, Integer.class);
+
+        return getContext().selectFrom(Tables.bans)
+                .where(Tables.bans.id.in(banIds))
+                .orderBy(Tables.bans.id.desc())
+                .fetchArray();
+    }
+
+    /**
+     * Retrieves an array of all (active and inactive) {@link BansRecord}s associated with a player from the database.
+     *
+     * @param uuid The UUID of the player.
+     * @return An array of {@link BansRecord}s associated with the specified player.
+     */
+    public static BansRecord[] getAllBans(String uuid) {
+        var userIps = DSL.selectDistinct(Tables.logins.ip)
+                .from(Tables.logins)
+                .where(Tables.logins.uuid.eq(uuid));
+
+        var bannedIps = DSL.selectDistinct(Tables.logins.ip, Tables.bans.asterisk())
+                .from(Tables.logins)
+                .join(Tables.users).on(Tables.logins.uuid.eq(Tables.users.uuid))
+                .join(Tables.bans).on(Tables.bans.target.eq(Tables.users.uuid));
 
         Integer[] banIds = getContext().select(bannedIps.field("id"))
                 .from(Tables.users)
@@ -297,7 +328,7 @@ public class Database {
     }
 
     /**
-     * Unbans a player. Affects <b>all</b> records associated with the player.
+     * Unbans a player. Affects <b>all</b> records associated with the player by either disabling them or adding the player to the whitelist.
      *
      * @param target The UUID of the player to be unbanned.
      * @return The updated {@link BansRecord}s
@@ -313,7 +344,13 @@ public class Database {
 
         List<BansRecord> records = new ArrayList<>();
         for (BansRecord record : getBans(target)) {
-            record.setActive(false).store();
+            List<String> whitelist = new ArrayList<>(Arrays.asList(record.getWhitelist()));
+            if (record.getTarget().equals(target)) {
+                record.setActive(false).store();
+            } else if (!whitelist.contains(target)) {
+                whitelist.add(target);
+                record.setWhitelist(whitelist.toArray(new String[0])).store();
+            }
             records.add(record);
         }
 

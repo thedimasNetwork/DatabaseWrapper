@@ -9,12 +9,12 @@ import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Function7;
+import org.jooq.Function8;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
 import org.jooq.Records;
-import org.jooq.Row7;
+import org.jooq.Row8;
 import org.jooq.Schema;
 import org.jooq.SelectField;
 import org.jooq.Table;
@@ -85,6 +85,11 @@ public class Bans extends TableImpl<BansRecord> {
      * The column <code>mindustry.bans.active</code>.
      */
     public final TableField<BansRecord, Boolean> active = createField(DSL.name("active"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field("true", SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>mindustry.bans.whitelist</code>.
+     */
+    public final TableField<BansRecord, String[]> whitelist = createField(DSL.name("whitelist"), SQLDataType.VARCHAR(40).getArrayDataType(), this, "");
 
     private Bans(Name alias, Table<BansRecord> aliased) {
         this(alias, aliased, null);
@@ -174,25 +179,25 @@ public class Bans extends TableImpl<BansRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row7 type methods
+    // Row8 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row7<Integer, String, String, OffsetDateTime, OffsetDateTime, String, Boolean> fieldsRow() {
-        return (Row7) super.fieldsRow();
+    public Row8<Integer, String, String, OffsetDateTime, OffsetDateTime, String, Boolean, String[]> fieldsRow() {
+        return (Row8) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function7<? super Integer, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? super String, ? super Boolean, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function8<? super Integer, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? super String, ? super Boolean, ? super String[], ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
     /**
      * Convenience mapping calling {@link #convertFrom(Class, Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super Integer, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? super String, ? super Boolean, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function8<? super Integer, ? super String, ? super String, ? super OffsetDateTime, ? super OffsetDateTime, ? super String, ? super Boolean, ? super String[], ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }
