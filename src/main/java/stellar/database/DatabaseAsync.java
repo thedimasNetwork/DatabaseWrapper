@@ -293,10 +293,9 @@ public class DatabaseAsync {
                 .from(Tables.logins)
                 .join(Tables.users).on(Tables.logins.uuid.eq(Tables.users.uuid))
                 .join(Tables.bans).on(Tables.bans.target.eq(Tables.users.uuid))
-                .where(Tables.bans.active.isTrue())
-                .and(DSL.condition("{0} <> ALL({1})", uuid, Tables.bans.whitelist)) // not contains UUID
-                .and(Tables.bans.until.isNull())
-                .or(Tables.bans.until.gt(OffsetDateTime.now()));
+                .where(Tables.bans.active.isTrue()
+                        .and(Tables.bans.until.isNull())
+                        .or(Tables.bans.until.gt(OffsetDateTime.now())));
 
         return getContextAsync().thenComposeAsync(context ->
                 CompletableFuture.supplyAsync(() -> {
@@ -305,7 +304,8 @@ public class DatabaseAsync {
                                 .from(Tables.users)
                                 .join(userIps).on(Tables.users.uuid.eq(uuid))
                                 .leftJoin(bannedIps).on(userIps.field("ip", String.class).eq(bannedIps.field("ip", String.class)))
-                                .where(bannedIps.field("ip").isNotNull())
+                                .where(bannedIps.field("ip").isNotNull()
+                                        .and(DSL.not(DSL.condition("{0} = ANY ({1})", DSL.val(uuid), bannedIps.field("whitelist")))))
                                 .orderBy(bannedIps.field("id").desc())
                                 .fetchArray(0, Integer.class);
                     } catch (DataAccessException e) {
@@ -360,7 +360,7 @@ public class DatabaseAsync {
                                 .orderBy(Tables.bans.id.desc())
                                 .fetchArray();
                     } catch (DataAccessException e) {
-                        throw new RuntimeException("Error fetching bans.", e);
+                        throw new RuntimeException("Error fetching all bans.", e);
                     }
                 })
         );

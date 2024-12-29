@@ -229,16 +229,16 @@ public class Database {
                 .from(Tables.logins)
                 .join(Tables.users).on(Tables.logins.uuid.eq(Tables.users.uuid))
                 .join(Tables.bans).on(Tables.bans.target.eq(Tables.users.uuid))
-                .where(Tables.bans.active.isTrue())
-                .and(DSL.condition("{0} <> ALL({1})", uuid, Tables.bans.whitelist)) // not contains UUID
-                .and(Tables.bans.until.isNull())
-                .or(Tables.bans.until.gt(OffsetDateTime.now()));
+                .where(Tables.bans.active.isTrue()
+                        .and(Tables.bans.until.isNull())
+                        .or(Tables.bans.until.gt(OffsetDateTime.now())));
 
         Integer[] banIds = getContext().select(bannedIps.field("id"))
                 .from(Tables.users)
                 .join(userIps).on(Tables.users.uuid.eq(uuid))
                 .leftJoin(bannedIps).on(userIps.field("ip", String.class).eq(bannedIps.field("ip", String.class)))
-                .where(bannedIps.field("ip").isNotNull())
+                .where(bannedIps.field("ip").isNotNull()
+                        .and(DSL.not(DSL.condition("{0} = ANY ({1})", DSL.val(uuid), bannedIps.field("whitelist")))))
                 .orderBy(bannedIps.field("id").desc())
                 .fetchArray(0, Integer.class);
 
@@ -345,13 +345,18 @@ public class Database {
         List<BansRecord> records = new ArrayList<>();
         for (BansRecord record : getBans(target)) {
             List<String> whitelist = new ArrayList<>(Arrays.asList(record.getWhitelist()));
+            System.out.println(whitelist);
             if (record.getTarget().equals(target)) {
                 record.setActive(false).store();
+                records.add(record);
             } else if (!whitelist.contains(target)) {
                 whitelist.add(target);
-                record.setWhitelist(whitelist.toArray(new String[0])).store();
+                records.add(getContext().update(Tables.bans)
+                        .set(Tables.bans.whitelist, whitelist.toArray(new String[0]))
+                        .where(Tables.bans.id.eq(record.getId()))
+                        .returning()
+                        .fetchOne());
             }
-            records.add(record);
         }
 
         return records.toArray(new BansRecord[0]);
