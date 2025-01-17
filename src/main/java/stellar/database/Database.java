@@ -230,8 +230,7 @@ public class Database {
                 .join(Tables.users).on(Tables.logins.uuid.eq(Tables.users.uuid))
                 .join(Tables.bans).on(Tables.bans.target.eq(Tables.users.uuid))
                 .where(Tables.bans.active.isTrue()
-                        .and(Tables.bans.until.isNull())
-                        .or(Tables.bans.until.gt(OffsetDateTime.now())));
+                        .and(Tables.bans.until.isNull().or(Tables.bans.until.gt(OffsetDateTime.now()))));
 
         Integer[] banIds = getContext().select(bannedIps.field("id"))
                 .from(Tables.users)
